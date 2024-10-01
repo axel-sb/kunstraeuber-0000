@@ -1,4 +1,4 @@
-app = "kunstraeuber2-8a72"
+app = "kunstraeuber2-0000"
 primary_region = "cdg"
 kill_signal = "SIGINT"
 kill_timeout = 5
@@ -59,3 +59,8 @@ script_checks = [ ]
   method = "GET"
   timeout = "5s"
   path = "/litefs/health"
+
+  [[vm]]
+  size = "shared-cpu-2x"
+  memory = "2gb"
+
