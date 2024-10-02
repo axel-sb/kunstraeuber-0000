@@ -17,15 +17,17 @@ import {
 	ScrollRestoration,
 	useLoaderData,
 	useLocation,
-	// useMatches,
+	useMatches,
 	useSearchParams,
 	useSubmit,
 } from '@remix-run/react'
 import { withSentry } from '@sentry/remix'
 import { useId, useRef, useState } from 'react'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
-import globalStyles from './app.css?url'
+import appleTouchIconAssetUrl from './assets/favicons/apple-touch-icon.png'
+import faviconAssetUrl from './assets/favicons/favicon.svg'
 import { GeneralErrorBoundary } from './components/error-boundary.tsx'
+import { SearchBar } from './components/search-bar.tsx'
 
 //import { SearchBar } from './components/search-bar.tsx'
 import { useToast } from './components/toaster.tsx'
@@ -81,13 +83,13 @@ export const links: LinksFunction = () => {
 	return [
 		// Preload svg sprite as a resource to avoid render blocking
 		{ rel: 'preload', href: iconsHref, as: 'image' },
-		{ rel: 'mask-icon', href: '/favicons/mask-icon.svg' },
 		{
-			rel: 'alternate icon',
-			type: 'image/png',
-			href: '/favicons/favicon-32x32.png',
+			rel: 'icon',
+			href: '/favicon.ico',
+			sizes: '48x48',
 		},
-		{ rel: 'apple-touch-icon', href: '/favicons/apple-touch-icon.png' },
+		{ rel: 'icon', type: 'image/svg+xml', href: faviconAssetUrl },
+		{ rel: 'apple-touch-icon', href: appleTouchIconAssetUrl },
 		{
 			rel: 'manifest',
 			href: '/site.webmanifest',
@@ -95,7 +97,6 @@ export const links: LinksFunction = () => {
 		} as const, // necessary to make typescript happy
 		{ rel: 'icon', type: 'image/png', href: '/favicons/favicon.png' },
 		{ rel: 'stylesheet', href: tailwindStyleSheetUrl },
-		{ rel: 'stylesheet', href: globalStyles },
 	].filter(Boolean)
 }
 
@@ -189,7 +190,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 		/* data = await getArtist('Picasso') */
 	}
 
-	console.log('🟡 searchType →', searchType)
+	/* console.log('🟡 searchType →', searchType) */
 
 	return json(
 		{
@@ -274,13 +275,13 @@ function Document({
 
 //   ...........................   MARK: App
 
-function App(): React.ReactNode {
+function App() {
 	const data = useLoaderData<typeof loader>()
 	const nonce = useNonce()
 	const user = useOptionalUser()
-	// const matches = useMatches()
-	// const isOnSearchPage = matches.find((m) => m.id === 'routes/users+/index')
-	// const searchBar = isOnSearchPage ? null : <SearchBar status="idle" />
+	const matches = useMatches()
+	const isOnSearchPage = matches.find((m) => m.id === 'routes/users+/index')
+	const searchBar = isOnSearchPage ? null : <SearchBar status="idle" />
 	const allowIndexing = data.ENV.ALLOW_INDEXING !== 'false'
 	useToast(data.toast)
 	const id = useId()
@@ -300,6 +301,9 @@ function App(): React.ReactNode {
 				<>
 					<div className="grid-container m-auto h-full max-w-[calc(843px+8rem)]">
 						<Logo />
+						<div className="ml-auto hidden max-w-sm flex-1 sm:block">
+							{searchBar}
+						</div>
 						{/*
             //   ...................................   MARK: User 龜
             */}
