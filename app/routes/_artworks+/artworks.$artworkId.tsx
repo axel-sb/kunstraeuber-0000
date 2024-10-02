@@ -203,7 +203,7 @@ export default function ArtworkId() {
 						<Icon
 							name="cross-1"
 							size="font"
-							className="p-0.5 text-[2rem] xl:text-xl"
+							className="p-0.5 text-[1.8rem] xl:text-xl"
 						/>
 					</Button>
 					{/*// .MARK: ⃝ info-circled ℹ️ .................  */}
