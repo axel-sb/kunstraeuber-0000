@@ -28,8 +28,6 @@ import appleTouchIconAssetUrl from './assets/favicons/apple-touch-icon.png'
 import faviconAssetUrl from './assets/favicons/favicon.svg'
 import { GeneralErrorBoundary } from './components/error-boundary.tsx'
 import { SearchBar } from './components/search-bar.tsx'
-
-//import { SearchBar } from './components/search-bar.tsx'
 import { useToast } from './components/toaster.tsx'
 import { Button } from './components/ui/button.tsx'
 import {
@@ -95,7 +93,6 @@ export const links: LinksFunction = () => {
 			href: '/site.webmanifest',
 			crossOrigin: 'use-credentials',
 		} as const, // necessary to make typescript happy
-		{ rel: 'icon', type: 'image/png', href: '/favicons/favicon.png' },
 		{ rel: 'stylesheet', href: tailwindStyleSheetUrl },
 	].filter(Boolean)
 }
