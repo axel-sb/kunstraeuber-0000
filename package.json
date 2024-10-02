@@ -60,7 +60,7 @@
     "@remix-run/express": "2.10.3",
     "@remix-run/node": "2.10.3",
     "@remix-run/react": "2.10.3",
-    "@samvera/clover-iiif": "^1.11.2",
+    "@samvera/clover-iiif": "^2.10.1",
     "@sentry/profiling-node": "^8.18.0",
     "@sentry/remix": "^8.18.0",
     "@uiw/react-color-hue": "^2.3.2",
