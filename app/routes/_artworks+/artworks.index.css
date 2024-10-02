@@ -1,0 +1,105 @@
+body {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+/* radio-group */
+header > form > div {
+	background: conic-gradient(from -90deg at top left, #0001, #fff1);
+}
+
+canvas {
+	display: none;
+}
+
+html {
+	height: fit-content !important;
+}
+
+header,
+footer {
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+main {
+	flex-grow: 1;
+}
+
+.artworks-fade-in {
+	animation: 3s 0s fade-in forwards cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+.truncate {
+	width: 250px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/*+ figcaption container query: list-item ............................  */
+
+@container list-item (min-width: 0) {
+	figcaption {
+		font-size: clamp(11px, 10px + 2cqw, 20px) !important;
+		padding: 2cqi 3cqi 1cqi !important;
+		border-top-left-radius: 0 !important;
+		border-top-right-radius: 0 !important;
+
+		div {
+			white-space: nowrap !important;
+			overflow: hidden;
+		}
+
+		&span {
+			padding-left: 5cqi !important;
+			margin-left: auto !important;
+			margin-right: 3cqi !important;
+		}
+	}
+}
+
+@container list-item (min-width: 150px) {
+	figcaption {
+		padding-block: 10cqi;
+		padding-inline: 2cqi;
+		font-size: small;
+	}
+	div.w-full.pt-2 {
+		width: auto;
+		padding-top: 0.25rem;
+	}
+	svg {
+		width: 0.7lh;
+		height: 0.7lh;
+	}
+}
+
+@container list-item (min-width: 300px) {
+	figure {
+		margin-bottom: 10rem!important;
+	}
+	li {
+		padding-bottom: 25cqb;
+		padding-inline: 3cqi;
+	}
+	div.w-full.pt-2 {
+		width: auto;
+		padding-top: 0.25rem;
+	}
+	svg {
+		width: 1lh;
+		height: 1lh;
+	}
+}

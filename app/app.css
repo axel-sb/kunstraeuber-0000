@@ -1,0 +1,1064 @@
+* {
+	scrollbar-width: none;
+	text-wrap: pretty;
+}
+
+* {
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	text-wrap: balance;
+}
+
+br {
+  display: inline-block;
+  width: 100%;
+}
+
+li, p {
+  hyphens: auto;
+}
+
+:root {
+	--clamped: clamp(106.25%, 1rem + 0.5vw, 1.5rem);
+	--padding-inline: clamp(1rem, 1rem + 1vw, 2rem);
+	font-size: var(--clamped);
+	--background: hsl(20 14.3 4.1);
+	color-scheme: dark;
+	--shadow-color: 0deg 0% 0%;
+	--shadow-elevation-low: 0.3px 0.5px 0.4px hsl(var(--shadow-color) / 1),
+		1.3px 2.5px 2.1px -5px hsl(var(--shadow-color) / 0.78);
+	--shadow-elevation-medium: 0.3px 0.5px 0.4px hsl(var(--shadow-color) / 1),
+		1px 2px 1.7px -2.5px hsl(var(--shadow-color) / 0.97),
+		6.3px 12.5px 10.5px -5px hsl(var(--shadow-color) / 0.49);
+	--shadow-elevation-high: 0.3px 0.5px 0.4px hsl(var(--shadow-color) / 1),
+		0.8px 1.7px 1.4px -1.2px hsl(var(--shadow-color) / 1),
+		4.9px 9.8px 8.2px -2.5px hsl(var(--shadow-color) / 0.98),
+		16px 31.9px 26.8px -3.7px hsl(var(--shadow-color) / 0.65),
+		37.5px 75px 62.9px -5px hsl(var(--shadow-color) / 0.32);
+
+	--colorLch: lch(from var(--color) l c h);
+
+	/* screensize numeric pixel value width/height vars */
+	/* https://dev.to/janeori/css-type-casting-to-numeric-tanatan2-scalars-582j */
+	--100vw: 100vw;
+	--100vh: 100vh;
+	--px-width: calc(tan(atan2(var(--100vw), 1px)));
+	--px-height: calc(tan(atan2(var(--100vh), 1px)));
+	/* calc() wrapper required for Safari, bug:
+  // https://bugs.webkit.org/show_bug.cgi?id=263000
+  */
+}
+
+/* GRID adapted from artworks.artworkId.css */
+.grid-container {
+	display: grid;
+	grid-template-columns:
+		var(--padding-inline) minmax(10px, 5rem) minmax(10px, max-content)
+		minmax(10px, 5rem) var(--padding-inline);
+	grid-template-rows: 1rem 48px min-content 1fr min-content;
+	align-items: center;
+	justify-content: space-between;
+}
+
+/* MARK: LOGO ......................... */
+
+.logo {
+	display: inline-grid;
+	grid-column: 2 / 3;
+	grid-row: 2;
+	justify-self: start;
+	padding: 1rem 0;
+	justify-content: start;
+}
+
+/*__ .. MARK: USER ........................ */
+
+.user {
+	grid-column: 4 /5;
+	grid-row: 2;
+	justify-self: end;
+}
+
+/*__ MARK: SEARCH-BAR ..................... */
+
+.search-bar {
+	justify-self: center;
+	align-self: center;
+}
+
+input div#search-clear,
+#search-clear::-webkit-search-cancel-button,
+input[type="search" i]:enabled:read-write:-webkit-any(:focus, :hover)::-webkit-search-cancel-button {
+  opacity: 0.5 !important;
+		color: #ccc !important;
+font-size: 1.25rem !important;
+
+
+	&:focus,
+	&:active {
+		opacity: 0.5 !important;
+		color: #ccc !important;
+	}
+}
+
+#picker,
+input::-webkit-calendar-picker-indicator {
+	display: none !important;
+}
+
+/*__ MARK: FOOTER ........................ */
+
+footer {
+	position: sticky;
+	top: calc(100vh - 4rem);
+}
+
+/*
+@property --100vw {
+	syntax: '<length>';
+	initial-value: 0px;
+	inherits: false;
+}
+
+@property --100vh {
+	syntax: '<length>';
+	initial-value: 0px;
+	inherits: false;
+}
+*/
+
+/* body:has(details[open]) {
+	div.wrapper:nth-child(1) {
+		display: none !important;
+	}
+}
+
+body:has(details[open]) {
+	div.wrapper:nth-child(2) {
+		display: flex !important;
+	}
+} */
+
+/* background: radial-gradient(circle at -50% 50%, #0000, #f0f 5%, #0000)!important; */
+/* background: #000!important; */
+
+/* .wrapper {
+	height: calc(var(--px-height) * 1px);
+	width: calc(var(--px-width) * 1px);
+}
+
+.wrapper::after {
+	counter-reset: val calc(tan(atan2(var(--px-height), 1px)));
+	content: counter(val);
+} */
+
+/*+                                           MARK: artwork$id wrapper
+animated gradient */
+
+.animated-gradient {
+	background: radial-gradient(
+			300px circle at 55% 60% in oklab,
+			var(--shine-2),
+			transparent 100% 100%
+		),
+		radial-gradient(
+			farthest-side circle at 75% 30% in oklab,
+			var(--shine-1) 0%,
+			var(--card-bg) 100%
+		) !important;
+	background-blend-mode: color-burn !important;
+	animation:
+		animate-color-1 8s infinite linear alternate,
+		4s animate-color-2 1s infinite linear alternate !important;
+}
+
+@keyframes animate-color-1 {
+	from {
+		--shine-1: initial;
+	}
+	to {
+		--shine-1: #3f3f34;
+	}
+}
+
+@keyframes animate-color-2 {
+	from {
+		--shine-2: initial;
+	}
+	to {
+		--shine-2: #535345;
+	}
+}
+
+@property --card-bg {
+	syntax: '<color>';
+	inherits: false;
+	initial-value: #555547;
+}
+
+@property --shine-1 {
+	syntax: '<color>';
+	inherits: false;
+	initial-value: #a09f83;
+}
+
+@property --shine-2 {
+	syntax: '<color>';
+	inherits: false;
+	initial-value: #4a4a3d;
+}
+
+/*§     _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _     */
+
+html {
+	height: 100dvh;
+}
+
+body {
+	font-weight: 400;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+		Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	text-rendering: optimizeLegibility;
+	height: 100%;
+}
+
+.animate-hue {
+	animation: hue 60s 5s linear infinite;
+}
+
+.animate-hue-backdrop {
+	animation: hue 60s 5s linear infinite;
+}
+
+@keyframes hue {
+	from {
+		filter: hue-rotate(0deg);
+	}
+
+	to {
+		filter: hue-rotate(359deg);
+	}
+}
+
+@keyframes hue-backdrop {
+	from {
+		backdrop-filter: hue-rotate(0deg);
+	}
+
+	to {
+		backdrop-filter: hue-rotate(359deg);
+	}
+}
+
+/* MARK: Select ............................. */
+
+.SelectIcon {
+	width: 1.5rem;
+	height: 1.5rem;
+}
+
+/* MARK: Search Bar .......................... */
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+	transition:
+		background-color 0s 600000s,
+		color 0s 600000s !important;
+}
+
+input:-internal-autofill-selected {
+	appearance: menulist-button;
+	background-image: none !important;
+	background-color: light-dark(
+		rgba(70, 90, 126, 0.4),
+		rgba(70, 90, 126, 0.4)
+	) !important;
+	color: fieldtext !important;
+}
+
+input[type='select'] {
+	border-right: 0;
+
+	&:active,
+	&:focus {
+		font-size: 1.25rem !important;
+	}
+}
+
+div.search-bar svg {
+	opacity: 0.75;
+}
+
+/* div[data-radix-popper-content-wrapper] {
+	transform: translate(1rem, 6rem) !important;
+	background: var(--background) !important;
+} */
+
+/* Enable panning and pinch zoom gestures, but disable additional non-standard gestures such as double-tap to zoom. Disabling double-tap to zoom removes the need for browsers to delay the generation of click events when the user taps the screen.  */
+button {
+	touch-action: manipulation;
+}
+
+
+
+/* Route ArtworkId MARK: Details */
+
+details > summary {
+	list-style: none !important;
+	&::webkit-details-marker {
+		display: none !important;
+	}
+}
+
+details {
+	-webkit-details-marker {
+		display: none !important;
+		&::-webkit-details-marker {
+			list-style-type: none!;
+		}
+	}
+
+	.wrapper-text {
+		position: sticky;
+		top: 20rem;
+		background: radial-gradient(
+			ellipse at 50% 45%,
+			#0005,
+			#0003,
+			transparent,
+			transparent
+		);
+	}
+
+
+
+	p {
+		hyphens: auto;
+		white-space: normal;
+	}
+
+	a {
+		color: hsl(220, 100%, 89%);
+	}
+
+	strong {
+		font-weight: 500;
+	}
+}
+
+
+
+.splitbutton {
+	button {
+		justify-content: flex-start;
+	}
+	/* border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	border-left: solid 0.5px #fefce880;
+	box-shadow: 0px 0px 0px 0.5px #fefce825; */
+
+	& > svg {
+		opacity: 0.85;
+	}
+	span {
+		white-space: normal;
+	}
+}
+
+/*___ toggle details with animation 2 */
+
+details[open] > #expander {
+	grid-template-rows: 1fr;
+	overflow-y: auto;
+}
+
+#expander {
+	display: grid;
+	grid-template-rows: 0fr;
+	overflow: hidden;
+	animation: ease-out expand 1.5s;
+	transition:
+		overflow,
+		grid-template-rows 1s;
+}
+
+details[open] > #expander {
+	grid-template-rows: 1fr;
+	overflow-y: auto;
+	animation: ease-out expand 1.5s reverse;
+}
+
+@keyframes expand {
+	0% {
+		grid-template-rows: 0fr;
+		opacity: 0;
+		overflow-y: hidden;
+	}
+
+	10% {
+		opacity: 0.5;
+	}
+
+	100% {
+		grid-template-rows: 1fr;
+		opacity: 1;
+		overflow-y: auto;
+	}
+}
+
+@keyframes contract {
+	0% {
+		grid-template-rows: 1fr;
+		opacity: 0;
+	}
+
+	10% {
+		opacity: 0.5;
+	}
+
+	100% {
+		grid-template-rows: 0fr;
+	}
+}
+
+/* Artwork ID toggle Details */
+
+& .toolbar.btn-close {
+	display: block;
+}
+
+& .toolbar > a {
+	transform: translate(-13rem, 41vh);
+}
+
+/*+ Get the width & height of an element   ________   ‾_🡙_‾  ________  | 🡘 |
+MARK: Get ‾_🡙_‾    | 🡘 |
+*/
+
+@property --_x {
+	syntax: '<number>';
+	inherits: true;
+	initial-value: 0;
+}
+@property --_y {
+	syntax: '<number>';
+	inherits: true;
+	initial-value: 0;
+}
+@property --w {
+	syntax: '<integer>';
+	inherits: true;
+	initial-value: 0;
+}
+@property --h {
+	syntax: '<integer>';
+	inherits: true;
+	initial-value: 0;
+}
+
+.size {
+	overflow: auto;
+	position: relative;
+	--w: calc(1 / (1 - var(--_x)));
+	--h: calc(1 / (1 - var(--_y)));
+	timeline-scope: --cx, --cy;
+	animation:
+		x linear,
+		y linear;
+	animation-timeline: --cx, --cy;
+	animation-range: entry 100% exit 100%;
+}
+.size:before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 1px;
+	aspect-ratio: 1;
+	view-timeline:
+		--cx inline,
+		--cy block;
+}
+@keyframes x {
+	to {
+		--_x: 1;
+	}
+}
+@keyframes y {
+	to {
+		--_y: 1;
+	}
+}
+
+.size:after {
+	content: counter(w) 'x' counter(h);
+	counter-reset: w var(--w) h var(--h);
+	position: absolute;
+	left: 0;
+	top: 0;
+	background: #000;
+	color: #fff;
+	font-size: 23px;
+	font-weight: bold;
+	padding: 0.3em;
+}
+
+/*+ arrow with clip-path */
+.arrow-left {
+	--t: 45%;
+	/* control the tail part */
+	--h: 40%;
+	/* control the head part */
+
+	aspect-ratio: 3/2;
+	display: inline-block;
+	width: 1.5rem;
+	background: #0000;
+	mix-blend-mode: difference;
+	clip-path: polygon(
+		100% calc(50% - var(--t) / 2),
+		var(--h) calc(50% - var(--t) / 2),
+		var(--h) 0,
+		var(--h) 100%,
+		var(--h) calc(50% + var(--t) / 2),
+		100% calc(50% + var(--t) / 2)
+	);
+}
+
+/* Zoom */
+.navigator,
+.viewer {
+	/* display: none !important; */
+}
+
+@media (min-width: 300rem) {
+	/*
+    Layout Debugger
+    ===============
+   */
+	/*
+	Hue rotation
+	---------     --------------
+    */
+
+	* {
+		--hue: 0;
+	}
+
+	* > * {
+		--hue: 60;
+	}
+
+	* > * > * {
+		--hue: 120;
+	}
+
+	* > * > * > * {
+		--hue: 180;
+	}
+
+	* > * > * > * > * {
+		--hue: 240;
+	}
+
+	* > * > * > * > * > * {
+		--hue: 300;
+	}
+
+	* > * > * > * > * > * > * {
+		--hue: 0;
+	}
+
+	* > * > * > * > * > * > * > * {
+		--hue: 60;
+	}
+
+	* > * > * > * > * > * > * > * > * {
+		--hue: 120;
+	}
+
+	* > * > * > * > * > * > * > * > * > * {
+		--hue: 180;
+	}
+
+	* > * > * > * > * > * > * > * > * > * > * {
+		--hue: 240;
+	}
+
+	* > * > * > * > * > * > * > * > * > * > * > * {
+		--hue: 300;
+	}
+
+	/*
+	Draw elements' boxes
+	-----------------     --------------
+    */
+
+	body :hover,
+	body :hover > * {
+		/* Opaque version */
+		--c-solid: hsl(var(--hue), 100%, 50%);
+
+		/* Translucent version */
+		--c-bg: hsl(var(--hue), 100%, 50%, 0.1);
+
+		outline: 1px solid var(--c-solid);
+
+		background-image:
+
+            /* Content box fill */
+			linear-gradient(var(--c-bg), var(--c-bg)),
+			/* Content box white underpaint */ linear-gradient(white, white),
+			/* Padding box stripes */
+				repeating-linear-gradient(
+					45deg,
+					var(--c-solid),
+					var(--c-solid) 1px,
+					var(--c-bg) 1px,
+					var(--c-bg) 3px
+				);
+
+		background-origin: content-box, content-box, padding-box;
+		background-repeat: no-repeat;
+	}
+
+	/*
+    Show elements' classes / IDs
+ ------------------------     --------------
+    */
+
+	[id]:hover::before,
+	[class]:hover::before {
+		position: absolute;
+		transform: translate(0, -100%);
+		background: #000;
+		color: hsl(var(--hue), 100%, 80%);
+	}
+
+	:not([id])[class]:hover::before {
+		content: '.' attr(class);
+	}
+
+	:not([class])[id]:hover::before {
+		content: '#' attr(id);
+	}
+
+	[id][class]:hover::before {
+		content: '#' attr(id) '.' attr(class);
+	}
+
+	details[data-rdt-source='/Volumes/Samsung/_Projects-on-Samsung/Remix/artepic/app/routes/_artworks+/artworks.$artworkId.tsx:::188'] {
+		color: red !important;
+	}
+}
+
+/* CLIP-PATH */
+
+/* https://bennettfeely.com/clippy/ and https://developer.mozilla.org/en-US/docs/Web/CSS/clip-path*/
+
+.clip-path {
+	clip-path: polygon(
+		40% 0%,
+		40% 30%,
+		95% 30%,
+		95% 70%,
+		40% 70%,
+		40% 100%,
+		0 50%
+	);
+}
+
+/* body > button {
+	background-color: #ff03;
+	display: inline-block;
+	width: 2.5rem;
+	height: 2.5rem;
+	z-index: 9999;
+}
+
+body > button > span {
+	background-color: #0ffff030;
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	clip-path: polygon(
+		40% 0%,
+		40% 30%,
+		95% 30%,
+		95% 70%,
+		40% 70%,
+		40% 100%,
+		0 50%
+	);
+	&::before {
+		content: '';
+		display: inline-block;
+		width: 2rem;
+		height: 2rem;
+		background-color: #0ffff0;
+		border-radius: 0%;
+	}
+} */
+
+/* Pending UI (for Navlinks) */
+
+.pending {
+	animation: progress 2s infinite ease-in-out;
+	animation-delay: 200ms;
+}
+
+@keyframes progress {
+	0% {
+		background: #e3e3e3;
+	}
+	50% {
+		background: rgb(254 252 232 / 0.5);
+	}
+	100% {
+		background: #e3e3e3;
+	}
+}
+
+.active,
+.pending {
+	display: inline-flex;
+	height: 3rem;
+	width: 3rem;
+	font-size: 2.25rem;
+}
+
+/*
+conic-gradient(
+			from 331deg at 10% -5%,
+			oklch( / 0),
+			oklch( / 0.1) 40%,
+			oklch( / 0.4) 44%,
+			oklch( / 0.7) 47%,
+			oklch( / 1) 50%,
+			oklch( / 0.7) 55%,
+			oklch( / 0.4) 56%,
+			oklch( / 0.1) 60%,
+			oklch( /x 0)
+*/
+
+body > div > header > form > button > svg .path {
+	stroke-dasharray: 50;
+}
+
+/* Favorite Star Animation */
+.animated {
+	animation:
+		dash 2s ease-out forwards,
+		fill 3s ease-out forwards;
+	stroke-dashoffset: 50;
+}
+
+@keyframes dash {
+	0% {
+		stroke-dashoffset: 25;
+	}
+	90% {
+		stroke-dashoffset: 0;
+	}
+
+	70% {
+		stroke-dashoffset: 0;
+	}
+
+	1000% {
+		stroke-dashoffset: 25;
+	}
+}
+
+@keyframes fill {
+	0% {
+		fill-opacity: 0;
+	}
+
+	50% {
+		fill-opacity: 0.1;
+	}
+
+	100% {
+		fill-opacity: 1;
+	}
+}
+
+
+
+/* route artworks.index ................................ */
+/* radio buttons - grid selection */
+
+/* body:has(label:nth-child(1) > input[type='radio']:checked) {
+	> main > ul {
+		grid-template-columns: 1fr;
+	}
+}
+
+body:has(label:nth-child(2) > input[type='radio']:checked) {
+	> main > ul {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+body:has(label:nth-child(3) > input[type='radio']:checked) {
+	> main > ul {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+}
+
+form > div {
+	> label:nth-child(1):has(input[type='radio']:checked) {
+		color: #fefce8;
+		display: inline-flex;
+		ul {
+			grid-template-columns: 1fr;
+		}
+	}
+	& > label:nth-child(2):has(input[type='radio']:checked) {
+		color: #fefce8;
+		display: inline-flex;
+		ul {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+	& > label:nth-child(3):has(input[type='radio']:checked) {
+		color: #fefce8;
+		display: inline-flex;
+		ul {
+			grid-template-columns: 1fr 1fr 1fr;
+		}
+	}
+} */
+
+input[type='radio']:checked + svg {
+	color: #fffcd6;
+}
+
+:checked svg {
+	color: #fffcd622;
+}
+
+/* animated gradients with custom properties */
+
+/* setting up your custom property (think: CSS variable) values as colors */
+/*
+@property --card-bg {
+	syntax: '<color>';
+	inherits: false;
+	initial-value: lavender;
+}
+
+@property --shine-1 {
+	syntax: '<color>';
+	inherits: false;
+	initial-value: wheat;
+}
+
+@property --shine-2 {
+	syntax: '<color>';
+	inherits: false;
+	initial-value: lightpink;
+}
+
+/* access them to create the initial gradient background */ /*
+
+.card {
+	background: radial-gradient(
+			300px circle at 55% 60% in oklab,
+			var(--shine-2),
+			transparent 100% 100%
+		),
+		radial-gradient(
+			farthest-side circle at 75% 30% in oklab,
+			var(--shine-1) 0%,
+			var(--card-bg) 100%
+		);
+}
+
+/*  then update the values in keyframes */ /*
+
+@keyframes animate-color-1 {
+	to {
+		--shine-1: orange;
+	}
+}
+
+@keyframes animate-color-2 {
+	to {
+		--shine-2: hotpink;
+	}
+}
+
+*/
+/*  And animate each */ /*
+
+animation:
+	animate-color-1 8s infinite linear alternate,
+	animate-color-2 1s infinite linear alternate;
+*/
+
+/* text with fill and stroke ............  */
+
+/* h1 {
+  color: #333;
+  -webkit-text-fill-color: #333; /* Will override color (regardless of order) */ /*
+  -webkit-text-stroke: 1px white;
+} */
+
+/*!                                                      viewport width
+@property --_w {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 100vw;
+}
+@property --_h {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 100vh;
+}
+:root {
+  --w: tan(atan2(var(--_w),1px)); /* screen width */ /*
+  --h: tan(atan2(var(--_h),1px)); /* screen height*/ /*
+  /* The result is an integer without unit  */ /*
+}
+
+body:has(.openseadragon-container):before {
+  content: counter(w) "x" counter(h);
+  counter-reset: h var(--h) w var(--w);
+  font-size: 50px;
+  font-family: system-ui,sans-serif;
+  font-weight: 900;
+  position: fixed;
+  inset: 0;
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
+  span {
+    content: "";
+  }
+} */
+
+/*  */
+.gradient-border {
+	border: 5px solid #0000;
+	border-radius: 25px;
+	background:
+		conic-gradient(#fff /* the background color */ 0 0) padding-box,
+		linear-gradient(#ff4e50, #40c0cb) border-box;
+}
+
+/*!     `Comment Highlighting`: false */
+/*?     `Comment Highlighting`: false */
+/*§     `Comment Highlighting`: false */
+/*§§    `Comment Highlighting`: false */
+/*$     `Comment Highlighting`: false */
+/*%     `Comment Highlighting`: false */
+/*+     `Comment Highlighting`: false */
+/*⭐️    `Comment Highlighting`: false */
+/*      `Comment Highlighting`: false */
+/*_     `Comment Highlighting`: false */
+/*__    `Comment Highlighting`: false */
+/*___   `Comment Highlighting`: false */
+/*todo  `Comment Highlighting`: false */
+/*fixme `Comment Highlighting`: false */
+
+/*+   ....................................   Cross Shape    */
+/* HTML: <div class="cross"></div> */
+.cross {
+	--c: #e2f0f4;
+
+	height: 120px;
+	aspect-ratio: 1;
+	box-shadow: 0 0 0 35px inset var(--c);
+	border-image: conic-gradient(var(--c) 0 0) 50% / calc(50% - 5px);
+	clip-path: circle(); /* remove this if you don't want a rounded shape */
+	rotate: 45deg;
+}
+
+/*+  https://css-pattern.com/3d-wavy/  */
+
+/* html {
+  --s: 300px; /* control the size*/ /*
+  --c1: #f8b195;
+  --c2: #355c7d;
+
+  --_g:
+     var(--c2) 6%  14%,var(--c1) 16% 24%,var(--c2) 26% 34%,var(--c1) 36% 44%,
+     var(--c2) 46% 54%,var(--c1) 56% 64%,var(--c2) 66% 74%,var(--c1) 76% 84%,var(--c2) 86% 94%;
+  background:
+    radial-gradient(100% 100% at 100% 0,var(--c1) 4%,var(--_g),#0008 96%,#0000),
+    radial-gradient(100% 100% at 0 100%,#0000, #0008 4%,var(--_g),var(--c1) 96%)
+    var(--c1);
+  background-size: var(--s) var(--s);
+} */
+
+/*+  Folded Zig-Zag pattern  */
+
+/* html {
+  --s: 84px; /* control the size*/ /*
+  --c1: #ffffff;
+  --c2: #71e9a0;
+  --c3: #2a6a9b;
+
+  --a:from -30deg at;
+  background:
+    linear-gradient(#0000 50%,#0004 0),
+    conic-gradient(var(--a) 90%,var(--c1) 240deg,#0000     0),
+    conic-gradient(var(--a) 75%,var(--c2) 240deg,#0000     0),
+    conic-gradient(var(--a) 25%,#0000     240deg,var(--c1) 0),
+    conic-gradient(var(--a) 40%,var(--c1) 240deg,var(--c3) 0);
+  background-size: calc(1.5*var(--s)) var(--s);
+} */
+
+/*+  ................................................... gradient shadow   */
+
+/*
+conic-gradient(from 90deg at 40% -25%, #ffd700, #f79d03, #ee6907, #e6390a, #de0d0d, #d61039, #cf1261, #c71585, #cf1261, #d61039, #de0d0d, #ee6907, #f79d03, #ffd700, #ffd700, #ffd700)
+
+img {
+	-webkit-mask: linear-gradient(135deg, #000c 40%, #000, #000c 60%) 100% 100%/250%
+		250%;
+}
+img:hover {
+	-webkit-mask-position: 0 0;
+}
+*/
+
+/*+     ........................     animated gradient  */
+
+.anim-gradient {
+	/* background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); */
+	animation: gradient 15s ease infinite;
+	background-size: 400% 400%;
+	height: 100vh;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 0%;
+	}
+	25% {
+		background-position: 50% 50%;
+	}
+	50% {
+		background-position: 100% 100%;
+	}
+	75% {
+		background-position: 50% 50%;
+	}
+	100% {
+		background-position: 0% 0%;
+	}
+}
+
+/* https://github.com/argyleink/conic.css */
+/* div {
+  background: conic-gradient(from -90deg at top left, #0001, #fff1)
+} */

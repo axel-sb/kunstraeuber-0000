@@ -1,3 +1,4 @@
+// #region imports, links, meta
 import {
 	json,
 	type LoaderFunctionArgs,
@@ -11,20 +12,22 @@ import {
 	Links,
 	Meta,
 	Outlet,
+	// redirect,
 	Scripts,
 	ScrollRestoration,
 	useLoaderData,
-	useMatches,
+	useLocation,
+	// useMatches,
+	useSearchParams,
 	useSubmit,
 } from '@remix-run/react'
 import { withSentry } from '@sentry/remix'
-import { useRef } from 'react'
+import { useId, useRef, useState } from 'react'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
-import appleTouchIconAssetUrl from './assets/favicons/apple-touch-icon.png'
-import faviconAssetUrl from './assets/favicons/favicon.svg'
+import globalStyles from './app.css?url'
 import { GeneralErrorBoundary } from './components/error-boundary.tsx'
-import { EpicProgress } from './components/progress-bar.tsx'
-import { SearchBar } from './components/search-bar.tsx'
+
+//import { SearchBar } from './components/search-bar.tsx'
 import { useToast } from './components/toaster.tsx'
 import { Button } from './components/ui/button.tsx'
 import {
@@ -35,15 +38,39 @@ import {
 	DropdownMenuTrigger,
 } from './components/ui/dropdown-menu.tsx'
 import { Icon, href as iconsHref } from './components/ui/icon.tsx'
-import { EpicToaster } from './components/ui/sonner.tsx'
-import { ThemeSwitch, useTheme } from './routes/resources+/theme-switch.tsx'
+import { Input } from './components/ui/input.tsx'
+import { Label } from './components/ui/label.tsx'
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from './components/ui/select.tsx'
+import { StatusButton } from './components/ui/status-button.tsx'
+import {
+	getAny,
+	getArtist,
+	getStyle,
+	getPlace,
+	getDate,
+	getColor,
+	getType,
+} from './routes/resources+/search-data.server.tsx'
+import { ThemeSwitch } from './routes/resources+/theme-switch.tsx'
+
 import tailwindStyleSheetUrl from './styles/tailwind.css?url'
 import { getUserId, logout } from './utils/auth.server.ts'
 import { ClientHintCheck, getHints } from './utils/client-hints.tsx'
 import { prisma } from './utils/db.server.ts'
 import { getEnv } from './utils/env.server.ts'
 import { honeypot } from './utils/honeypot.server.ts'
-import { combineHeaders, getDomainUrl, getUserImgSrc } from './utils/misc.tsx'
+import {
+	combineHeaders,
+	getDomainUrl,
+	getUserImgSrc,
+	useIsPending,
+} from './utils/misc.tsx'
 import { useNonce } from './utils/nonce-provider.ts'
 import { type Theme, getTheme } from './utils/theme.server.ts'
 import { makeTimings, time } from './utils/timing.server.ts'
@@ -54,28 +81,36 @@ export const links: LinksFunction = () => {
 	return [
 		// Preload svg sprite as a resource to avoid render blocking
 		{ rel: 'preload', href: iconsHref, as: 'image' },
+		{ rel: 'mask-icon', href: '/favicons/mask-icon.svg' },
 		{
-			rel: 'icon',
-			href: '/favicon.ico',
-			sizes: '48x48',
+			rel: 'alternate icon',
+			type: 'image/png',
+			href: '/favicons/favicon-32x32.png',
 		},
-		{ rel: 'icon', type: 'image/svg+xml', href: faviconAssetUrl },
-		{ rel: 'apple-touch-icon', href: appleTouchIconAssetUrl },
+		{ rel: 'apple-touch-icon', href: '/favicons/apple-touch-icon.png' },
 		{
 			rel: 'manifest',
 			href: '/site.webmanifest',
 			crossOrigin: 'use-credentials',
 		} as const, // necessary to make typescript happy
+		{ rel: 'icon', type: 'image/png', href: '/favicons/favicon.png' },
 		{ rel: 'stylesheet', href: tailwindStyleSheetUrl },
+		{ rel: 'stylesheet', href: globalStyles },
 	].filter(Boolean)
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	return [
-		{ title: data ? 'Epic Notes' : 'Error | Epic Notes' },
-		{ name: 'description', content: `Your own captain's log` },
+		{ title: data ? '* Kunsträuber' : 'Error | Kunsträuber' },
+		{
+			name: 'description',
+			content: `Good Artists Borrow, Great Artists Steal`,
+		},
 	]
 }
+// #endregion imports, links, meta
+
+//   ...........................   MARK: Loader
 
 export async function loader({ request }: LoaderFunctionArgs) {
 	const timings = makeTimings('root loader')
@@ -117,9 +152,50 @@ export async function loader({ request }: LoaderFunctionArgs) {
 	const { toast, headers: toastHeaders } = await getToast(request)
 	const honeyProps = honeypot.getInputProps()
 
+	const url = new URL(request.url)
+	const query = url.searchParams.get('search') ?? undefined
+	/* if (!query) {
+        url.searchParams.set('search', 'Picasso')
+        return redirect(url.pathname + url.search)
+    } */
+	const searchType = url.searchParams.get('searchType') ?? ''
+
+	let data
+	switch (searchType) {
+		case 'all':
+			data = await getAny(query)
+			break
+		case 'artist':
+			data = await getArtist(query)
+			break
+		case 'style':
+			data = await getStyle(query)
+			break
+		case 'type':
+			data = await getType(query)
+			break
+		case 'place':
+			data = await getPlace(query)
+			break
+		case 'date':
+			data = await getDate(Number(query))
+			break
+		case 'color':
+			data = await getColor((query ?? '').toString())
+			break
+
+		default:
+			data = await getAny('Picasso') // break
+		/* data = await getArtist('Picasso') */
+	}
+
+	console.log('🟡 searchType →', searchType)
+
 	return json(
 		{
 			user,
+			data,
+			searchType,
 			requestInfo: {
 				hints: getHints(request),
 				origin: getDomainUrl(request),
@@ -148,10 +224,12 @@ export const headers: HeadersFunction = ({ loaderHeaders }) => {
 	return headers
 }
 
+//   ...........................   MARK: Document
+
 function Document({
 	children,
 	nonce,
-	theme = 'light',
+	theme = 'dark',
 	env = {},
 	allowIndexing = true,
 }: {
@@ -173,7 +251,7 @@ function Document({
 				)}
 				<Links />
 			</head>
-			<body className="bg-background text-foreground">
+			<body className="group/body min-h-[100dvh] bg-background text-foreground">
 				{children}
 				<script
 					nonce={nonce}
@@ -188,32 +266,44 @@ function Document({
 	)
 }
 
-function App() {
+/**
+ * React component for the main App. It handles various hooks and state variables, including user data, theme, search parameters, and more.
+ *
+ * @return {React.ReactNode} The main React component for the entire application.
+ */
+
+//   ...........................   MARK: App
+
+function App(): React.ReactNode {
 	const data = useLoaderData<typeof loader>()
 	const nonce = useNonce()
 	const user = useOptionalUser()
-	const theme = useTheme()
-	const matches = useMatches()
-	const isOnSearchPage = matches.find((m) => m.id === 'routes/users+/index')
-	const searchBar = isOnSearchPage ? null : <SearchBar status="idle" />
+	// const matches = useMatches()
+	// const isOnSearchPage = matches.find((m) => m.id === 'routes/users+/index')
+	// const searchBar = isOnSearchPage ? null : <SearchBar status="idle" />
 	const allowIndexing = data.ENV.ALLOW_INDEXING !== 'false'
 	useToast(data.toast)
+	const id = useId()
+	const isPending = useIsPending()
+	const location = useLocation()
+
+	const [searchParams, setsearchParams] = useSearchParams()
+	const [searchType, setSearchType] = useState<
+		'all' | 'artist' | 'style' | 'place' | 'date' | 'color' | 'type' | ''
+	>('')
+
+	//   ......................................   MARK: return  ⮐
 
 	return (
-		<Document
-			nonce={nonce}
-			theme={theme}
-			allowIndexing={allowIndexing}
-			env={data.ENV}
-		>
-			<div className="flex h-screen flex-col justify-between">
-				<header className="container py-6">
-					<nav className="flex flex-wrap items-center justify-between gap-4 sm:flex-nowrap md:gap-8">
+		<Document nonce={nonce} allowIndexing={allowIndexing} env={data.ENV}>
+			{location.pathname === '/' ? (
+				<>
+					<div className="grid-container m-auto h-full max-w-[calc(843px+8rem)]">
 						<Logo />
-						<div className="ml-auto hidden max-w-sm flex-1 sm:block">
-							{searchBar}
-						</div>
-						<div className="flex items-center gap-10">
+						{/*
+            //   ...................................   MARK: User 龜
+            */}
+						<div className="user py1 col-[4_/_5] flex gap-10 place-self-center pr-0">
 							{user ? (
 								<UserDropdown />
 							) : (
@@ -222,35 +312,104 @@ function App() {
 								</Button>
 							)}
 						</div>
-						<div className="block w-full sm:hidden">{searchBar}</div>
-					</nav>
-				</header>
+						{/*
+            //   .....................   MARK: SearchBar  🔎
+            */}
+						<div className="search-bar w-[calc(100vw - 2rem)] col-[2_/_5] row-[3_/_4] m-4 mx-auto w-full rounded-md bg-opacity-90 py-1 ring-0 ring-yellow-100/25 ring-offset-[.5px] ring-offset-yellow-50/25 lg:col-[3_/_4] lg:row-[2_/_3] lg:m-0">
+							<Form
+								method="GET"
+								action="/artworks"
+								className="no-wrap flex items-center justify-start gap-0"
+								/* onChange={(e) => handleFormChange(e.currentTarget)} */
+							>
+								{/*
+                //  ..............................   MARK: SearchInput
+                */}
 
-				<div className="flex-1">
-					<Outlet />
-				</div>
+								<div className="max-h-6 flex-1 rounded-md">
+									<Label htmlFor={id} className="sr-only">
+										Search
+									</Label>
+									<Input
+										id={id}
+										type="search"
+										name="search"
+										defaultValue={searchParams.get('search') ?? ''}
+										placeholder={`Search ${searchType}`}
+										className="search-cancel:-scale-150 h-6 w-full border-0 py-1 focus:ring-0"
+										onChange={(e) => setsearchParams(e.target.value)}
+									/>
+								</div>
+								{/* //   ...........................   MARK: Status Button  🔄
+								 */}
 
-				<div className="container flex justify-between pb-5">
-					<Logo />
-					<ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
-				</div>
+								<StatusButton
+									type="submit"
+									status={isPending ? 'pending' : 'idle'}
+									className="flex h-6 max-w-12 flex-1 items-center justify-start border-0 pb-3 shadow-none"
+								>
+									<Icon name="magnifying-glass" size="md" />
+									<span className="sr-only">Search</span>
+								</StatusButton>
+								{/* //   ...........................   MARK: Split Button 🔽
+								 */}
+								<div className="splitbutton flex h-6 w-24 items-center justify-start rounded-md">
+									<SelectSearchType
+										searchType={searchType}
+										setSearchType={setSearchType}
+									/>
+								</div>
+							</Form>
+						</div>
+						{/*
+              //   ......................................   MARK: Figure 🖼️
+              */}
+						<figure
+							className="col-[2_/_-2] row-[4_/_-2] flex !max-h-full flex-col items-center lg:row-[4_/_-1]"
+							style={{
+								containerType: 'inline-size',
+								containerName: 'figure',
+							}}
+						>
+							<img
+								className="animate-hue max-h-[calc(100dvh-10rem)] max-w-[calc(100vw_-_2rem)] rounded-sm object-contain sm:max-w-[clamp(283px,calc(100vw-2rem),min(843px,100%))]"
+								alt="A work made of acrylic and silkscreen ink on linen."
+								src="four-mona-lisas.avif"
+								data-rdt-source="/Volumes/Samsung/_Projects-on-Samsung/Remix/artepic/app/routes/_artworks+/artworks.$artworkId.tsx:::247"
+							/>
+							<figcaption className="relative pt-8 text-lg opacity-85">
+								Four Mona Lisas, 1978
+							</figcaption>
+						</figure>{' '}
+						{/*
+         //   ........................................   MARK: Footer  ┗━┛
+      */}
+						<div className="footer col-[2_/_-2] row-[5_/_6] flex h-12 w-full max-w-[843px+4rem] items-center justify-between px-4 pb-6">
+							<ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
+							<Help />
+						</div>
+					</div>
+				</>
+			) : null}
+
+			<Outlet />
+
+			{/* <div className="footer container flex items-center justify-between py-3">
+				<Logo />
+				<ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
+				<Help />
 			</div>
-			<EpicToaster closeButton position="top-center" theme={theme} />
-			<EpicProgress />
-		</Document>
-	)
-}
 
-function Logo() {
-	return (
-		<Link to="/" className="group grid leading-snug">
-			<span className="font-light transition group-hover:-translate-x-1">
-				epic
-			</span>
-			<span className="font-bold transition group-hover:translate-x-1">
-				notes
-			</span>
-		</Link>
+           <EpicProgress />
+
+
+			{location.pathname === '/' ||
+			location.pathname === '/artworks.$artworkId' ? (
+				<>
+					<ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
+				</>
+			) : null} */}
+		</Document>
 	)
 }
 
@@ -265,28 +424,35 @@ function AppWithProviders() {
 
 export default withSentry(AppWithProviders)
 
+{
+	/*
+    //   ..........................................   MARK: User Dropdown
+  */
+}
+
 function UserDropdown() {
 	const user = useUser()
 	const submit = useSubmit()
 	const formRef = useRef<HTMLFormElement>(null)
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger asChild>
+			<DropdownMenuTrigger
+				asChild
+				className="border-amber-950 radix-state-open:border-2 py-1 h-8"
+			>
 				<Button asChild variant="secondary">
 					<Link
 						to={`/users/${user.username}`}
 						// this is for progressive enhancement
 						onClick={(e) => e.preventDefault()}
-						className="flex items-center gap-2"
+						className="flex items-center gap-2 p-0"
 					>
 						<img
-							className="h-8 w-8 rounded-full object-cover"
+							className="h-6 w-6 rounded-full object-cover"
 							alt={user.name ?? user.username}
 							src={getUserImgSrc(user.image?.id)}
 						/>
-						<span className="text-body-sm font-bold">
-							{user.name ?? user.username}
-						</span>
+						<span className="text-body-sm">{user.name ?? user.username}</span>
 					</Link>
 				</Button>
 			</DropdownMenuTrigger>
@@ -323,6 +489,160 @@ function UserDropdown() {
 				</DropdownMenuContent>
 			</DropdownMenuPortal>
 		</DropdownMenu>
+	)
+}
+
+//   ...........................   MARK: SelectSearchType
+
+interface SelectSearchTypeProps {
+	searchType:
+		| ''
+		| 'color'
+		| 'style'
+		| 'date'
+		| 'all'
+		| 'artist'
+		| 'place'
+		| 'type'
+	setSearchType: React.Dispatch<
+		React.SetStateAction<
+			'' | 'color' | 'style' | 'date' | 'all' | 'artist' | 'place' | 'type'
+		>
+	>
+}
+
+function SelectSearchType({
+	searchType,
+	setSearchType,
+}: SelectSearchTypeProps) {
+	const isPending = useIsPending({ formMethod: 'GET', formAction: '/artworks' })
+	return (
+		<Select
+			name="searchType"
+			required={true}
+			value={searchType}
+			onValueChange={(value) => {
+				const searchType = value as
+					| 'all'
+					| 'artist'
+					| 'style'
+					| 'place'
+					| 'date'
+					| 'type'
+					| 'color'
+
+				setSearchType(searchType)
+				const searchForm =
+					document.querySelector<HTMLFormElement>('#search-form')
+				const searchInput =
+					document.querySelector<HTMLInputElement>('#search-input')
+				if (searchForm && searchInput) {
+					searchForm.action = `/artworks?searchType=${searchType}&search=${searchInput.value}`
+					searchForm.submit()
+				}
+			}}
+		>
+			<SelectTrigger className="h-6 w-24 justify-between border-0">
+				<SelectValue placeholder={searchType ? `${searchType}` : ''} />
+			</SelectTrigger>
+			<SelectContent>
+				<SelectItem value="artist">
+					<StatusButton
+						type="submit"
+						status={isPending ? 'pending' : 'idle'}
+						className="flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left shadow-none"
+					>
+						Artist
+					</StatusButton>
+				</SelectItem>
+				<SelectItem value="style">
+					<StatusButton
+						type="submit"
+						status={isPending ? 'pending' : 'idle'}
+						className="flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left shadow-none"
+					>
+						Style
+					</StatusButton>
+				</SelectItem>
+				<SelectItem value="place">
+					<StatusButton
+						type="submit"
+						status={isPending ? 'pending' : 'idle'}
+						className="w-16text-left flex h-6 items-center justify-start border-0 pl-4 pr-2 shadow-none"
+					>
+						Place
+					</StatusButton>
+				</SelectItem>
+				<SelectItem value="date">
+					<StatusButton
+						type="submit"
+						status={isPending ? 'pending' : 'idle'}
+						className="w-16text-left flex h-6 items-center justify-start border-0 pl-4 pr-2 shadow-none"
+					>
+						Date
+					</StatusButton>
+				</SelectItem>
+				<SelectItem value="type">
+					<StatusButton
+						type="submit"
+						status={isPending ? 'pending' : 'idle'}
+						className="w-16text-left flex h-6 items-center justify-start border-0 pl-4 pr-2 shadow-none"
+					>
+						Type
+					</StatusButton>
+				</SelectItem>
+				<SelectItem value="color">
+					<StatusButton
+						type="submit"
+						status={isPending ? 'pending' : 'idle'}
+						className="w-16text-left flex h-6 items-center justify-start border-0 pl-4 pr-2 shadow-none"
+					>
+						Color
+					</StatusButton>
+				</SelectItem>
+				<SelectItem value="all">
+					<StatusButton
+						type="submit"
+						status={isPending ? 'pending' : 'idle'}
+						className="w-16text-left flex h-6 items-center justify-start border-0 pl-4 pr-2 shadow-none"
+					>
+						All
+					</StatusButton>
+				</SelectItem>
+			</SelectContent>
+		</Select>
+	)
+}
+
+//   ...........................   MARK: Logo
+
+function Logo() {
+	return (
+		<Link
+			to="/"
+			className="logo group col-[2_/_3] row-[2_/_3] grid place-self-center px-2 text-lg leading-tight sm:px-4"
+		>
+			<span className="font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
+				kunst
+			</span>
+			<span className="pl-1 font-light leading-none text-yellow-100 transition group-hover:translate-x-1">
+				räuber
+			</span>
+		</Link>
+	)
+}
+
+//   ...........................   MARK: Help
+
+function Help() {
+	return (
+		<Button variant="ghost" size="ghost" className="ml-auto place-self-center">
+			<Icon
+				name="question-mark-circled"
+				className="border-0"
+				size="font"
+			></Icon>
+		</Button>
 	)
 }
 
