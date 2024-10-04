@@ -522,3 +522,24 @@ export function groupBy(q?: string | '') {
 		},
 	})
 }
+
+export async function searchArtworks(searchType: string, query: string) {
+  switch (searchType) {
+    case 'all':
+      return getAny(query)
+    case 'artist':
+      return getArtist(query)
+    case 'style':
+      return getStyle(query)
+    case 'type':
+      return getType(query)
+    case 'place':
+      return getPlace(query)
+    case 'date':
+      return getDate(Number(query))
+    case 'color':
+      return getColor(query)
+    default:
+      return getAny(query)
+  }
+}

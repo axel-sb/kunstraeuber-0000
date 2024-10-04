@@ -54,8 +54,8 @@ main {
 	figcaption {
 		font-size: clamp(11px, 10px + 2cqw, 20px) !important;
 		padding: 2cqi 3cqi 1cqi !important;
-		border-top-left-radius: 0 !important;
-		border-top-right-radius: 0 !important;
+		/* border-top-left-radius: 0 !important;
+		border-top-right-radius: 0 !important; */
 
 		div {
 			white-space: nowrap !important;

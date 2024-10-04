@@ -22,7 +22,7 @@ import {
 	useSubmit,
 } from '@remix-run/react'
 import { withSentry } from '@sentry/remix'
-import { useId, useRef, useState } from 'react'
+import { useRef,  } from 'react'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import appleTouchIconAssetUrl from './assets/favicons/apple-touch-icon.png'
 import faviconAssetUrl from './assets/favicons/favicon.svg'
@@ -38,16 +38,6 @@ import {
 	DropdownMenuTrigger,
 } from './components/ui/dropdown-menu.tsx'
 import { Icon, href as iconsHref } from './components/ui/icon.tsx'
-import { Input } from './components/ui/input.tsx'
-import { Label } from './components/ui/label.tsx'
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from './components/ui/select.tsx'
-import { StatusButton } from './components/ui/status-button.tsx'
 import {
 	getAny,
 	getArtist,
@@ -69,7 +59,6 @@ import {
 	combineHeaders,
 	getDomainUrl,
 	getUserImgSrc,
-	useIsPending,
 } from './utils/misc.tsx'
 import { useNonce } from './utils/nonce-provider.ts'
 import { type Theme, getTheme } from './utils/theme.server.ts'
@@ -281,14 +270,10 @@ function App() {
 	const searchBar = isOnSearchPage ? null : <SearchBar status="idle" />
 	const allowIndexing = data.ENV.ALLOW_INDEXING !== 'false'
 	useToast(data.toast)
-	const id = useId()
-	const isPending = useIsPending()
 	const location = useLocation()
 
-	const [searchParams, setsearchParams] = useSearchParams()
-	const [searchType, setSearchType] = useState<
-		'all' | 'artist' | 'style' | 'place' | 'date' | 'color' | 'type' | ''
-	>('')
+	const [] = useSearchParams()
+
 
 	//   ......................................   MARK: return  ⮐
 
@@ -304,7 +289,7 @@ function App() {
 						{/*
             //   ...................................   MARK: User 龜
             */}
-						<div className="user py1 col-[4_/_5] flex gap-10 place-self-center pr-0">
+						<div className="user py-1 col-[4_/_5] flex gap-10 place-self-center pr-0">
 							{user ? (
 								<UserDropdown />
 							) : (
@@ -314,54 +299,7 @@ function App() {
 							)}
 						</div>
 						{/*
-            //   .....................   MARK: SearchBar  🔎
-            */}
-						<div className="search-bar w-[calc(100vw - 2rem)] col-[2_/_5] row-[3_/_4] m-4 mx-auto w-full rounded-md bg-opacity-90 py-1 ring-0 ring-yellow-100/25 ring-offset-[.5px] ring-offset-yellow-50/25 lg:col-[3_/_4] lg:row-[2_/_3] lg:m-0">
-							<Form
-								method="GET"
-								action="/artworks"
-								className="no-wrap flex items-center justify-start gap-0"
-								/* onChange={(e) => handleFormChange(e.currentTarget)} */
-							>
-								{/*
-                //  ..............................   MARK: SearchInput
-                */}
 
-								<div className="max-h-6 flex-1 rounded-md">
-									<Label htmlFor={id} className="sr-only">
-										Search
-									</Label>
-									<Input
-										id={id}
-										type="search"
-										name="search"
-										defaultValue={searchParams.get('search') ?? ''}
-										placeholder={`Search ${searchType}`}
-										className="search-cancel:-scale-150 h-6 w-full border-0 py-1 focus:ring-0"
-										onChange={(e) => setsearchParams(e.target.value)}
-									/>
-								</div>
-								{/* //   ...........................   MARK: Status Button  🔄
-								 */}
-
-								<StatusButton
-									type="submit"
-									status={isPending ? 'pending' : 'idle'}
-									className="flex h-6 max-w-12 flex-1 items-center justify-start border-0 pb-3 shadow-none"
-								>
-									<Icon name="magnifying-glass" size="md" />
-									<span className="sr-only">Search</span>
-								</StatusButton>
-								{/* //   ...........................   MARK: Split Button 🔽
-								 */}
-								<div className="splitbutton flex h-6 w-24 items-center justify-start rounded-md">
-									<SelectSearchType
-										searchType={searchType}
-										setSearchType={setSearchType}
-									/>
-								</div>
-							</Form>
-						</div>
 						{/*
               //   ......................................   MARK: Figure 🖼️
               */}
@@ -383,7 +321,7 @@ function App() {
 							</figcaption>
 						</figure>{' '}
 						{/*
-         //   ........................................   MARK: Footer  ┗━┛
+         // ,  ........................................   MARK: Footer ┗━┛
       */}
 						<div className="footer col-[2_/_-2] row-[5_/_6] flex h-12 w-full max-w-[843px+4rem] items-center justify-between px-4 pb-6">
 							<ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
@@ -490,128 +428,6 @@ function UserDropdown() {
 				</DropdownMenuContent>
 			</DropdownMenuPortal>
 		</DropdownMenu>
-	)
-}
-
-//   ...........................   MARK: SelectSearchType
-
-interface SelectSearchTypeProps {
-	searchType:
-		| ''
-		| 'color'
-		| 'style'
-		| 'date'
-		| 'all'
-		| 'artist'
-		| 'place'
-		| 'type'
-	setSearchType: React.Dispatch<
-		React.SetStateAction<
-			'' | 'color' | 'style' | 'date' | 'all' | 'artist' | 'place' | 'type'
-		>
-	>
-}
-
-function SelectSearchType({
-	searchType,
-	setSearchType,
-}: SelectSearchTypeProps) {
-	const isPending = useIsPending({ formMethod: 'GET', formAction: '/artworks' })
-	return (
-		<Select
-			name="searchType"
-			required={true}
-			value={searchType}
-			onValueChange={(value) => {
-				const searchType = value as
-					| 'all'
-					| 'artist'
-					| 'style'
-					| 'place'
-					| 'date'
-					| 'type'
-					| 'color'
-
-				setSearchType(searchType)
-				const searchForm =
-					document.querySelector<HTMLFormElement>('#search-form')
-				const searchInput =
-					document.querySelector<HTMLInputElement>('#search-input')
-				if (searchForm && searchInput) {
-					searchForm.action = `/artworks?searchType=${searchType}&search=${searchInput.value}`
-					searchForm.submit()
-				}
-			}}
-		>
-			<SelectTrigger className="h-6 w-24 justify-between border-0">
-				<SelectValue placeholder={searchType ? `${searchType}` : ''} />
-			</SelectTrigger>
-			<SelectContent>
-				<SelectItem value="artist">
-					<StatusButton
-						type="submit"
-						status={isPending ? 'pending' : 'idle'}
-						className="flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left shadow-none"
-					>
-						Artist
-					</StatusButton>
-				</SelectItem>
-				<SelectItem value="style">
-					<StatusButton
-						type="submit"
-						status={isPending ? 'pending' : 'idle'}
-						className="flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left shadow-none"
-					>
-						Style
-					</StatusButton>
-				</SelectItem>
-				<SelectItem value="place">
-					<StatusButton
-						type="submit"
-						status={isPending ? 'pending' : 'idle'}
-						className="w-16text-left flex h-6 items-center justify-start border-0 pl-4 pr-2 shadow-none"
-					>
-						Place
-					</StatusButton>
-				</SelectItem>
-				<SelectItem value="date">
-					<StatusButton
-						type="submit"
-						status={isPending ? 'pending' : 'idle'}
-						className="w-16text-left flex h-6 items-center justify-start border-0 pl-4 pr-2 shadow-none"
-					>
-						Date
-					</StatusButton>
-				</SelectItem>
-				<SelectItem value="type">
-					<StatusButton
-						type="submit"
-						status={isPending ? 'pending' : 'idle'}
-						className="w-16text-left flex h-6 items-center justify-start border-0 pl-4 pr-2 shadow-none"
-					>
-						Type
-					</StatusButton>
-				</SelectItem>
-				<SelectItem value="color">
-					<StatusButton
-						type="submit"
-						status={isPending ? 'pending' : 'idle'}
-						className="w-16text-left flex h-6 items-center justify-start border-0 pl-4 pr-2 shadow-none"
-					>
-						Color
-					</StatusButton>
-				</SelectItem>
-				<SelectItem value="all">
-					<StatusButton
-						type="submit"
-						status={isPending ? 'pending' : 'idle'}
-						className="w-16text-left flex h-6 items-center justify-start border-0 pl-4 pr-2 shadow-none"
-					>
-						All
-					</StatusButton>
-				</SelectItem>
-			</SelectContent>
-		</Select>
 	)
 }
 

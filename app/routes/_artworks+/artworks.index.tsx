@@ -191,12 +191,12 @@ export default function ArtworksPage() {
                        //§   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    MARK: Figcaption
                   */}
 										<figcaption
-											className="z-50 flex w-full flex-wrap justify-between overflow-hidden rounded-md pb-4 backdrop-blur-sm"
+											className="z-50 my-4 flex w-full flex-wrap justify-between overflow-hidden rounded-md py-4 backdrop-blur-sm"
 											style={{
 												background:
-													(('linear-gradient(0deg,' +
-														artwork.colorHsl) as string) +
-													', #121212 .04%, #0000 50%)',
+													(('linear-gradient(-15deg, #0000, #000 25% 70%, #0000), ' +
+														'linear-gradient(-15deg, #0000, ' +
+														artwork.colorHsl) as string) + ' 50%, #0000)',
 											}}
 										>
 											<div className="group-has-[input[type=radio]]:grid-cols-2]:justify-self-start relative flex w-full flex-wrap font-light tracking-[-0.020rem] text-[#f2ece2]">
