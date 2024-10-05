@@ -207,11 +207,11 @@ export default function ArtworkDetails() {
 
 			<div
 				dangerouslySetInnerHTML={artist}
-				className="artist w-fit hyphens-auto px-4 text-lg"
+				className="artist w-fit hyphens-auto px-6 text-lg"
 			></div>
 
 			{/* // .MARK:► UL (details) ..................... */}
-			<ul className="mx-auto flex max-w-prose flex-col gap-2 px-4 py-8 leading-relaxed">
+			<ul className="mx-auto flex max-w-prose flex-col gap-2 px-6 py-8 leading-relaxed">
 				{Object.entries({
 					Date: artwork.date_display,
 					Place: artwork.place_of_origin,

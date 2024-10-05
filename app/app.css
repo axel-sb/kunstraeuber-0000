@@ -790,6 +790,11 @@ body > div > header > form > button > svg .path {
 	}
 }
 
+form > div > label:nth-child(3) {
+	font-size: 1.5rem !important;
+}
+
+
 
 
 /* route artworks.index ................................ */
