@@ -24,9 +24,9 @@ import {
 import { withSentry } from '@sentry/remix'
 import { useRef,  } from 'react'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
+import globalStyles from './app.css?url'
 import appleTouchIconAssetUrl from './assets/favicons/apple-touch-icon.png'
 import faviconAssetUrl from './assets/favicons/favicon.svg'
-import globalStyles from './app.css?url'
 import { GeneralErrorBoundary } from './components/error-boundary.tsx'
 import { SearchBar } from './components/search-bar.tsx'
 import { useToast } from './components/toaster.tsx'
@@ -285,13 +285,13 @@ function App() {
 				<>
 					<div className="grid-container m-auto h-full max-w-[calc(843px+8rem)]">
 						<Logo />
-						<div className="ml-auto hidden max-w-sm flex-1 sm:block">
+						<div className="col-[3_/_4] row-[2_/_3] ml-auto hidden flex-1 sm:block">
 							{searchBar}
 						</div>
 						{/*
             //   ...................................   MARK: User 龜
             */}
-						<div className="user py-1 col-[4_/_5] flex gap-10 place-self-center pr-0">
+						<div className="user col-[4_/_5] flex gap-10 place-self-center py-1 pr-0">
 							{user ? (
 								<UserDropdown />
 							) : (
@@ -313,7 +313,7 @@ function App() {
 							}}
 						>
 							<img
-								className="animate-hue max-h-[calc(100dvh-10rem)] max-w-[calc(100vw_-_2rem)] rounded-sm object-contain sm:max-w-[clamp(283px,calc(100vw-2rem),min(843px,100%))]"
+								className="animate-hue my-4 max-h-[calc(100dvh-12rem)] max-w-[calc(100vw_-_2rem)] rounded-sm object-contain sm:my-8 sm:max-h-[calc(100dvh-14rem)] sm:max-w-[clamp(283px,calc(100vw-2rem),min(843px,100%))]"
 								alt="A work made of acrylic and silkscreen ink on linen."
 								src="four-mona-lisas.avif"
 								data-rdt-source="/Volumes/Samsung/_Projects-on-Samsung/Remix/artepic/app/routes/_artworks+/artworks.$artworkId.tsx:::247"

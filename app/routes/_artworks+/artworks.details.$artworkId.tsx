@@ -155,9 +155,16 @@ export default function ArtworkDetails() {
 			<section className="absolute left-0 -z-10 h-[100vw] w-full opacity-30">
 				<div className="halftone-anim"></div>
 			</section>
-
 			{/* // ........  MARK: ◐ HALFTONE  	.........................	 */}
-
+			<div className="halftone-image-wrapper">
+				<img
+					className="mx-auto h-auto max-h-[calc(100dvh-18rem)] max-w-[clamp(calc(100vw-2rem),100%,calc(100vw-2rem))] rounded-md object-contain object-center grayscale"
+					alt={artwork.alt_text ?? undefined}
+					key={artwork.id}
+					src={artwork.image_url ?? '../../../four-mona-lisas-sm.jpg'}
+				/>
+			</div>
+			{/*{' '}
 			<aside className="absolute opacity-30 filter">
 				<div
 					className="halftone"
@@ -169,24 +176,26 @@ export default function ArtworkDetails() {
 						} as React.CSSProperties
 					}
 				></div>
-			</aside>
-
+			</aside>{' '}
+			*/}
 			{/* // .MARK: TITLE & ARTIST (details) ..................... */}
-
+			{/*{' '}
 			<div
 				className="mx-auto flex h-full w-fit max-w-prose flex-col items-center justify-end gap-2 px-4 pb-4 leading-relaxed"
 				style={{ color: colorHslIcon }}
 			>
-				<div className="title-artist-wrapper max-w-fit rounded-3xl text-center">
-					<div className="inline text-[1.1rem] text-lg opacity-80">
-						Title
-						{': '}
-					</div>
-					<div className="isolate inline-block text-2xl font-bold backdrop-blur-sm">
-						{artwork.title}
-					</div>
+				{' '}
+				*/}
+			<div className="title-artist-wrapper mx-auto my-4 max-w-fit rounded-3xl text-center">
+				<div className="inline text-[1.1rem] text-lg opacity-80">
+					Title
+					{': '}
+				</div>
+				<div className="isolate inline-block text-2xl font-bold backdrop-blur-sm">
+					{artwork.title}
 				</div>
 			</div>
+			{/* </div> */}
 			<header className="flex w-full items-center justify-between p-4">
 				{/* //.MARK: ⃝ btn-back ⏪	...................*/}
 
@@ -204,12 +213,10 @@ export default function ArtworkDetails() {
 
 				<Favorite artwork={artwork} />
 			</header>
-
 			<div
 				dangerouslySetInnerHTML={artist}
 				className="artist w-fit hyphens-auto px-6 text-lg"
 			></div>
-
 			{/* // .MARK:► UL (details) ..................... */}
 			<ul className="mx-auto flex max-w-prose flex-col gap-2 px-6 py-8 leading-relaxed">
 				{Object.entries({
@@ -237,9 +244,7 @@ export default function ArtworkDetails() {
 							key !== 'is_boosted' &&
 							value !== 'none' &&
 							value !== 'null' &&
-							(key === 'Date' ||
-								key === 'Place' ||
-								key === 'Medium'),
+							(key === 'Date' || key === 'Place' || key === 'Medium'),
 					)
 					.sort(([keyA], [keyB]) => {
 						const order = [

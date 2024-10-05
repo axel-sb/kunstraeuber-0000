@@ -16,12 +16,13 @@ h6 {
 }
 
 br {
-  display: inline-block;
-  width: 100%;
+	display: inline-block;
+	width: 100%;
 }
 
-li, p {
-  hyphens: auto;
+li,
+p {
+	hyphens: auto;
 }
 
 :root {
@@ -94,11 +95,13 @@ li, p {
 
 input div#search-clear,
 #search-clear::-webkit-search-cancel-button,
-input[type="search" i]:enabled:read-write:-webkit-any(:focus, :hover)::-webkit-search-cancel-button {
-  opacity: 0.5 !important;
-		color: #ccc !important;
-font-size: 1.25rem !important;
-
+input[type='search' i]:enabled:read-write:-webkit-any(
+		:focus,
+		:hover
+	)::-webkit-search-cancel-button {
+	opacity: 0.5 !important;
+	color: #ccc !important;
+	font-size: 1.25rem !important;
 
 	&:focus,
 	&:active {
@@ -305,8 +308,6 @@ button {
 	touch-action: manipulation;
 }
 
-
-
 /* Route ArtworkId MARK: Details */
 
 details > summary {
@@ -336,8 +337,6 @@ details {
 		);
 	}
 
-
-
 	p {
 		hyphens: auto;
 		white-space: normal;
@@ -351,8 +350,6 @@ details {
 		font-weight: 500;
 	}
 }
-
-
 
 .splitbutton {
 	button {
@@ -794,9 +791,6 @@ form > div > label:nth-child(3) {
 	font-size: 1.5rem !important;
 }
 
-
-
-
 /* route artworks.index ................................ */
 /* radio buttons - grid selection */
 
@@ -1067,3 +1061,21 @@ img:hover {
 /* div {
   background: conic-gradient(from -90deg at top left, #0001, #fff1)
 } */
+
+.halftone-image-wrapper {
+	position: relative;
+	filter: brightness(0.8) blur(1.5px) contrast(4);
+	margin-bottom: 1.5rem;
+	max-width: fit-content;
+	margin: auto;
+}
+
+.halftone-image-wrapper::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(5px at center, black, white);
+	background-size: 10px 10px;
+	mix-blend-mode: screen;
+	opacity: 0.5;
+}
