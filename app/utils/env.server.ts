@@ -36,6 +36,7 @@ export function init() {
 			'❌ Invalid environment variables:',
 			parsed.error.flatten().fieldErrors,
 		)
+		console.log(parsed.data)
 
 		throw new Error('Invalid environment variables')
 	}
