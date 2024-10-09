@@ -17,9 +17,9 @@ export function getArtwork({ id }: Pick<Artwork, 'id'>) {
 			technique_titles: true,
 			description: true,
 			style_titles: true,
-      artwork_type_title: true,
-			// width: true,
-			// height: true,
+			artwork_type_title: true,
+			width: true,
+			height: true,
 			image_url: true,
 			subject_titles: true,
 			category_titles: true,
@@ -61,7 +61,7 @@ export function getWeight(q?: string | '') {
 			date_end: true,
 			description: true,
 			style_titles: true,
-            artwork_type_title: true,
+			artwork_type_title: true,
 			term_titles: true,
 			subject_titles: true,
 			classification_titles: true,
@@ -95,7 +95,7 @@ export function getFavorite() {
 			date_end: true,
 			description: true,
 			style_titles: true,
-            artwork_type_title: true,
+			artwork_type_title: true,
 			term_titles: true,
 			subject_titles: true,
 			classification_titles: true,
@@ -139,7 +139,7 @@ export function getAny(qAny?: string | '') {
 			category_titles: true,
 			term_titles: true,
 			style_titles: true,
-      artwork_type_title: true,
+			artwork_type_title: true,
 			subject_titles: true,
 			classification_titles: true,
 			technique_titles: true,
@@ -202,8 +202,8 @@ export function getArtist(q?: string | '') {
 			// technique_titles: true,
 			// description: true,
 			//
-      width: true,
-      height: true,
+			width: true,
+			height: true,
 			image_url: true,
 			// term_titles: true,
 			// subject_titles: true,
@@ -253,7 +253,7 @@ export function getArtworksBysubject_titles(querysubject_titles?: string | '') {
 			subject_titles: true,
 			category_titles: true,
 			style_titles: true,
-            artwork_type_title: true,
+			artwork_type_title: true,
 			classification_titles: true,
 			technique_titles: true,
 			provenance_text: true,
@@ -368,7 +368,7 @@ export function getPlace(qPlace?: string | '') {
 			subject_titles: true,
 			category_titles: true,
 			style_titles: true,
-            artwork_type_title: true,
+			artwork_type_title: true,
 			classification_titles: true,
 			technique_titles: true,
 			provenance_text: true,
@@ -407,7 +407,7 @@ export function getDate(qDate?: number | 0) {
 			subject_titles: true,
 			category_titles: true,
 			style_titles: true,
-            artwork_type_title: true,
+			artwork_type_title: true,
 			classification_titles: true,
 			technique_titles: true,
 			provenance_text: true,
@@ -444,7 +444,7 @@ export function getColor(q?: string | '') {
 				technique_titles: true,
 				description: true,
 				style_titles: true,
-            artwork_type_title: true,
+				artwork_type_title: true,
 				width: true,
 				height: true,
 				//
@@ -524,22 +524,22 @@ export function groupBy(q?: string | '') {
 }
 
 export async function searchArtworks(searchType: string, query: string) {
-  switch (searchType) {
-    case 'all':
-      return getAny(query)
-    case 'artist':
-      return getArtist(query)
-    case 'style':
-      return getStyle(query)
-    case 'type':
-      return getType(query)
-    case 'place':
-      return getPlace(query)
-    case 'date':
-      return getDate(Number(query))
-    case 'color':
-      return getColor(query)
-    default:
-      return getAny(query)
-  }
+	switch (searchType) {
+		case 'all':
+			return getAny(query)
+		case 'artist':
+			return getArtist(query)
+		case 'style':
+			return getStyle(query)
+		case 'type':
+			return getType(query)
+		case 'place':
+			return getPlace(query)
+		case 'date':
+			return getDate(Number(query))
+		case 'color':
+			return getColor(query)
+		default:
+			return getAny(query)
+	}
 }

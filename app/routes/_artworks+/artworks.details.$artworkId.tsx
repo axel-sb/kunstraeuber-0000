@@ -18,6 +18,7 @@ import {
 } from '@remix-run/react'
 import chalk from 'chalk'
 import { type FunctionComponent } from 'react'
+import { Halftone } from '#app/components/halftone.tsx'
 import { Button } from '#app/components/ui/button.tsx'
 import { Icon } from '#app/components/ui/icon.js'
 // import kunstraeuber from '../../../avatars/kunstraeuber.png'
@@ -99,7 +100,6 @@ const Favorite: FunctionComponent<{
 		artwork: { colorHsl: colorHsl },
 	} = useLoaderData<typeof loader>()
 
-	console.log('🔵 fetcher.formData →', fetcher.formData, '🔵')
 
 	return (
 		<fetcher.Form method="post" className="favorite">
@@ -110,7 +110,6 @@ const Favorite: FunctionComponent<{
 				className="inline-flex w-8 px-0 pt-2"
 				style={{
 					color: colorHsl as unknown as string,
-					filter: '',
 					strokeDasharray: 50,
 				}}
 			>
@@ -127,75 +126,34 @@ const Favorite: FunctionComponent<{
 export default function ArtworkDetails() {
 	const { artwork } = useLoaderData<typeof loader>()
 	const navigate = useNavigate()
-	const halftoneUrl = `url(${artwork.image_url}) 50% / cover` || 'none'
-	// const colorHsl = artwork.colorHsl
-	const colorHslIcon = `hsl(${artwork.color_h}, ${artwork.color_s}%, 50%)`
-	const colorHslGradientBg = `hsl(${artwork.color_h}, 100%, 55% / 1.0)`
+
+    const colorHsl = `hsl(${artwork.color_h}, ${artwork.color_s}%, 50%)`
+
+	// Define halftoneUrl
+	const halftoneUrl = `url(${artwork.image_url})50%/contain`
 
 	const artist = {
 		__html:
-			'<div class="artist-caption  opacity-80 text-lg">Artist:  </div> ' +
+			'<div class="artist-caption opacity-80 text-lg">Artist:  </div> ' +
 			artwork.artist_display,
 	}
 
 	const description = {
 		__html:
 			artwork.description && artwork.description !== 'null'
-				? '<div class="text-base opacity-80 pb-4 backdrop-blur-xl">Description: </div>' +
+				? '<div class="text-base pb-4">Description: </div>' +
 					artwork.description
 				: '',
 	}
 
-	{
-		/* //   MARK: RETURN .................................	 */
-	}
-
 	return (
-		<div className="details-container mx-auto max-w-prose">
-			<section className="absolute left-0 -z-10 h-[100vw] w-full opacity-30">
-				<div className="halftone-anim"></div>
-			</section>
-			{/* // ........  MARK: ◐ HALFTONE  	.........................	 */}
-			<div className="halftone-image-wrapper">
-				<img
-					className="mx-auto h-auto max-h-[calc(100dvh-18rem)] max-w-[clamp(calc(100vw-2rem),100%,calc(100vw-2rem))] rounded-md object-contain object-center grayscale"
-					alt={artwork.alt_text ?? undefined}
-					key={artwork.id}
-					src={artwork.image_url ?? '../../../four-mona-lisas-sm.jpg'}
-				/>
-			</div>
-			{/*{' '}
-			<aside className="absolute opacity-30 filter">
-				<div
-					className="halftone"
-					style={
-						{
-							'--img': halftoneUrl,
-							'--colorHsl': colorHslGradientBg,
-							backgroundSize: 'cover',
-						} as React.CSSProperties
-					}
-				></div>
-			</aside>{' '}
-			*/}
-			{/* // .MARK: TITLE & ARTIST (details) ..................... */}
-			{/*{' '}
-			<div
-				className="mx-auto flex h-full w-fit max-w-prose flex-col items-center justify-end gap-2 px-4 pb-4 leading-relaxed"
-				style={{ color: colorHslIcon }}
-			>
-				{' '}
-				*/}
-			<div className="title-artist-wrapper mx-auto my-4 max-w-fit rounded-3xl text-center">
-				<div className="inline text-[1.1rem] text-lg opacity-80">
-					Title
-					{': '}
-				</div>
-				<div className="isolate inline-block text-2xl font-bold backdrop-blur-sm">
-					{artwork.title}
-				</div>
-			</div>
-			{/* </div> */}
+		<div
+			className="details-container mx-auto max-w-prose"
+			style={{ '--halftone-url': halftoneUrl, '--colorHsl': colorHsl } as React.CSSProperties}
+		>
+			{/* // ........  MARK: HALFTONE  	.........................	 */}
+			<Halftone />
+
 			<header className="flex w-full items-center justify-between p-4">
 				{/* //.MARK: ⃝ btn-back ⏪	...................*/}
 
@@ -305,7 +263,7 @@ export default function ArtworkDetails() {
 function Logo() {
 	const { artwork } = useLoaderData<typeof loader>()
 	// const colorHslGradientBg = `hsl(${artwork.color_h}, 100%, 55% / 1.0)`
-	const colorHslIcon = `hsl(${artwork.color_h}, ${artwork.color_s}%, 50%)`
+	const colorHsl = `hsl(${artwork.color_h}, ${artwork.color_s}%, 50%)`
 
 	return (
 		<>
@@ -317,12 +275,12 @@ function Logo() {
 				<div className="right-12 w-screen overflow-hidden px-4 text-right">
 					<section className="absolute left-0 -z-10 h-20 w-full opacity-30">
 						<div className="halftone-anim bg-black mix-blend-darken">
-							<div className="halftone" style={{ color: colorHslIcon }}></div>
+							<div className="halftone" style={{ color: colorHsl }}></div>
 						</div>
 					</section>
 					<span
 						className="mt-4 inline-block text-xl font-medium leading-none backdrop-blur-sm transition group-hover:translate-x-1"
-						style={{ color: colorHslIcon }}
+						style={{ color: colorHsl }}
 					>
 						kunst
 					</span>

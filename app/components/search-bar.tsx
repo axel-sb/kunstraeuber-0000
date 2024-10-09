@@ -21,7 +21,7 @@ export function SearchBar({
 	const submit = useSubmit()
 	const isSubmitting = useIsPending({
 		formMethod: 'GET',
-		formAction: '/users',
+		formAction: '/artworks',
 	})
 
 	const handleFormChange = useDebounce((form: HTMLFormElement) => {
@@ -36,10 +36,10 @@ export function SearchBar({
 		<Form
 			method="GET"
 			action="/artworks"
-			className="flex flex-wrap items-center justify-center gap-2"
+			className="flex items-center justify-between gap-2 w-full grid-col-"
 			onChange={(e) => autoSubmit && handleFormChange(e.currentTarget)}
 		>
-			<div className="flex-1">
+			<div className="flex-1 absolute">
 				<Label htmlFor={id} className="sr-only">
 					Search
 				</Label>
@@ -121,7 +121,7 @@ function SelectSearchType({
 				}
 			}}
 		>
-			<SelectTrigger className="h-6 w-24 justify-between border-0">
+			<SelectTrigger className="h-6 w-6 justify-between">
 				<SelectValue placeholder={searchType ? `${searchType}` : ''} />
 			</SelectTrigger>
 			<SelectContent>

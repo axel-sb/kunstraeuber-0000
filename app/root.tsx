@@ -284,27 +284,23 @@ function App() {
 			{location.pathname === '/' ? (
 				<>
 					<div className="grid-container m-auto h-full max-w-[calc(843px+8rem)]">
-						<Logo />
-						<div className="col-[3_/_4] row-[2_/_3] ml-auto hidden flex-1 sm:block">
-							{searchBar}
-						</div>
-						{/*
-            //   ...................................   MARK: User 龜
-            */}
-						<div className="user col-[4_/_5] flex gap-10 place-self-center py-1 pr-0">
-							{user ? (
-								<UserDropdown />
-							) : (
-								<Button asChild variant="default" size="lg">
-									<Link to="/login">Log In</Link>
-								</Button>
-							)}
-						</div>
-						{/*
-
-						{/*
-              //   ......................................   MARK: Figure 🖼️
-              */}
+						{/* MARK: Header 🧭
+						 */}
+						<header className="col-[1_/_-1] row-[2_/_4] flex h-20 w-full items-start justify-between">
+							<Logo />
+							<div className="w-full flex-1 sm:block">{searchBar}</div>
+							<div className="user flex gap-10 justify-self-end px-4 py-1 sm:px-8 md:px-12 lg:px-16 xl:px-20">
+								{user ? (
+									<UserDropdown />
+								) : (
+									<Button asChild variant="default" size="lg">
+										<Link to="/login">Log In</Link>
+									</Button>
+								)}
+							</div>
+						</header>
+						{/* MARK: Figure 🖼️
+						 */}
 						<figure
 							className="col-[2_/_-2] row-[4_/_-2] flex !max-h-full flex-col items-center lg:row-[4_/_-1]"
 							style={{
@@ -389,7 +385,7 @@ function UserDropdown() {
 						className="flex items-center gap-2 p-0"
 					>
 						<img
-							className="h-6 w-6 rounded-full object-cover"
+							className="h-6 max-w-10 rounded-full object-cover"
 							alt={user.name ?? user.username}
 							src={getUserImgSrc(user.image?.id)}
 						/>
@@ -439,7 +435,7 @@ function Logo() {
 	return (
 		<Link
 			to="/"
-			className="logo group col-[2_/_3] row-[2_/_3] grid place-self-center px-2 text-lg leading-tight sm:px-4"
+			className="logo group inline-grid justify-self-start px-4 text-lg leading-tight sm:px-8 md:px-12 lg:px-16 xl:px-20"
 		>
 			<span className="font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
 				kunst

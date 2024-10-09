@@ -118,7 +118,8 @@ app.use(
 				].filter(Boolean),
 				'font-src': ["'self'"],
 				'frame-src': ["'self'"],
-				'img-src': ["'self'", 'data:'],
+				// add 'https://www.artic.edu/' as an allowed image source
+                'img-src': ["'self'", 'https://www.artic.edu/'],
 				'script-src': [
 					"'strict-dynamic'",
 					"'self'",

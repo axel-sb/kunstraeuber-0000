@@ -27,7 +27,7 @@ p {
 
 :root {
 	--clamped: clamp(106.25%, 1rem + 0.5vw, 1.5rem);
-	--padding-inline: clamp(1rem, 1rem + 1vw, 2rem);
+	--padding-inline: 1rem;
 	font-size: var(--clamped);
 	--background: hsl(20 14.3 4.1);
 	color-scheme: dark;
@@ -60,31 +60,21 @@ p {
 .grid-container {
 	display: grid;
 	grid-template-columns:
-		var(--padding-inline) minmax(10px, 5rem) minmax(10px, max-content)
-		minmax(10px, 5rem) var(--padding-inline);
-	grid-template-rows: 1rem 48px min-content 1fr min-content;
-	align-items: center;
+		var(--padding-inline) repeat(3, minmax(1rem, max-content)) var(--padding-inline);
+	grid-template-rows: 1.5rem minmax(3rem, max-content) auto min-content;
 	justify-content: space-between;
 }
 
 /* MARK: LOGO ......................... */
 
-.logo {
+.logo > a {
 	display: inline-grid;
-	grid-column: 2 / 3;
-	grid-row: 2;
 	justify-self: start;
-	padding: 1rem 0;
 	justify-content: start;
 }
 
 /*__ .. MARK: USER ........................ */
 
-.user {
-	grid-column: 4 /5;
-	grid-row: 2;
-	justify-self: end;
-}
 
 /*__ MARK: SEARCH-BAR ..................... */
 
@@ -1074,8 +1064,13 @@ img:hover {
 	content: '';
 	position: absolute;
 	inset: 0;
-	background: radial-gradient(5px at center, black, white);
+	background: radial-gradient(5px at center, black, white) space;
 	background-size: 10px 10px;
 	mix-blend-mode: screen;
 	opacity: 0.5;
+}
+
+#edit-profile-username,
+#edit-profile-name {
+	padding-inline: 0;
 }

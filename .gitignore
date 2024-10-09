@@ -25,3 +25,34 @@ node_modules
 
 # generated files
 /app/components/ui/icons
+app/routes/_marketing+/about.tsx
+app/routes/_marketing+/index.tsx
+app/routes/_marketing+/privacy.tsx
+app/routes/_marketing+/support.tsx
+app/routes/_marketing+/tailwind-preset.ts
+app/routes/_marketing+/tos.tsx
+app/routes/_marketing+/logos/docker.svg
+app/routes/_marketing+/logos/eslint.svg
+app/routes/_marketing+/logos/faker.svg
+app/routes/_marketing+/logos/fly.svg
+app/routes/_marketing+/logos/github.svg
+app/routes/_marketing+/logos/logos.ts
+app/routes/_marketing+/logos/msw.svg
+app/routes/_marketing+/logos/playwright.svg
+app/routes/_marketing+/logos/prettier.svg
+app/routes/_marketing+/logos/prisma.svg
+app/routes/_marketing+/logos/radix.svg
+app/routes/_marketing+/logos/react-email.svg
+app/routes/_marketing+/logos/remix.svg
+app/routes/_marketing+/logos/resend.svg
+app/routes/_marketing+/logos/sentry.svg
+app/routes/_marketing+/logos/shadcn-ui.svg
+app/routes/_marketing+/logos/sqlite.svg
+app/routes/_marketing+/logos/stars.jpg
+app/routes/_marketing+/logos/tailwind.svg
+app/routes/_marketing+/logos/testing-library.png
+app/routes/_marketing+/logos/typescript.svg
+app/routes/_marketing+/logos/vitest.svg
+app/routes/_marketing+/logos/zod.svg
+halftone-reference/style.css
+client_secret_642208729626-ids9ig4ntanjfu4rq5k109a0sm255651.apps.googleusercontent.com.json
