@@ -130,7 +130,7 @@ export default function ArtworkDetails() {
     const colorHsl = `hsl(${artwork.color_h}, ${artwork.color_s}%, 50%)`
 
 	// Define halftoneUrl
-	const halftoneUrl = `url(${artwork.image_url})50%/contain`
+	const halftoneUrl = `url(${artwork.image_url}) no-repeat 50%/contain`
 
 	const artist = {
 		__html:
