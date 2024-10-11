@@ -118,7 +118,7 @@ app.use(
 				].filter(Boolean),
 				'font-src': ["'self'"],
 				'frame-src': ["'self'"],
-				'img-src': ["'self'", 'data:', 'https://www.artic.edu/'],
+				'img-src': ["'self'", 'data:', 'https://*.artic.edu'],
 				'script-src': [
 					"'strict-dynamic'",
 					"'self'",
