@@ -51,7 +51,7 @@ export const action = async ({ params }: ActionFunctionArgs) => {
 	return redirect(`./`)
 }
 
-//    ................................    MARK: Loader
+//    MARK: LOADER
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
 	invariantResponse(params.artworkId, 'Missing artworkId param')
@@ -86,7 +86,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 	return json({ artwork: filteredArtwork })
 }
 
-//    ...........................   MARK: FAVORITE
+//  MARK: FAVORITE
 
 const Favorite: FunctionComponent<{
 	artwork: Pick<Artwork, 'favorite'>
@@ -149,13 +149,22 @@ export default function ArtworkDetails() {
 	return (
 		<div
 			className="details-container mx-auto max-w-prose"
-			style={{ '--halftone-url': halftoneUrl, '--colorHsl': colorHsl } as React.CSSProperties}
+			style={
+				{
+					'--halftone-url': halftoneUrl,
+					'--colorHsl': colorHsl,
+				} as React.CSSProperties
+			}
 		>
-			{/* // ........  MARK: HALFTONE  	.........................	 */}
-			<Halftone />
+			{/* // ........  MARK: HALFTONE
+            */}
+
+			<Halftone title={artwork.title ?? ''} imageUrl={artwork.image_url ?? ''} />
 
 			<header className="flex w-full items-center justify-between p-4">
-				{/* //.MARK: ⃝ btn-back ⏪	...................*/}
+
+				{/* //.MARK: ⃝ btn-back ⏪
+                */}
 
 				<Button
 					className="btn-back relative z-50 flex h-10 w-10 cursor-pointer rounded-full p-0 text-yellow-50/50 active:opacity-50"
@@ -167,7 +176,8 @@ export default function ArtworkDetails() {
 					<Icon name="cross-1" className="h-6 w-6" />
 				</Button>
 
-				{/* //.MARK: ⭐️ FAVORITE ⏪	...................*/}
+				{/* //.MARK: ⭐️ FAVORITE ⏪
+                */}
 
 				<Favorite artwork={artwork} />
 			</header>
@@ -257,7 +267,8 @@ export default function ArtworkDetails() {
 }
 
 {
-	/* // ........  MARK: LOGO  	.........................	 */
+	/*  MARK: LOGO
+     */
 }
 
 function Logo() {

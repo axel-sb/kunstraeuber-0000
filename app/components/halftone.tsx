@@ -1,15 +1,20 @@
-export function Halftone() {
+interface HalftoneProps {
+	title: string;
+	imageUrl: string;
+}
+
+export function Halftone({ title, imageUrl }: HalftoneProps) {
 	return (
 		<article>
-			<section >
+			<section>
 				<div className="halftone">
 					<span className="title-container">
-						<h1 className="title text-balance text-center">
-							Sunday Morning, Mayflower Hotel, N.Y.
+						<h1 className="title text-[clamp(1.5rem, calc(12px + 2vw), 2rem)] text-balance text-center">
+							{title}
 						</h1>
 					</span>
 					{/* This image is only included as a helper for the parent container to calculate the size of the halftone component, since the image is otherwise only included as a background url CSS variable which does not claim any space */}
-					<img src="https://www.artic.edu/iiif/2/c04a376f-23fc-65da-bc10-6af4b77f120a/full/843,/0/default.jpg" />
+					<img src={imageUrl} alt={title} />
 				</div>
 			</section>
 		</article>

@@ -127,7 +127,10 @@ const Favorite: FunctionComponent<{
 
 export default function ArtworkId() {
 	const { artwork } = useLoaderData<typeof loader>()
-
+    const colorHsl = `hsl(${artwork.colorHsl}`
+    const gradientBtnStyle = {
+        '--colorHsl': colorHsl,
+    } as React.CSSProperties
 	const colorHslIcon = `hsl(${artwork.color_h}, ${artwork.color_s}%, 50%)`
 	console.log('colorHslIcon', colorHslIcon)
 	const colorH = parseInt(`${artwork.color_h}`)
@@ -156,10 +159,11 @@ export default function ArtworkId() {
 			{/* // ........  MARK:HEADER ▀▀▀	....................	 */}
 			<header className="px-4">
 				<Logo />
-				<ul
-					id="currGradColors"
-					className="absolute left-32 top-4 mx-auto flex h-16 w-3/5"
-				></ul>
+				<div
+					style={
+						{'--colorHsl': gradientBtnStyle } as React.CSSProperties
+					}
+				></div>
 				<Favorite artwork={artwork} />
 			</header>
 			{/* // .MARK: FIGURE 🪆	 .....................	 */}
@@ -238,9 +242,8 @@ export default function ArtworkId() {
 					</div>
 				</div>
 			</footer>
-			<div className="canvas cols-[1_/_-1] absolute -z-10 h-full w-full">
-				{MeshGradients(colorH, colorS, colorL)}
-			</div>
+
+			{MeshGradients(colorH, colorS, colorL)}
 		</>
 	)
 

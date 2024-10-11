@@ -56,9 +56,21 @@ function MeshGradients(colorH: number, colorS: number, colorL: number) {
 	}
 
 	return (
-		<div className="absolute">
-			<canvas id={canvasId} width="800" height="800" />
-			<button onClick={() => regenerate()}> Regenerate </button>
+		<div className="grid h-screen w-screen grid-cols-[subgrid] grid-rows-[subgrid]">
+			<button
+				id="regenerate"
+				className="absolute left-1/2 top-0 h-6 w-6 -translate-x-1/2 translate-y-full rounded-[30%_70%_70%_30%_/_30%_30%_70%_70%]"
+				style={{
+					backgroundImage: `radial-gradient(ellipse at -61% 141%, ${'hsl(' + colorH + ', 10%, 20%)'}, ${'hsl(' + colorH + ', 100%, 50%)'} 20%, ${'hsl(' + colorH + ', ' + colorS + '%, 15%)'}, ${'hsl(' + colorH + ', 100%, 30%)'} 60%)`,
+				}}
+				onClick={() => regenerate()}
+			></button>
+			<canvas
+				id={canvasId}
+				className="grid-column: 2 / -2 !important; grid-row: 1 / 2; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; align-items: center; justify-content: space-between; -z-10"
+				width="800"
+				height="800"
+			/>
 		</div>
 	)
 }

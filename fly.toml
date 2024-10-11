@@ -63,3 +63,6 @@ script_checks = [ ]
 [[vm]]
   size = "shared-cpu-2x"
   memory = "2gb"
+
+[deploy]
+  wait_timeout = "10m"
