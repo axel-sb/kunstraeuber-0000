@@ -159,11 +159,6 @@ export default function ArtworkId() {
 			{/* // ........  MARK:HEADER ▀▀▀	....................	 */}
 			<header className="px-4">
 				<Logo />
-				<div
-					style={
-						{'--colorHsl': gradientBtnStyle } as React.CSSProperties
-					}
-				></div>
 				<Favorite artwork={artwork} />
 			</header>
 			{/* // .MARK: FIGURE 🪆	 .....................	 */}

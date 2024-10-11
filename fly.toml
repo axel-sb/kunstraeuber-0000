@@ -65,4 +65,4 @@ script_checks = [ ]
   memory = "2gb"
 
 [deploy]
-  wait_timeout = "10m"
+  wait_timeout = "15m"
