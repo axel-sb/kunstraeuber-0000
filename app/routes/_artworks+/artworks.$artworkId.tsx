@@ -127,10 +127,10 @@ const Favorite: FunctionComponent<{
 
 export default function ArtworkId() {
 	const { artwork } = useLoaderData<typeof loader>()
-    const colorHsl = `hsl(${artwork.colorHsl}`
-    const gradientBtnStyle = {
+	/*const colorHsl = `hsl(${artwork.colorHsl}`
+	 const gradientBtnStyle = {
         '--colorHsl': colorHsl,
-    } as React.CSSProperties
+    } as React.CSSProperties */
 	const colorHslIcon = `hsl(${artwork.color_h}, ${artwork.color_s}%, 50%)`
 	console.log('colorHslIcon', colorHslIcon)
 	const colorH = parseInt(`${artwork.color_h}`)
