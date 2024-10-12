@@ -18,18 +18,23 @@ img {
 	}
 }
 
-
+:root {
+	--dots-anim: linear-gradient(var(--dark), var(--light), var(--dark)) 0
+			calc(var(--j0) * 20vh) / 100% 20vh,
+		radial-gradient(closest-side, var(--light), var(--dark)) 0/0.5rem 0.5rem
+			space;
+	--dark: #0008;
+	--light: #fff8;
+}
 
 article {
-	margin: 1rem 0;
+	margin: 2rem 0;
 	box-shadow:
 		0 0 0.2rem var(--colorHsl),
-		0 0 0.4rem hsl(from var(--colorHsl) h s l /50%),
+		0 0 0.4rem hsl(from var(--colorHsl) h s l / 50%),
 		0 0 0.5rem #000;
 	border-radius: 0.5rem;
 }
-
-
 
 section {
 	display: grid;
@@ -59,33 +64,42 @@ section {
 	border-radius: 0.9rem;
 }
 
+.halftone-logo {
+	/* first declaration (background) will not work if `background-image` is used */
+	background: var(--dots-anim);
+	position: relative;
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	overflow: hidden;
+	filter: sepia(0.6) brightness(1) contrast(1.1);
+	background-blend-mode: overlay;
+	border-radius: 0.9rem;
+}
+
+.logo-wrapper {
+	animation: j0 4.6087s linear infinite;
+}
+
 .title-container {
 	display: inline-flex;
 	position: absolute;
 	align-items: center;
 	justify-content: center;
-	width: 100vw;
 	backdrop-filter: blur(2px) grayscale(0.5) brightness(0.85);
-    margin-bottom: 1rem;
-	&::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		mix-blend-mode: multiply;
-		background: linear-gradient(to bottom, transparent, #0005, transparent);
-	}
+	margin-bottom: 1rem;
 }
 
-h1 {
+div.title {
+	display: inline!important;
 	font-size: clamp(1.5rem, calc(12px + 2.5vw), 2rem);
 	color: #fffe;
+    background: linear-gradient(to bottom, transparent, #0005, transparent);
 	padding: 0.25rem 0.5rem;
 	border-radius: 0.5rem;
-	text-shadow: 0 0 .2rem black;
-    font-weight: 900;
+	text-shadow: 0 0 0.2rem black;
+	font-weight: 900;
+	flex: 0 1 content;
 }
 
 /* h2 {
@@ -133,22 +147,13 @@ body > ul {
 }
 
 p {
-	color: #eee;
+	color: var(--foreground);
 }
 
 .logo {
 	display: inline-grid;
 	padding: 1rem;
 	justify-content: end;
-	background: radial-gradient(
-		circle at 3.25rem,
-		#0c0a0980 2rem,
-		#0c0a09a0 2.2rem,
-		#0000 2.5rem,
-		#0c0a09 6rem,
-		#0c0a09 70%,
-		#0c0a0980
-	);
 }
 
 /*#endregion*/

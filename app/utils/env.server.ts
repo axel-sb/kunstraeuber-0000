@@ -13,9 +13,9 @@ const schema = z.object({
 	// If you plan to use Resend, uncomment this line
 	// RESEND_API_KEY: z.string(),
 	// If you plan to use GitHub auth, remove the default:
-	GITHUB_CLIENT_ID: z.string().default('MOCK_GITHUB_CLIENT_ID'),
-	GITHUB_CLIENT_SECRET: z.string().default('MOCK_GITHUB_CLIENT_SECRET'),
-	GITHUB_TOKEN: z.string().default('MOCK_GITHUB_TOKEN'),
+	GITHUB_CLIENT_ID: z.string(),
+	GITHUB_CLIENT_SECRET: z.string(),
+	GITHUB_TOKEN: z.string(),
 	// If you plan to use Google auth, remove the default:
 	GOOGLE_CLIENT_ID: z.string(),
 	GOOGLE_CLIENT_SECRET: z.string(),
@@ -32,14 +32,14 @@ export function init() {
 	const parsed = schema.safeParse(process.env)
 
 	if (parsed.success === false) {
-		 console.error(
-				'❌ Invalid environment variables:',
-				JSON.stringify(parsed.error.format(), null, 2),
-			)
+		console.error(
+			'❌ Invalid environment variables:',
+			JSON.stringify(parsed.error.format(), null, 2),
+		)
 
 		throw new Error('Invalid environment variables')
-    }
-    return parsed.data
+	}
+	return parsed.data
 }
 
 /**
