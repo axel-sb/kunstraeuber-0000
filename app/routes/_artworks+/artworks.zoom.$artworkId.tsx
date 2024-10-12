@@ -43,7 +43,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 export default function Zoom() {
 	const navigate = useNavigate()
 	const { identifier } = useLoaderData() as { identifier: string }
-	const { colorHsl } = useLoaderData() as { colorHsl: string }
+	// const { colorHsl } = useLoaderData() as { colorHsl: string }
 	/* const colorStyle = { '--color': colorHsl } as React.CSSProperties */
 	return (
 		<>
