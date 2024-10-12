@@ -24,12 +24,5 @@ node_modules
 .history
 
 # generated files
-/app/components/ui/icons
-app/routes/_marketing+/about.tsx
-app/routes/_marketing+/index.tsx
-app/routes/_marketing+/privacy.tsx
-app/routes/_marketing+/support.tsx
-app/routes/_marketing+/tailwind-preset.ts
-app/routes/_marketing+/tos.tsx
+client_secret_*.json
 app/routes/_marketing+/logos/*
-client_secret_642208729626-ids9ig4ntanjfu4rq5k109a0sm255651.apps.googleusercontent.com.json
