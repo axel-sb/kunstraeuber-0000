@@ -60,9 +60,5 @@ script_checks = [ ]
   timeout = "5s"
   path = "/litefs/health"
 
-[[vm]]
-  size = "shared-cpu-2x"
-  memory = "2gb"
-
 [deploy]
   wait_timeout = "10m"
