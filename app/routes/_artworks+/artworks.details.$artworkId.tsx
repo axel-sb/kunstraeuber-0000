@@ -141,10 +141,8 @@ export default function ArtworkDetails() {
 	const description = {
 		__html:
 			artwork.description && artwork.description !== 'null'
-				? '<div class="text-base">Description: </div>' +
-                '<div class="leading-relaxed text-foreground opacity-80">' +
-					artwork.description +
-                '</div>'
+				? '<div class="text-base pb-4">Description: </div>' +
+					artwork.description
 				: '',
 	}
 
@@ -159,16 +157,14 @@ export default function ArtworkDetails() {
 			}
 		>
 			{/* // ........  MARK: HALFTONE
-			 */}
+            */}
 
-			<Halftone
-				title={artwork.title ?? ''}
-				imageUrl={artwork.image_url ?? ''}
-			/>
+			<Halftone title={artwork.title ?? ''} imageUrl={artwork.image_url ?? ''} />
 
 			<header className="flex w-full items-center justify-between p-4">
+
 				{/* //.MARK: ⃝ btn-back ⏪
-				 */}
+                */}
 
 				<Button
 					className="btn-back relative z-50 flex h-10 w-10 cursor-pointer rounded-full p-0 text-yellow-50/50 active:opacity-50"
@@ -181,7 +177,7 @@ export default function ArtworkDetails() {
 				</Button>
 
 				{/* //.MARK: ⭐️ FAVORITE ⏪
-				 */}
+                */}
 
 				<Favorite artwork={artwork} />
 			</header>
@@ -230,14 +226,17 @@ export default function ArtworkDetails() {
 						return indexA - indexB
 					})
 					.map(([key, value]) => (
-						<li key={key} className="pb-3">
+						<li key={key} className="pb-6">
 							<span className="list-item opacity-80">{key}:</span>{' '}
 							<span className="detail-content inline-block opacity-[0.99]">
 								{value}
 							</span>
 						</li>
 					))}
-				<li className="pb-3" dangerouslySetInnerHTML={description}></li>
+				<li
+					className="max-w-prose pb-4 pt-4 leading-relaxed text-foreground opacity-80"
+					dangerouslySetInnerHTML={description}
+				></li>
 				{Object.entries({
 					Style: artwork.style_titles,
 					Subject: artwork.subject_titles,
@@ -278,32 +277,29 @@ function Logo() {
 	const colorHsl = `hsl(${artwork.color_h}, ${artwork.color_s}%, 50%)`
 
 	return (
-		<section className="relative z-10 w-full h-20">
-			<div className="halftone">
-				<span className="title-container">
-					<Link
-						to="/"
-						className="logo halftone-logo group relative  h-20 z-10 w-full leading-snug"
-						style={{}}
-					>
-						<div className="right-12 w-screen overflow-hidden px-4 text-right">
-							<span
-								className="mt-4 inline-block text-xl font-medium leading-none backdrop-blur-sm transition group-hover:translate-x-1"
-								style={{ color: colorHsl }}
-							>
-								kunst
-							</span>
-							<div className="px-4 text-xl font-light leading-none text-yellow-100 backdrop-blur-sm transition group-hover:-translate-x-1">
-								räuber
-							</div>
+		<>
+			<Link
+				to="/"
+				className="logo group relative z-10 w-full leading-snug"
+				style={{}}
+			>
+				<div className="right-12 w-screen overflow-hidden px-4 text-right">
+					<section className="absolute left-0 -z-10 h-20 w-full opacity-30">
+						<div className="halftone-anim bg-black mix-blend-darken">
+							<div className="halftone" style={{ color: colorHsl }}></div>
 						</div>
-					</Link>
-				</span>
-				<img
-					src="https://www.artic.edu/iiif/2/8806d7fe-0e1d-128a-5e2b-67fbbdb009cb/full/843,/0/default.jpg"
-					alt='Oct. 31, 1978 (Today Series, "Tuesday")'
-				/>
-			</div>
-		</section>
+					</section>
+					<span
+						className="mt-4 inline-block text-xl font-medium leading-none backdrop-blur-sm transition group-hover:translate-x-1"
+						style={{ color: colorHsl }}
+					>
+						kunst
+					</span>
+					<div className="px-4 text-xl font-light leading-none text-yellow-100 backdrop-blur-sm transition group-hover:-translate-x-1">
+						räuber
+					</div>
+				</div>
+			</Link>
+		</>
 	)
 }
