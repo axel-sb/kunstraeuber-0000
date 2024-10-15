@@ -18,18 +18,14 @@ img {
 	}
 }
 
-
-
 article {
-	margin: 1rem 0;
+	margin: 2rem;
 	box-shadow:
 		0 0 0.2rem var(--colorHsl),
-		0 0 0.4rem hsl(from var(--colorHsl) h s l /50%),
+		0 0 0.4rem hsl(from var(--colorHsl) h s l / 50%),
 		0 0 0.5rem #000;
-	border-radius: 0.5rem;
+	border-radius: 0.3rem;
 }
-
-
 
 section {
 	display: grid;
@@ -39,14 +35,13 @@ section {
 			calc(var(--j0) * 20vh) / 100% 20vh,
 		radial-gradient(closest-side, var(--light), var(--dark)) 0/0.5rem 0.5rem
 			space;
-	--dark: #0008;
-	--light: #fff8;
+	--dark: #000c;
+	--light: hsl(from var(--colorHsl) h 50 90);
 	position: relative;
-	animation: j0 4.6087s linear infinite;
+	animation: j0 2s linear infinite reverse;
 }
 
 .halftone {
-	/* first declaration (background) will not work if `background-image` is used */
 	background: var(--halftone-url), var(--dots-anim);
 	position: relative;
 	display: flex;
@@ -54,9 +49,11 @@ section {
 	justify-content: center;
 	max-width: 843px;
 	overflow: hidden;
-	filter: sepia(0.6) brightness(1) contrast(1.1);
+	filter: sepia(0) brightness(1) grayscale(0) contrast(1) blur(0.5px);
 	background-blend-mode: overlay;
-	border-radius: 0.9rem;
+	mix-blend-mode: exclusion;
+	border-radius: 0.6rem;
+	opacity: 1;
 }
 
 .title-container {
@@ -65,39 +62,52 @@ section {
 	align-items: center;
 	justify-content: center;
 	width: 100vw;
-	backdrop-filter: blur(2px) grayscale(0.5) brightness(0.85);
-    margin-bottom: 1rem;
-	&::before {
+	margin-bottom: 1rem;
+	mix-blend-mode: luminosity;
+	opacity: 0.85;
+	/* backdrop-filter: blur(2px) grayscale(0.5) brightness(0.85);
+	&::after {
 		content: '';
 		position: absolute;
 		top: 0;
 		left: 0;
 		width: 100%;
 		height: 100%;
-		mix-blend-mode: multiply;
 		background: linear-gradient(to bottom, transparent, #0005, transparent);
-	}
+	} */
 }
 
-h1 {
+/* h1 {
 	font-size: clamp(1.5rem, calc(12px + 2.5vw), 2rem);
 	color: #fffe;
 	padding: 0.25rem 0.5rem;
 	border-radius: 0.5rem;
-	text-shadow: 0 0 .2rem black;
-    font-weight: 900;
-}
-
-/* h2 {
-	font-size: 1.25rem;
-	line-height: 2;
-	background-image: linear-gradient(180deg, transparent, #3335, transparent);
-	color: #fff;
-	padding: 0.25rem 1.2rem;
-	border-radius: 0.7rem;
-	margin: 1rem 0;
+	text-shadow: 0 0 0.2rem black;
+	font-weight: 900;
+	backdrop-filter: blur(2px) grayscale(0.5) brightness(0.85);
 	text-shadow: 0 0 2px black;
 } */
+
+h1 {
+	font-size: clamp(1.2rem, calc(12px + 2vw), 1.5rem);
+	color: #fffe;
+	padding: 0.1rem 0.25rem;
+	border-radius: 0.5rem;
+	font-weight: 700;
+	position: relative;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0%;
+		left: 0%;
+		width: 100%;
+		height: 100%;
+		rotate: 1deg;
+		z-index: -1;
+		background-color: #000a;
+	}
+}
 
 /*#endregion*/
 
@@ -140,7 +150,7 @@ p {
 	display: inline-grid;
 	padding: 1rem;
 	justify-content: end;
-	background: radial-gradient(
+	/* background: radial-gradient(
 		circle at 3.25rem,
 		#0c0a0980 2rem,
 		#0c0a09a0 2.2rem,
@@ -148,7 +158,7 @@ p {
 		#0c0a09 6rem,
 		#0c0a09 70%,
 		#0c0a0980
-	);
+	); */
 }
 
 /*#endregion*/

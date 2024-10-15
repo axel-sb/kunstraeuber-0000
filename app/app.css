@@ -92,6 +92,7 @@ input[type='search' i]:enabled:read-write:-webkit-any(
 	opacity: 0.5 !important;
 	color: #ccc !important;
 	font-size: 1.25rem !important;
+    transform: translateX(-2rem);
 
 	&:focus,
 	&:active {

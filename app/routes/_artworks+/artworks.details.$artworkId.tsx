@@ -157,14 +157,17 @@ export default function ArtworkDetails() {
 			}
 		>
 			{/* // ........  MARK: HALFTONE
-            */}
+			 */}
 
-			<Halftone title={artwork.title ?? ''} imageUrl={artwork.image_url ?? ''} />
+			<Halftone
+				title={artwork.title ?? ''}
+				imageUrl={artwork.image_url ?? ''}
+				colorHsl={colorHsl}
+			/>
 
-			<header className="flex w-full items-center justify-between p-4">
-
+			<header className="flex w-full items-center justify-between p-6">
 				{/* //.MARK: ⃝ btn-back ⏪
-                */}
+				 */}
 
 				<Button
 					className="btn-back relative z-50 flex h-10 w-10 cursor-pointer rounded-full p-0 text-yellow-50/50 active:opacity-50"
@@ -173,11 +176,11 @@ export default function ArtworkDetails() {
 						navigate(-1)
 					}}
 				>
-					<Icon name="cross-1" className="h-6 w-6" />
+					<Icon name="arrow-left" className="h-8 w-8" />
 				</Button>
 
 				{/* //.MARK: ⭐️ FAVORITE ⏪
-                */}
+				 */}
 
 				<Favorite artwork={artwork} />
 			</header>

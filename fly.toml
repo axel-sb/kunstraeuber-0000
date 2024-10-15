@@ -21,6 +21,9 @@ ignorefile = "/other/Dockerfile.dockerignore"
 internal_port = 8_080
 processes = [ "app" ]
 protocol = "tcp"
+auto_stop_machines = "stop"
+auto_start_machines = true
+min_machines_running = 0
 script_checks = [ ]
 
   [services.concurrency]

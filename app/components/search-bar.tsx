@@ -4,7 +4,12 @@ import { useDebounce, useIsPending } from '#app/utils/misc.tsx'
 import { Icon } from './ui/icon.tsx'
 import { Input } from './ui/input.tsx'
 import { Label } from './ui/label.tsx'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select.tsx'
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+} from './ui/select.tsx'
 import { StatusButton } from './ui/status-button.tsx'
 
 export function SearchBar({
@@ -36,10 +41,10 @@ export function SearchBar({
 		<Form
 			method="GET"
 			action="/artworks"
-			className="flex items-center justify-between gap-2 w-full grid-col-"
+			className="relative flex w-full items-center justify-between gap-2"
 			onChange={(e) => autoSubmit && handleFormChange(e.currentTarget)}
 		>
-			<div className="flex-1 absolute">
+			<div className="flex-1">
 				<Label htmlFor={id} className="sr-only">
 					Search
 				</Label>
@@ -48,7 +53,8 @@ export function SearchBar({
 					name="search"
 					id={id}
 					defaultValue={searchParams.get('search') ?? ''}
-					placeholder={`Search ${searchType || 'all'}`}
+					placeholder="Search..."
+					/* placeholder={`Search ${searchType || 'all'}`} */
 					className="w-full"
 					autoFocus={autoFocus}
 				/>
@@ -57,7 +63,7 @@ export function SearchBar({
 				<SelectSearchType
 					searchType={searchType}
 					setSearchType={setSearchType}
-					/>
+				/>
 			</div>
 			<div>
 				<StatusButton
@@ -69,6 +75,11 @@ export function SearchBar({
 					<span className="sr-only">Search</span>
 				</StatusButton>
 			</div>
+            {searchType ?
+			<div className="absolute left-0 top-12 px-3 text-muted-foreground text-sm">
+				{' '}
+				in: <span className="font-bold italic text-yellow-100 px-2"> {`${searchType || 'all'}`} </span>
+			</div> : null}
 		</Form>
 	)
 }
@@ -121,9 +132,7 @@ function SelectSearchType({
 				}
 			}}
 		>
-			<SelectTrigger className="h-6 w-6 justify-between">
-				<SelectValue placeholder={searchType ? `${searchType}` : ''} />
-			</SelectTrigger>
+			<SelectTrigger className="absolute right-20 top-2 h-6 w-6 justify-between"></SelectTrigger>
 			<SelectContent>
 				<SelectItem value="artist">
 					<StatusButton

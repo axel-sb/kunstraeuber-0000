@@ -192,7 +192,7 @@ export default function ArtworkId() {
 				>
 					{/* //  .MARK: ⃝ btn-back ⏪	...................*/}
 					<Button
-						className="btn-back justify- relative col-[1_/_2] inline-flex h-10 w-10 flex-[2_1_auto] cursor-pointer justify-start justify-self-start rounded-full text-yellow-50/50"
+						className="btn-back relative col-[1_/_2] inline-flex h-10 w-10 flex-[2_1_auto] cursor-pointer justify-end justify-self-start rounded-full p-0 text-yellow-50/50"
 						variant="ghost"
 						size="ghost"
 						onClick={() => {
@@ -200,9 +200,9 @@ export default function ArtworkId() {
 						}}
 					>
 						<Icon
-							name="cross-1"
+							name="arrow-left"
 							size="font"
-							className="p-0.5 text-[1.8rem] xl:text-xl"
+							className="text-[2rem] xl:text-xl"
 						/>
 					</Button>
 					{/*// .MARK: ⃝ info-circled ℹ️ .................  */}
@@ -246,14 +246,14 @@ export default function ArtworkId() {
 
 	function Logo() {
 		return (
-			<Link to="/" className="logo group relative z-10 leading-snug">
-				<span
-					className="text-xl font-medium leading-none transition group-hover:-translate-x-1"
-					style={{ color: 'var(--gray-8)' }}
-				>
+			<Link
+				to="/"
+				className="logo group inline-grid justify-self-start py-2 pl-1 pr-3 leading-tight sm:px-8 md:px-12 lg:px-16 xl:px-20"
+			>
+				<span className="font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
 					kunst
 				</span>
-				<span className="text-xl font-light leading-none text-yellow-100 transition">
+				<span className="pl-3 font-light leading-none text-yellow-100 transition group-hover:translate-x-1">
 					räuber
 				</span>
 			</Link>

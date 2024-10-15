@@ -18,11 +18,10 @@ import {
 	useLoaderData,
 	useLocation,
 	useMatches,
-	useSearchParams,
 	useSubmit,
 } from '@remix-run/react'
 import { withSentry } from '@sentry/remix'
-import { useRef,  } from 'react'
+import { useRef } from 'react'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import globalStyles from './app.css?url'
 import appleTouchIconAssetUrl from './assets/favicons/apple-touch-icon.png'
@@ -56,11 +55,7 @@ import { ClientHintCheck, getHints } from './utils/client-hints.tsx'
 import { prisma } from './utils/db.server.ts'
 import { getEnv } from './utils/env.server.ts'
 import { honeypot } from './utils/honeypot.server.ts'
-import {
-	combineHeaders,
-	getDomainUrl,
-	getUserImgSrc,
-} from './utils/misc.tsx'
+import { combineHeaders, getDomainUrl, getUserImgSrc } from './utils/misc.tsx'
 import { useNonce } from './utils/nonce-provider.ts'
 import { type Theme, getTheme } from './utils/theme.server.ts'
 import { makeTimings, time } from './utils/timing.server.ts'
@@ -274,9 +269,6 @@ function App() {
 	useToast(data.toast)
 	const location = useLocation()
 
-	const [] = useSearchParams()
-
-
 	//   ......................................   MARK: return  ⮐
 
 	return (
@@ -286,9 +278,9 @@ function App() {
 					<div className="grid-container m-auto h-full max-w-[calc(843px+8rem)]">
 						{/* MARK: Header 🧭
 						 */}
-						<header className="col-[1_/_-1] row-[2_/_4] flex h-20 w-full items-start justify-between">
+						<header className="h-30 col-[1_/_-1] row-[2_/_4] flex w-full flex-wrap items-start justify-between">
 							<Logo />
-							<div className="w-full flex-1 sm:block">{searchBar}</div>
+							<div className="hidden w-full flex-1 sm:block">{searchBar}</div>
 							<div className="user flex gap-10 justify-self-end px-4 py-1 sm:px-8 md:px-12 lg:px-16 xl:px-20">
 								{user ? (
 									<UserDropdown />
@@ -297,6 +289,9 @@ function App() {
 										<Link to="/login">Log In</Link>
 									</Button>
 								)}
+							</div>
+							<div className="search-bar-mobile block w-full px-4 py-4 sm:hidden">
+								{searchBar}
 							</div>
 						</header>
 						{/* MARK: Figure 🖼️
@@ -321,7 +316,7 @@ function App() {
 						{/*
          // ,  ........................................   MARK: Footer ┗━┛
       */}
-						<div className="footer col-[2_/_-2] row-[5_/_6] flex h-12 w-full max-w-[843px+4rem] items-center justify-between px-4 pb-6">
+						<div className="footer col-[2_/_-2] row-[5_/_6] flex h-12 w-full max-w-[843px+4rem] flex-initial items-center justify-between self-end px-4 pb-6">
 							<ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
 							<Help />
 						</div>
@@ -435,12 +430,12 @@ function Logo() {
 	return (
 		<Link
 			to="/"
-			className="logo group inline-grid justify-self-start px-4 text-lg leading-tight sm:px-8 md:px-12 lg:px-16 xl:px-20"
+			className="logo group inline-grid justify-self-start px-4 py-2 text-[90%] leading-tight sm:px-8 md:px-12 lg:px-16 xl:px-20"
 		>
 			<span className="font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
 				kunst
 			</span>
-			<span className="pl-1 font-light leading-none text-yellow-100 transition group-hover:translate-x-1">
+			<span className="pl-3 font-light leading-none text-yellow-100 transition group-hover:translate-x-1">
 				räuber
 			</span>
 		</Link>

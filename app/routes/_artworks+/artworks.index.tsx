@@ -259,17 +259,21 @@ export default function ArtworksPage() {
 //§   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    MARK: Logo
 
 function Logo() {
-	return (
-		<Link to="/" className="group/logo col-[1/2] grid leading-snug md:text-2xl">
-			<span className="font-light leading-none text-cyan-200 transition group-hover/logo:-translate-x-1">
-				kunst
-			</span>
-			<span className="font-bold leading-none text-yellow-100 transition group-hover/logo:translate-x-1">
-				räuber
-			</span>
-		</Link>
+		return (
+			<Link
+				to="/"
+				className="logo group inline-grid justify-self-start pl-1 pr-3 py-2 leading-tight sm:px-8 md:px-12 lg:px-16 xl:px-20"
+			>
+				<span className="font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
+					kunst
+				</span>
+				<span className="pl-3 font-light leading-none text-yellow-100 transition group-hover:translate-x-1">
+					räuber
+				</span>
+			</Link>
 	)
 }
+
 //§   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    MARK: Footer
 
 function Footer() {

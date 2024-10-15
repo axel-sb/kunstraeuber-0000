@@ -1,6 +1,7 @@
 interface HalftoneProps {
 	title: string;
 	imageUrl: string;
+	colorHsl: string;
 }
 
 export function Halftone({ title, imageUrl }: HalftoneProps) {

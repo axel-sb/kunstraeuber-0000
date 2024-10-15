@@ -30,15 +30,15 @@ export default function NotesRoute() {
 	const isOwner = user?.id === data.owner.id
 	const ownerDisplayName = data.owner.name ?? data.owner.username
 	const navLinkDefaultClassName =
-		'line-clamp-2 block rounded-l-full py-2 pl-8 pr-6 text-base lg:text-xl'
+		'line-clamp-2 block rounded-l-full py-2 pl-2 pr-6 text-base lg:text-xl'
 	return (
 		<main className="container flex h-full min-h-[400px] px-0 pb-12 md:px-8">
 			<div className="grid w-full grid-cols-4 bg-muted pl-2 md:container md:rounded-3xl md:pr-0">
 				<div className="relative col-span-1">
-					<div className="absolute inset-0 flex flex-col">
+					<div className="absolute inset-0 flex flex-col flex-wrap">
 						<Link
 							to={`/users/${data.owner.username}`}
-							className="flex flex-col items-center justify-center gap-2 bg-muted pb-4 pl-8 pr-4 pt-12 lg:flex-row lg:justify-start lg:gap-4"
+							className="flex flex-col items-center justify-center gap-2 bg-muted pb-10 pl-0 pr-2 pt-12 lg:flex-row lg:justify-start lg:gap-4"
 						>
 							<img
 								src={getUserImgSrc(data.owner.image?.id)}
@@ -51,7 +51,7 @@ export default function NotesRoute() {
 						</Link>
 						<ul className="overflow-y-auto overflow-x-hidden pb-12">
 							{isOwner ? (
-								<li className="p-1 pr-0">
+								<li className="p-0">
 									<NavLink
 										to="new"
 										className={({ isActive }) =>
