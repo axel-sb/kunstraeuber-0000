@@ -48,6 +48,18 @@ main {
 	text-overflow: ellipsis;
 }
 
+form > div > label:nth-child(3) {
+	font-size: 1.5rem !important;
+}
+
+input[type='radio']:checked + svg {
+	color: #fffcd6;
+}
+
+:checked svg {
+	color: #fffcd622;
+}
+
 /*+ figcaption container query: list-item ............................  */
 
 @container list-item (min-width: 0) {

@@ -26,7 +26,7 @@ p {
 }
 
 :root {
-	--clamped: clamp(106.25%, 1rem + 0.5vw, 1.5rem);
+	--clamped: clamp(106.25%, 1rem + 0.5vw, 1.35rem);
 	--padding-inline: 1rem;
 	font-size: var(--clamped);
 	--background: hsl(20 14.3 4.1);
@@ -56,11 +56,36 @@ p {
   */
 }
 
+/* media query for light mode */
+/* @media (prefers-color-scheme: light) {
+
+	canvas#my-canvas {
+		height: 100vh;
+		width: 100vw;
+		position: absolute;
+		top: 0;
+		left: 0;
+		grid-column: 1 / -1 !important;
+		grid-row: 1 / -1 !important;
+		display: block !important;
+        color-scheme: light;
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	canvas#my-canvas,
+	#regenerate {
+		display: none;
+	}
+} */
+
+
 /* GRID adapted from artworks.artworkId.css */
 .grid-container {
 	display: grid;
 	grid-template-columns:
-		var(--padding-inline) repeat(3, minmax(1rem, max-content)) var(--padding-inline);
+		var(--padding-inline) repeat(3, minmax(1rem, max-content))
+		var(--padding-inline);
 	grid-template-rows: 1.5rem minmax(3rem, max-content) auto min-content;
 	justify-content: space-between;
 }
@@ -74,7 +99,6 @@ p {
 }
 
 /*__ .. MARK: USER ........................ */
-
 
 /*__ MARK: SEARCH-BAR ..................... */
 
@@ -92,7 +116,7 @@ input[type='search' i]:enabled:read-write:-webkit-any(
 	opacity: 0.5 !important;
 	color: #ccc !important;
 	font-size: 1.25rem !important;
-    transform: translateX(-2rem);
+	transform: translateX(-2rem);
 
 	&:focus,
 	&:active {
@@ -778,9 +802,6 @@ body > div > header > form > button > svg .path {
 	}
 }
 
-form > div > label:nth-child(3) {
-	font-size: 1.5rem !important;
-}
 
 /* route artworks.index ................................ */
 /* radio buttons - grid selection */
@@ -827,13 +848,6 @@ form > div {
 	}
 } */
 
-input[type='radio']:checked + svg {
-	color: #fffcd6;
-}
-
-:checked svg {
-	color: #fffcd622;
-}
 
 /* animated gradients with custom properties */
 

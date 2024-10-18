@@ -27,6 +27,7 @@ import globalStyles from './app.css?url'
 import appleTouchIconAssetUrl from './assets/favicons/apple-touch-icon.png'
 import faviconAssetUrl from './assets/favicons/favicon.svg'
 import { GeneralErrorBoundary } from './components/error-boundary.tsx'
+import MeshGradients from './components/mesh-gradients.tsx'
 import { SearchBar } from './components/search-bar.tsx'
 import { useToast } from './components/toaster.tsx'
 import { Button } from './components/ui/button.tsx'
@@ -251,7 +252,7 @@ function Document({
 }
 
 /**
- * React component for the main App. It handles various hooks and state variables, including user data, theme, search parameters, and more.
+ * React component for the main App. It handles various hooks and state variables, including user data, , search parameters, and more.
  *
  * @return {React.ReactNode} The main React component for the entire application.
  */
@@ -268,6 +269,10 @@ function App() {
 	const allowIndexing = data.ENV.ALLOW_INDEXING !== 'false'
 	useToast(data.toast)
 	const location = useLocation()
+
+	const colorH = 0
+	const colorS = 0
+	const colorL = 15
 
 	//   ......................................   MARK: return  ⮐
 
@@ -304,7 +309,7 @@ function App() {
 							}}
 						>
 							<img
-								className="animate-hue my-4 max-h-[calc(100dvh-12rem)] max-w-[calc(100vw_-_2rem)] rounded-sm object-contain sm:my-8 sm:max-h-[calc(100dvh-14rem)] sm:max-w-[clamp(283px,calc(100vw-2rem),min(843px,100%))]"
+								className="animate-hue my-4 max-h-[calc(100dvh-12rem)] max-w-[calc(100vw_-_2rem)] rounded-sm object-contain sm:my-8 sm:max-h-[calc(100dvh-15rem)] sm:max-w-[clamp(283px,calc(100vw-2rem),min(843px,100%))]"
 								alt="A work made of acrylic and silkscreen ink on linen."
 								src="four-mona-lisas.avif"
 								data-rdt-source="/Volumes/Samsung/_Projects-on-Samsung/Remix/artepic/app/routes/_artworks+/artworks.$artworkId.tsx:::247"
@@ -317,9 +322,10 @@ function App() {
          // ,  ........................................   MARK: Footer ┗━┛
       */}
 						<div className="footer col-[2_/_-2] row-[5_/_6] flex h-12 w-full max-w-[843px+4rem] flex-initial items-center justify-between self-end px-4 pb-6">
-							<ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
+							<ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />{' '}
 							<Help />
 						</div>
+						{/* {MeshGradients(colorH, colorS, colorL)} */}
 					</div>
 				</>
 			) : null}
@@ -328,7 +334,7 @@ function App() {
 
 			{/* <div className="footer container flex items-center justify-between py-3">
 				<Logo />
-				<ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
+				<Switch userPreference={data.requestInfo.userPrefs.} />
 				<Help />
 			</div>
 
@@ -338,7 +344,7 @@ function App() {
 			{location.pathname === '/' ||
 			location.pathname === '/artworks.$artworkId' ? (
 				<>
-					<ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
+					<Switch userPreference={data.requestInfo.userPrefs.} />
 				</>
 			) : null} */}
 		</Document>

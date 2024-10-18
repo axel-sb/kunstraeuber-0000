@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewport="0 0 50 50" width="50" height="50">
+  <defs>
+    <linearGradient id="redgradient">
+      <stop offset="0" stop-color="#ff0"/>
+      <stop offset="0.362" stop-color="#f0f"/>
+      <stop offset="1" stop-color="#0ff"/>
+    </linearGradient>
+  </defs>
+  <g id="Layer_1">
+    <path d="M0,0 L50,0 L50,50 L0,50 L0,0 z" fill="url(#redgradient)" width="100%" height="100%"/>
+  </g>
+</svg>

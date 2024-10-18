@@ -59,7 +59,7 @@ function MeshGradients(colorH: number, colorS: number, colorL: number) {
 		<div className="grid h-screen w-screen grid-cols-[subgrid] grid-rows-[subgrid]">
 			<button
 				id="regenerate"
-				className="absolute left-1/2 top-1 h-6 w-6 -translate-x-1/2 translate-y-full rounded-[30%_70%_70%_30%_/_30%_30%_70%_70%]"
+				className="absolute left-[calc(50%+1rem)] top-2 h-6 w-6 -translate-x-1/2 translate-y-full rounded-[30%_70%_70%_30%_/_30%_30%_70%_70%]"
 				style={{
 					backgroundImage: `radial-gradient(ellipse at -61% 141%, ${'hsl(' + colorH + ', 10%, 20%)'}, ${'hsl(' + colorH + ', 100%, 50%)'} 20%, ${'hsl(' + colorH + ', ' + colorS + '%, 15%)'}, ${'hsl(' + colorH + ', 100%, 30%)'} 60%)`,
 				}}

@@ -93,23 +93,17 @@ const Favorite: FunctionComponent<{
 	const favorite = fetcher.formData
 		? fetcher.formData.get('favorite') === 'true'
 		: artwork.favorite
-
-	const {
-		artwork: { colorHsl: colorHsl },
-	} = useLoaderData<typeof loader>()
-
-	console.log('🔵 fetcher.formData →', fetcher.formData, '🔵')
-
 	return (
-		<fetcher.Form method="post" className="favorite pl-4 pr-2">
+		<fetcher.Form
+			method="post"
+			className="favorite pl-4 pr-2 sm:px-8 md:px-12 lg:px-16 xl:px-20"
+		>
 			<Button
 				name="favorite"
 				variant="ghost"
 				size="ghost"
-				className="inline-flex w-8 px-0"
+				className="inline-flex w-8 px-0 text-yellow-100"
 				style={{
-					color: colorHsl as unknown as string,
-					filter: 'brightness(1.75)',
 					strokeDasharray: 50,
 				}}
 			>
@@ -162,7 +156,7 @@ export default function ArtworkId() {
 				<Favorite artwork={artwork} />
 			</header>
 			{/* // .MARK: FIGURE 🪆	 .....................	 */}
-			<figure className="col-[1_/_-1] row-[2_/_3] grid h-full gap-y-6">
+			<figure className="col-[1_/_-1] row-[2_/_3] grid h-full items-center gap-y-6">
 				<div className="image-wrapper row-[1_/_2] max-h-[calc(100dvh-18rem)]">
 					<img
 						className="mx-auto h-auto max-h-[calc(100dvh-18rem)] max-w-[clamp(calc(100vw-2rem),100%,calc(100vw-2rem))] rounded-md object-contain object-center"
@@ -184,7 +178,7 @@ export default function ArtworkId() {
 					</div>
 				</figcaption>
 			</figure>
-			<footer className="row-[3_/_4]">
+			<footer className="row-[3_/_4] sm:px-8 md:px-12 lg:px-16 xl:px-20">
 				{/* //  .MARK: 🧭 TOOLBAR ⏪	...................*/}
 				<div
 					className="toolbar col-[1_/_-1] w-full justify-around"
@@ -192,7 +186,7 @@ export default function ArtworkId() {
 				>
 					{/* //  .MARK: ⃝ btn-back ⏪	...................*/}
 					<Button
-						className="btn-back relative col-[1_/_2] inline-flex h-10 w-10 flex-[2_1_auto] cursor-pointer justify-end justify-self-start rounded-full p-0 text-yellow-50/50"
+						className="btn-back relative col-[1_/_2] inline-flex h-10 w-10 flex-[2_1_auto] cursor-pointer justify-center justify-self-start rounded-full p-0 text-yellow-50/50"
 						variant="ghost"
 						size="ghost"
 						onClick={() => {
@@ -202,7 +196,7 @@ export default function ArtworkId() {
 						<Icon
 							name="arrow-left"
 							size="font"
-							className="text-[2rem] xl:text-xl"
+							className="text-[1.5rem] xl:text-xl"
 						/>
 					</Button>
 					{/*// .MARK: ⃝ info-circled ℹ️ .................  */}
@@ -248,7 +242,7 @@ export default function ArtworkId() {
 		return (
 			<Link
 				to="/"
-				className="logo group inline-grid justify-self-start py-2 pl-1 pr-3 leading-tight sm:px-8 md:px-12 lg:px-16 xl:px-20"
+				className="logo group inline-grid justify-self-start text-lg py-2 pl-1 pr-3 leading-tight sm:px-8 md:px-12 lg:px-16 xl:px-20"
 			>
 				<span className="font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
 					kunst

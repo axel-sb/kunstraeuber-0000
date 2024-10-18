@@ -6,7 +6,6 @@ import {
 } from '@remix-run/node'
 import { useNavigate, useLoaderData } from '@remix-run/react'
 import { ClientOnly } from 'remix-utils/client-only'
-// import { Icon } from '#app/components/ui/icon.js'
 import { Icon } from '#app/components/ui/icon.js'
 import Viewer from '../../components/viewer.client'
 import { getArtworkUrl } from '../resources+/search-data.server'
@@ -47,15 +46,12 @@ export default function Zoom() {
 	const colorStyle = { '--color': colorHsl } as React.CSSProperties
 	return (
 		<>
-			<div className="absolute bottom-6 left-8 z-10 inline-flex h-9 w-9 rounded-full bg-white/70 text-black backdrop-brightness-200 backdrop-saturate-200">
+			<div className="rounded-full backdrop-filter absolute bottom-6 left-8 z-10 inline-flex h-9 w-9  text-xl backdrop-brightness-[4] [box-shadow:0_0_0_0.5px_#000]">
 				<Icon
 					name="x"
-					className="h-9 w-9"
-					style={{
-						backgroundColor: '#0000',
-						borderRadius: '50%',
-						backgroundImage: `radial-gradient(#0000, #0000 38%, ${colorStyle} 75% 100%)`,
-					}}
+					className="backdrop-brightness-500 h-9 w-9"
+					size="font"
+					style={{}}
 					onClick={() => navigate(-1)}
 				/>
 			</div>

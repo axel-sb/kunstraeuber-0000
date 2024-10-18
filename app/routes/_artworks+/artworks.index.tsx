@@ -93,7 +93,7 @@ export default function ArtworksPage() {
 
 	type RadioButtonProps = {
 		value: string
-		name: 'grid-1' | 'grid-2' | 'grid-3'
+		name: 'grid-1' | 'grid-2' | 'grid-3b'
 		onChange: () => void
 	}
 	const RadioButton = ({ value, name, onChange }: RadioButtonProps) => {
@@ -127,15 +127,15 @@ export default function ArtworksPage() {
            //§   ...........................................   MARK: Header
         */}
 
-				<header className="mx-auto grid w-full max-w-[clamp(843px+4rem)] grid-cols-2 justify-between gap-4 rounded-bl-2xl rounded-br-2xl bg-black py-6 pb-8 md:pt-4 md:pb-12">
+				<header className="absolute left-0 right-0 top-0 grid h-16 w-full max-w-[calc(843px+4rem)] grid-cols-2 items-center justify-between gap-4 rounded-bl-2xl rounded-br-2xl bg-black">
 					<Logo />
 
 					{/*
            //§   ...........................................   MARK: 🔘 btns
         */}
 
-					<form className="form align-self-center col-[2/3] w-fit justify-self-end">
-						<div className="group/radio grid grid-cols-3 place-items-center rounded border-[0.5px] border-solid border-yellow-50/25 pb-2 pt-1 pr-3 text-xl text-yellow-50/50 md:gap-4 md:text-3xl">
+					<form className="form align-self-center col-[2/3] mr-4 w-fit justify-self-end sm:px-8 md:px-12 lg:px-16 xl:px-20">
+						<div className="group/radio grid grid-cols-3 place-items-center rounded border-[0.5px] border-solid border-yellow-50/25 pb-2 pr-3 pt-1 text-xl text-yellow-50/50 md:gap-4 md:text-3xl">
 							<RadioButton
 								name="grid-1"
 								value={grid}
@@ -148,14 +148,14 @@ export default function ArtworksPage() {
 							/>
 
 							<RadioButton
-								name="grid-3"
+								name="grid-3b"
 								value={grid}
 								onChange={handleGrid3Change}
 							/>
 						</div>
 					</form>
 				</header>
-				<ul className="3xl:gap-x-[5%] w-full gap-x-[3%] [column-count:1] group-has-[label:nth-child(1)>input[type='radio']:checked]/body:[column-count:1] group-has-[label:nth-child(2)>input[type=radio]:checked]/body:[column-count:2] group-has-[label:nth-child(3)>input[type=radio]:checked]/body:[column-count:3] md:[column-count:2] lg:gap-x-12 lg:[column-count:4] xl:gap-x-[4%] xl:[column-count:5] 2xl:gap-x-20">
+				<ul className="3xl:gap-x-[5%] w-full gap-x-[3%] pt-40 [column-count:1] group-has-[label:nth-child(1)>input[type='radio']:checked]/body:[column-count:1] group-has-[label:nth-child(2)>input[type=radio]:checked]/body:[column-count:2] group-has-[label:nth-child(3)>input[type=radio]:checked]/body:[column-count:3] md:[column-count:2] lg:gap-x-12 lg:[column-count:4] xl:gap-x-[4%] xl:[column-count:5] 2xl:gap-x-20">
 					{data !== undefined && data.length > 0 ? (
 						data.map((artwork) => (
 							<li
@@ -186,11 +186,10 @@ export default function ArtworksPage() {
 										<figcaption
 											className="z-50 my-4 flex w-full flex-wrap justify-between overflow-hidden rounded-md py-4 backdrop-blur-sm"
 											style={{
-                                                backgroundColor: '#0000',
+												backgroundColor: '#0000',
 												backgroundImage:
-													(('linear-gradient(180deg, #0008 0% 5%, #0003 45%, #0000, #0002 55%, #0008 95% 100%), linear-gradient(#000b, #000b), radial-gradient(farthest-corner circle at -25% 0% in oklab, #0000 0% 45%, ' +
-														artwork.colorHsl) as string) +
-													'  50%, #0000 55% 100%)',
+													(('radial-gradient(farthest-corner circle at -25% 0% in oklab, #0000 0% 45%, ' +
+														artwork.colorHsl) as string) + '50%, #0000 55% 100% linear-gradient(180deg,  var(--bg-background) 0% 5%,  var(--bg-background) 45%, #0000,  var(--bg-background) 55%,  var(--bg-background) 95% 100%), linear-gradient(#000b, #000b))',
 												backgroundSize: '250%',
 											}}
 										>
@@ -262,7 +261,7 @@ function Logo() {
 		return (
 			<Link
 				to="/"
-				className="logo group inline-grid justify-self-start pl-1 pr-3 py-2 leading-tight sm:px-8 md:px-12 lg:px-16 xl:px-20"
+				className="logo group inline-grid justify-self-start pl-4 pr-3 py-4 leading-tight sm:px-8 md:px-12 lg:px-16 xl:px-20 text-lg"
 			>
 				<span className="font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
 					kunst
