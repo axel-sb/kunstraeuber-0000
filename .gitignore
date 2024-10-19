@@ -33,3 +33,14 @@ app/routes/_marketing+/tailwind-preset.ts
 app/routes/_marketing+/tos.tsx
 app/routes/_marketing+/logos/*
 client_secret_642208729626-ids9ig4ntanjfu4rq5k109a0sm255651.apps.googleusercontent.com.json
+app/components/ui/combobox-multiple.tsx
+app/components/ui/combobox-multiple.tsx.sly
+app/components/ui/getMeta.tsx
+app/components/ui/InlineCode.tsx
+app/components/ui/LocalStorageDB.tsx
+app/components/ui/tabs.tsx
+app/routes/_artworks+/test.css
+app/routes/_artworks+/test.tsx
+other/svg-icons/grid-3b.svg
+app/routes/_artworks+/test.tsx
+app/routes/_artworks+/test.tsx
