@@ -43,7 +43,7 @@ export default function Zoom() {
 	const navigate = useNavigate()
 	const { identifier } = useLoaderData() as { identifier: string }
 	const { colorHsl } = useLoaderData() as { colorHsl: string }
-	const colorStyle = { '--color': colorHsl } as React.CSSProperties
+	// const colorStyle = { '--color': colorHsl } as React.CSSProperties
 	return (
 		<>
 			<div className="rounded-full backdrop-filter absolute bottom-6 left-8 z-10 inline-flex h-9 w-9  text-xl backdrop-brightness-[4] [box-shadow:0_0_0_0.5px_#000]">

@@ -27,7 +27,6 @@ import globalStyles from './app.css?url'
 import appleTouchIconAssetUrl from './assets/favicons/apple-touch-icon.png'
 import faviconAssetUrl from './assets/favicons/favicon.svg'
 import { GeneralErrorBoundary } from './components/error-boundary.tsx'
-import MeshGradients from './components/mesh-gradients.tsx'
 import { SearchBar } from './components/search-bar.tsx'
 import { useToast } from './components/toaster.tsx'
 import { Button } from './components/ui/button.tsx'
@@ -269,10 +268,6 @@ function App() {
 	const allowIndexing = data.ENV.ALLOW_INDEXING !== 'false'
 	useToast(data.toast)
 	const location = useLocation()
-
-	const colorH = 0
-	const colorS = 0
-	const colorL = 15
 
 	//   ......................................   MARK: return  ⮐
 

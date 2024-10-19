@@ -93,25 +93,26 @@ export default function ArtworksPage() {
 
 	type RadioButtonProps = {
 		value: string
-		name: 'grid-1' | 'grid-2' | 'grid-3b'
+		name: 'grid-1' | 'grid-2' | 'grid-3'
 		onChange: () => void
+		className?: string
 	}
-	const RadioButton = ({ value, name, onChange }: RadioButtonProps) => {
+	const RadioButton = ({ value, name, onChange, className }: RadioButtonProps) => {
 		const checked = value === name
 
 		return (
-			<label>
+			<label className={className}>
 				<input
 					type="radio"
 					name={name}
 					checked={checked}
 					onChange={() => onChange()}
-					className="group invisible h-0 has-[input[type='radio']:checked]:text-yellow-300"
+					className="group invisible h-0 w-0 has-[input[type='radio']:checked]:text-yellow-300"
 				/>
 				<Icon
 					name={name}
 					size="font"
-					className="text-yellow-100/50 group-has-[input[type='radio']:checked]:inline-flex group-has-[input[type='radio']:checked]:animate-pulse !group-has-[input[type='radio']:checked]:text-yellow-300"
+					className="!group-has-[input[type='radio']:checked]:text-yellow-300 text-yellow-100/50 group-has-[input[type='radio']:checked]:inline-flex group-has-[input[type='radio']:checked]:animate-pulse px-1 w-12 visible"
 				/>
 			</label>
 		)
@@ -127,30 +128,33 @@ export default function ArtworksPage() {
            //§   ...........................................   MARK: Header
         */}
 
-				<header className="absolute left-0 right-0 top-0 grid h-16 w-full max-w-[calc(843px+4rem)] grid-cols-2 items-center justify-between gap-4 rounded-bl-2xl rounded-br-2xl bg-black">
+				<header className="absolute left-0 right-0 top-0 grid h-16 w-full max-w-[calc(843px+4rem)] grid-cols-2 place-content-center gap-4 bg-black">
 					<Logo />
 
 					{/*
-           //§   ...........................................   MARK: 🔘 btns
+           //§   ...........................................   MARK: 🔘 radio-btns
         */}
 
-					<form className="form align-self-center col-[2/3] mr-4 w-fit justify-self-end sm:px-8 md:px-12 lg:px-16 xl:px-20">
-						<div className="group/radio grid grid-cols-3 place-items-center rounded border-[0.5px] border-solid border-yellow-50/25 pb-2 pr-3 pt-1 text-xl text-yellow-50/50 md:gap-4 md:text-3xl">
+					<form className="form col-[2/3] grid h-12 place-self-center sm:px-8 md:px-12 lg:px-16 xl:px-20">
+						<div className="group/radio flex justify-around divide-y divide-slate-700 place-self-center rounded border-[0.5px] border-solid border-yellow-50/25 px-4 py-1 text-xl text-yellow-50/50 md:gap-4 md:text-lg">
 							<RadioButton
 								name="grid-1"
 								value={grid}
 								onChange={handleGrid1Change}
+								className="self-center"
 							/>
 							<RadioButton
 								name="grid-2"
 								value={grid}
 								onChange={handleGrid2Change}
+								className="place-self-center"
 							/>
 
 							<RadioButton
-								name="grid-3b"
+								name="grid-3"
 								value={grid}
 								onChange={handleGrid3Change}
+								className="place-self-center"
 							/>
 						</div>
 					</form>
@@ -189,7 +193,8 @@ export default function ArtworksPage() {
 												backgroundColor: '#0000',
 												backgroundImage:
 													(('radial-gradient(farthest-corner circle at -25% 0% in oklab, #0000 0% 45%, ' +
-														artwork.colorHsl) as string) + '50%, #0000 55% 100% linear-gradient(180deg,  var(--bg-background) 0% 5%,  var(--bg-background) 45%, #0000,  var(--bg-background) 55%,  var(--bg-background) 95% 100%), linear-gradient(#000b, #000b))',
+														artwork.colorHsl) as string) +
+													'50%, #0000 55% 100% linear-gradient(180deg,  var(--bg-background) 0% 5%,  var(--bg-background) 45%, #0000,  var(--bg-background) 55%,  var(--bg-background) 95% 100%), linear-gradient(#000b, #000b))',
 												backgroundSize: '250%',
 											}}
 										>

@@ -140,7 +140,7 @@ export default function ArtworkDetails() {
 	const description = {
 		__html:
 			artwork.description && artwork.description !== 'null'
-				? '<div class="text-base">Description: </div>' + artwork.description
+				? '<div class="text-base opacity-80">Description: </div>' + artwork.description
 				: '',
 	}
 
@@ -236,7 +236,7 @@ export default function ArtworkDetails() {
 								</li>
 							))}
 						<li
-							className="max-w-prose leading-relaxed text-foreground opacity-80"
+							className="max-w-prose leading-relaxed text-foreground"
 							dangerouslySetInnerHTML={
 								description.__html ? description : undefined
 							}

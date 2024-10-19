@@ -18,8 +18,7 @@ body {
 	grid-template-rows: 6rem minmax(max-content, 1fr) minmax(5rem, max-content);
 	justify-content: center;
 	align-items: stretch;
-	max-height: 100dvh;
-	overflow: hidden;
+	height: 100dvh;
 	background: none !important;
 
 	&::after {
