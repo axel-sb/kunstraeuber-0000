@@ -234,8 +234,8 @@ export default function ArtworkId() {
 					 */}
 
 					<div className="navlink-zoom col-[3_/_4] inline-flex h-10 w-10 flex-[2_1_auto] cursor-pointer justify-end justify-self-center rounded-full pt-0.5">
-						<NavLink
-							className={`$({ isActive, isPending }) => isActive ? 'active' : 'pending' z-10 inline-flex h-10 w-10 place-items-center`}
+							<NavLink
+						className={`$({ isActive, isPending }) => isActive ? 'active' : 'pending' z-10 inline-flex h-10 w-10 place-items-center`}
 							to={`../artworks/zoom/${artwork.id}`}
 						>
 							<Icon

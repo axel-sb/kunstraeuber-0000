@@ -1121,8 +1121,18 @@ img:hover {
 /* Other */
 
 .sea-gradient {
-	background-color: #0000;
-	background-image: none;
+	--tw-bg-opacity: 0 !important;
+	background-color: #0000 !important;
+	background-image: none !important;
+	--tw-gradient-from: none !important;
+	--tw-gradient-to: none !important;
+	--tw-gradient-stops: none !important;
+	--tw-gradient-to: none !important;
+}
+
+.sea-gradient {
+	background-color: #0000 !important;
+	background-image: none !important;
 }
 
 header form > div:nth-child(3) > button {
@@ -1130,5 +1140,7 @@ header form > div:nth-child(3) > button {
 	border-bottom-left-radius: 0;
 }
 
-#\:R12j5\: {border-top-right-radius: 0;
-	border-bottom-right-radius: 0;}
+#\:R12j5\: {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
