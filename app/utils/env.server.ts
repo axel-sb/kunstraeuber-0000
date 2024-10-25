@@ -16,6 +16,9 @@ const schema = z.object({
 	GITHUB_CLIENT_ID: z.string().default('MOCK_GITHUB_CLIENT_ID'),
 	GITHUB_CLIENT_SECRET: z.string().default('MOCK_GITHUB_CLIENT_SECRET'),
 	GITHUB_TOKEN: z.string().default('MOCK_GITHUB_TOKEN'),
+	// If you plan to use Google auth, remove the default:
+	GOOGLE_CLIENT_ID: z.string(),
+	GOOGLE_CLIENT_SECRET: z.string(),
 	ALLOW_INDEXING: z.enum(['true', 'false']).optional(),
 })
 
@@ -29,13 +32,14 @@ export function init() {
 	const parsed = schema.safeParse(process.env)
 
 	if (parsed.success === false) {
-		console.error(
-			'❌ Invalid environment variables:',
-			parsed.error.flatten().fieldErrors,
-		)
+		 console.error(
+				'❌ Invalid environment variables:',
+				JSON.stringify(parsed.error.format(), null, 2),
+			)
 
 		throw new Error('Invalid environment variables')
-	}
+    }
+    return parsed.data
 }
 
 /**

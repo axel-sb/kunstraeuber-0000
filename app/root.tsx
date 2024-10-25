@@ -1,3 +1,4 @@
+// #region imports, links, meta
 import {
 	json,
 	type LoaderFunctionArgs,
@@ -11,19 +12,21 @@ import {
 	Links,
 	Meta,
 	Outlet,
+	// redirect,
 	Scripts,
 	ScrollRestoration,
 	useLoaderData,
+	useLocation,
 	useMatches,
 	useSubmit,
 } from '@remix-run/react'
 import { withSentry } from '@sentry/remix'
 import { useRef } from 'react'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
+import globalStyles from './app.css?url'
 import appleTouchIconAssetUrl from './assets/favicons/apple-touch-icon.png'
 import faviconAssetUrl from './assets/favicons/favicon.svg'
 import { GeneralErrorBoundary } from './components/error-boundary.tsx'
-import { EpicProgress } from './components/progress-bar.tsx'
 import { SearchBar } from './components/search-bar.tsx'
 import { useToast } from './components/toaster.tsx'
 import { Button } from './components/ui/button.tsx'
@@ -35,8 +38,17 @@ import {
 	DropdownMenuTrigger,
 } from './components/ui/dropdown-menu.tsx'
 import { Icon, href as iconsHref } from './components/ui/icon.tsx'
-import { EpicToaster } from './components/ui/sonner.tsx'
-import { ThemeSwitch, useTheme } from './routes/resources+/theme-switch.tsx'
+import {
+	getAny,
+	getArtist,
+	getStyle,
+	getPlace,
+	getDate,
+	getColor,
+	getType,
+} from './routes/resources+/search-data.server.tsx'
+import { ThemeSwitch } from './routes/resources+/theme-switch.tsx'
+
 import tailwindStyleSheetUrl from './styles/tailwind.css?url'
 import { getUserId, logout } from './utils/auth.server.ts'
 import { ClientHintCheck, getHints } from './utils/client-hints.tsx'
@@ -67,15 +79,22 @@ export const links: LinksFunction = () => {
 			crossOrigin: 'use-credentials',
 		} as const, // necessary to make typescript happy
 		{ rel: 'stylesheet', href: tailwindStyleSheetUrl },
+		{ rel: 'stylesheet', href: globalStyles },
 	].filter(Boolean)
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	return [
-		{ title: data ? 'Epic Notes' : 'Error | Epic Notes' },
-		{ name: 'description', content: `Your own captain's log` },
+		{ title: data ? '* Kunsträuber' : 'Error | Kunsträuber' },
+		{
+			name: 'description',
+			content: `Good Artists Borrow, Great Artists Steal`,
+		},
 	]
 }
+// #endregion imports, links, meta
+
+//   ...........................   MARK: Loader
 
 export async function loader({ request }: LoaderFunctionArgs) {
 	const timings = makeTimings('root loader')
@@ -117,9 +136,50 @@ export async function loader({ request }: LoaderFunctionArgs) {
 	const { toast, headers: toastHeaders } = await getToast(request)
 	const honeyProps = honeypot.getInputProps()
 
+	const url = new URL(request.url)
+	const query = url.searchParams.get('search') ?? undefined
+	/* if (!query) {
+        url.searchParams.set('search', 'Picasso')
+        return redirect(url.pathname + url.search)
+    } */
+	const searchType = url.searchParams.get('searchType') ?? ''
+
+	let data
+	switch (searchType) {
+		case 'all':
+			data = await getAny(query)
+			break
+		case 'artist':
+			data = await getArtist(query)
+			break
+		case 'style':
+			data = await getStyle(query)
+			break
+		case 'type':
+			data = await getType(query)
+			break
+		case 'place':
+			data = await getPlace(query)
+			break
+		case 'date':
+			data = await getDate(Number(query))
+			break
+		case 'color':
+			data = await getColor((query ?? '').toString())
+			break
+
+		default:
+			data = await getAny('Picasso') // break
+		/* data = await getArtist('Picasso') */
+	}
+
+	/* console.log('🟡 searchType →', searchType) */
+
 	return json(
 		{
 			user,
+			data,
+			searchType,
 			requestInfo: {
 				hints: getHints(request),
 				origin: getDomainUrl(request),
@@ -148,10 +208,12 @@ export const headers: HeadersFunction = ({ loaderHeaders }) => {
 	return headers
 }
 
+//   ...........................   MARK: Document
+
 function Document({
 	children,
 	nonce,
-	theme = 'light',
+	theme = 'dark',
 	env = {},
 	allowIndexing = true,
 }: {
@@ -173,7 +235,7 @@ function Document({
 				)}
 				<Links />
 			</head>
-			<body className="bg-background text-foreground">
+			<body className="group/body min-h-[100dvh] bg-background text-foreground">
 				{children}
 				<script
 					nonce={nonce}
@@ -188,69 +250,101 @@ function Document({
 	)
 }
 
+/**
+ * React component for the main App. It handles various hooks and state variables, including user data, , search parameters, and more.
+ *
+ * @return {React.ReactNode} The main React component for the entire application.
+ */
+
+//   ...........................   MARK: App
+
 function App() {
 	const data = useLoaderData<typeof loader>()
 	const nonce = useNonce()
 	const user = useOptionalUser()
-	const theme = useTheme()
 	const matches = useMatches()
 	const isOnSearchPage = matches.find((m) => m.id === 'routes/users+/index')
 	const searchBar = isOnSearchPage ? null : <SearchBar status="idle" />
 	const allowIndexing = data.ENV.ALLOW_INDEXING !== 'false'
 	useToast(data.toast)
+	const location = useLocation()
+
+	//   ......................................   MARK: return  ⮐
 
 	return (
-		<Document
-			nonce={nonce}
-			theme={theme}
-			allowIndexing={allowIndexing}
-			env={data.ENV}
-		>
-			<div className="flex h-screen flex-col justify-between">
-				<header className="container py-6">
-					<nav className="flex flex-wrap items-center justify-between gap-4 sm:flex-nowrap md:gap-8">
-						<Logo />
-						<div className="ml-auto hidden max-w-sm flex-1 sm:block">
-							{searchBar}
+		<Document nonce={nonce} allowIndexing={allowIndexing} env={data.ENV}>
+			{location.pathname === '/' ? (
+				<>
+					<div className="grid-container m-auto h-full max-w-[calc(843px+8rem)]">
+						{/* MARK: Header 🧭
+						 */}
+						<header className="h-30 col-[1_/_-1] row-[2_/_4] flex w-full flex-wrap items-center justify-between">
+							<Logo />
+							<div className="bg-slate-95 hidden w-full max-w-sm flex-1 rounded-[.5rem] border sm:block">
+								{searchBar}
+							</div>
+							<div className="user flex gap-6 justify-self-end items-center h-12 px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
+								{user ? (
+									<UserDropdown />
+								) : (
+									<Button asChild variant="default" size="lg">
+										<Link to="/login">Log In</Link>
+									</Button>
+								)}
+							</div>
+							<div className="search-bar-mobile block w-full max-w-sm mx-auto px-4 py-4 sm:hidden">
+								{searchBar}
+							</div>
+						</header>
+						{/* MARK: Figure 🖼️
+						 */}
+						<figure
+							className="col-[2_/_-2] row-[4_/_-2] mt-6 flex !max-h-full flex-col items-center self-center lg:row-[4_/_-1]"
+							style={{
+								containerType: 'inline-size',
+								containerName: 'figure',
+							}}
+						>
+							<img
+								className="animate-hue my-4 max-h-[calc(100dvh-20rem)] max-w-[calc(100vw_-_2rem)] rounded-sm object-contain sm:my-8 sm:max-h-[calc(100dvh-20rem)] sm:max-w-[clamp(283px,calc(100vw-2rem),min(843px,100%))]"
+								alt="A work made of acrylic and silkscreen ink on linen."
+								src="four-mona-lisas.avif"
+								data-rdt-source="/Volumes/Samsung/_Projects-on-Samsung/Remix/artepic/app/routes/_artworks+/artworks.$artworkId.tsx:::247"
+							/>
+							<figcaption className="relative pt-8 text-lg opacity-85">
+								Four Mona Lisas, 1978
+							</figcaption>
+						</figure>{' '}
+						{/*
+         // ,  ........................................   MARK: Footer ┗━┛
+      */}
+						<div className="footer col-[2_/_-2] row-[5_/_6] flex h-12 w-full max-w-[843px+4rem] flex-initial items-center justify-between self-end px-4 pb-6">
+							<ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />{' '}
+							<Help />
 						</div>
-						<div className="flex items-center gap-10">
-							{user ? (
-								<UserDropdown />
-							) : (
-								<Button asChild variant="default" size="lg">
-									<Link to="/login">Log In</Link>
-								</Button>
-							)}
-						</div>
-						<div className="block w-full sm:hidden">{searchBar}</div>
-					</nav>
-				</header>
+						{/* {MeshGradients(colorH, colorS, colorL)} */}
+					</div>
+				</>
+			) : null}
 
-				<div className="flex-1">
-					<Outlet />
-				</div>
+			<Outlet />
 
-				<div className="container flex justify-between pb-5">
-					<Logo />
-					<ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
-				</div>
+			{/* <div className="footer container flex items-center justify-between py-3">
+				<Logo />
+				<Switch userPreference={data.requestInfo.userPrefs.} />
+				<Help />
 			</div>
-			<EpicToaster closeButton position="top-center" theme={theme} />
-			<EpicProgress />
-		</Document>
-	)
-}
 
-function Logo() {
-	return (
-		<Link to="/" className="group grid leading-snug">
-			<span className="font-light transition group-hover:-translate-x-1">
-				epic
-			</span>
-			<span className="font-bold transition group-hover:translate-x-1">
-				notes
-			</span>
-		</Link>
+           <EpicProgress />
+
+
+			{location.pathname === '/' ||
+			location.pathname === '/artworks.$artworkId' ? (
+				<>
+					<Switch userPreference={data.requestInfo.userPrefs.} />
+				</>
+			) : null} */}
+		</Document>
 	)
 }
 
@@ -265,28 +359,35 @@ function AppWithProviders() {
 
 export default withSentry(AppWithProviders)
 
+{
+	/*
+    //   ..........................................   MARK: User Dropdown
+  */
+}
+
 function UserDropdown() {
 	const user = useUser()
 	const submit = useSubmit()
 	const formRef = useRef<HTMLFormElement>(null)
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger asChild>
+			<DropdownMenuTrigger
+				asChild
+				className="border-amber-950 radix-state-open:border-2 py-1 h-8"
+			>
 				<Button asChild variant="secondary">
 					<Link
 						to={`/users/${user.username}`}
 						// this is for progressive enhancement
 						onClick={(e) => e.preventDefault()}
-						className="flex items-center gap-2"
+						className="flex items-center gap-2 p-0"
 					>
 						<img
-							className="h-8 w-8 rounded-full object-cover"
+							className="h-10 max-w-10 rounded-full object-cover"
 							alt={user.name ?? user.username}
 							src={getUserImgSrc(user.image?.id)}
 						/>
-						<span className="text-body-sm font-bold">
-							{user.name ?? user.username}
-						</span>
+						<span className="text-body-sm">{user.name ?? user.username}</span>
 					</Link>
 				</Button>
 			</DropdownMenuTrigger>
@@ -323,6 +424,38 @@ function UserDropdown() {
 				</DropdownMenuContent>
 			</DropdownMenuPortal>
 		</DropdownMenu>
+	)
+}
+
+//   ...........................   MARK: Logo
+
+function Logo() {
+	return (
+		<Link
+			to="/"
+			className="logo group inline-grid justify-self-start px-6 py-2 leading-tight sm:px-8 md:px-12 lg:px-16 xl:px-20"
+		>
+			<span className="animate-hue font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
+				kunst
+			</span>
+			<span className="pl-3 font-light leading-none text-yellow-100 transition group-hover:translate-x-1">
+				räuber
+			</span>
+		</Link>
+	)
+}
+
+//   ...........................   MARK: Help
+
+function Help() {
+	return (
+		<Button variant="ghost" size="ghost" className="ml-auto place-self-center">
+			<Icon
+				name="question-mark-circled"
+				className="animate-hue border-0 text-[#0ff]"
+				size="font"
+			></Icon>
+		</Button>
 	)
 }
 

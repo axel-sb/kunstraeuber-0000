@@ -1,0 +1,199 @@
+body {
+	display: grid;
+	grid-template-rows:  repeat(2, minmax(max-content, auto));
+}
+
+@property --i0 {
+	syntax: '<number>';
+	initial-value: 0;
+	inherits: true;
+}
+
+@property --j0 {
+	syntax: '<number>';
+	initial-value: 0;
+	inherits: true;
+}
+
+@property --k0 {
+	syntax: '<number>';
+	initial-value: 0;
+	inherits: true;
+}
+
+@keyframes j0 {
+	0% {
+		--j0: 0;
+	}
+	100% {
+		--j0: 1;
+	}
+}
+
+article {
+	position: relative;
+	box-shadow:
+		-0.5px -0.5px 0 1.5px #ffffff42,
+		0 0 0 6px #000;
+	border-radius: 0.25rem;
+	border: 0.3rem solid #000;
+	max-width: 843px;
+}
+
+/* create a query container for dot sizes */
+
+section {
+	display: grid;
+	place-content: center;
+	/* --dots-anim: linear-gradient(
+				905deg,
+				var(--dark),
+				var(--light),
+				var(--dark-muted),
+				var(--lighter)
+			)
+			0 calc(var(--j0) * 20vw) / 100vw 20vh,
+		radial-gradient(closest-side, var(--lighter), var(--dark-dot)) 0/0.5rem
+			0.5rem space; */
+	--dark: #0001;
+	--dark-muted: #0001;
+	--dark-dot: #0008;
+	--light: hsl(from var(--colorHsl) h 50 90);
+	--lighter: hsl(from var(--colorHsl) h 50 96);
+	/* --dots-anim: linear-gradient(#000, #777, #ffffff) 0 calc(var(--j0)* 20vh) / 100% 20vh, radial-gradient(closest-side, #888, #ffffff) 0 / 1em 1em space; */
+	filter: blur(0.1em);
+	/* opacity: 0.5; */
+	position: relative;
+	/* animation: j0 10s linear alternate infinite; */
+	animation: j0 5s linear reverse infinite;
+	border-radius: 0.25rem;
+	--map: linear-gradient(#000, #b7b7b7, #393939) 0 calc(var(--j0) * 20vh) / 100%
+		20vh;
+	filter: saturate(2);
+}
+
+/* MARK: SECTION Ⅱ
+ */
+
+section.section2 {
+	display: grid;
+	place-content: center;
+	/* --dots-anim: linear-gradient(#000, #777, #ffffff) 0 calc(var(--j0)* 20vh) / 100% 20vh, radial-gradient(closest-side, #888, #ffffff) 0 / 1em 1em space; */
+	/* filter: blur(0.1em); */
+	/* opacity: 0.5; */
+	position: relative;
+	/* animation: j0 10s linear alternate infinite; */
+	/* animation: j0 5s linear reverse infinite; */
+	border-radius: 0.25rem;
+	/* --map: linear-gradient(#000, #b7b7b7, #393939) 0 calc(var(--j0) * 20vh) / 100%
+		20vh; */
+	filter: unset;
+	--map: ;
+}
+
+/* section:before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: var(--halftone-url);
+	background-size: calc(100% - 2rem);
+	background-repeat: no-repeat;
+	background-position: center;
+	border-width: 1rem;
+	border-radius: 0.25rem;
+	--i0: 0;
+	--j0: 0;
+	--k0: 0;
+	filter: contrast(1) saturate(10) grayscale(1);
+
+} */
+
+.halftone {
+	container: halftone / inline-size;
+	/* background: var(--halftone-url) , var(--dots-anim); */
+	background: var(--halftone-url),
+		var(--map, linear-gradient(calc(var(--k0) * 360deg), #777 9%, #000)),
+		var(--pattern, radial-gradient(closest-side, #888, #000) 0/1em 1em space);
+	position: relative;
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	max-width: 843px;
+	overflow: hidden;
+	opacity: 1;
+	border-radius: 0.25rem;
+	box-shadow:
+		0 0 0 0.1rem #0008,
+		0 0 0 0.3rem #000d;
+	background-blend-mode: soft-light;
+	mix-blend-mode: soft-light;
+	filter: contrast(21);
+}
+
+/* MARK:HALFTONE Ⅱ
+   ◐             ◑ */
+
+.halftone2 {
+	position: relative;
+	display: flex;
+	align-items: flex-end;
+	justify-content: flex-end;
+	max-width: 843px;
+	overflow: hidden;
+	opacity: 1;
+	border-radius: 0.25rem;
+	box-shadow:
+		0 0 0 0.1rem #0008,
+		0 0 0 0.3rem #000d;
+}
+
+/* .halftone::before {
+	content: '';
+	background: var(--dots-anim);
+	position: absolute;
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	max-width: 843px;
+	overflow: hidden;
+	filter: blur(1.5px) grayscale(0.4) contrast(2) brightness(0.8)
+	background-blend-mode: overlay;
+	mix-blend-mode: hard-light;
+	background-blend-mode: screen;
+	mix-blend-mode: screen;
+	filter: blur(0.1em);
+	opacity: 0.5;
+	opacity: 1;
+	border-radius: 0.25rem;
+	box-shadow:
+		0 0 0 0.1rem #0008,
+		0 0 0 0.3rem #000d;
+	transform: rotate(45deg);
+	width: 100%;
+	height: 100%;
+} */
+
+/*#endregion*/
+
+/* MARK: OTHER
+ */
+
+body > ul > li > p {
+	opacity: 99%;
+	color: #e3dcd0;
+}
+
+p {
+	color: hsl(var(--foreground));
+}
+
+svg #star-filling > path {
+	fill: linear-gradient(#f0f, #0ff) !important;
+}
+
+.list-wrapper {
+  background: radial-gradient(circle at -10% -10%, var(--colorHslOp50) , #0008 24% 71%, var(--colorHslOp50)), radial-gradient(circle at 33% 50%, #0000, var(--colorHslOp50));
+}

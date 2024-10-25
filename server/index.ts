@@ -118,7 +118,7 @@ app.use(
 				].filter(Boolean),
 				'font-src': ["'self'"],
 				'frame-src': ["'self'"],
-				'img-src': ["'self'", 'data:'],
+				'img-src': ["'self'", 'data:', 'https://*.artic.edu'],
 				'script-src': [
 					"'strict-dynamic'",
 					"'self'",
@@ -202,6 +202,7 @@ async function getBuild() {
 			? await viteDevServer.ssrLoadModule('virtual:remix/server-build')
 			: // @ts-expect-error - the file might not exist yet but it will
 				// eslint-disable-next-line import/no-unresolved
+
 				await import('../build/server/index.js')
 
 		return { build: build as unknown as ServerBuild, error: null }

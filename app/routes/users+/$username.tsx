@@ -94,6 +94,7 @@ export default function ProfileRoute() {
 					</div>
 				</div>
 			</div>
+			<Logo />
 		</div>
 	)
 }
@@ -107,6 +108,22 @@ export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
 			content: `Profile of ${displayName} on Epic Notes`,
 		},
 	]
+}
+
+function Logo() {
+	return (
+		<Link
+			to="/"
+			className="logo group absolute bottom-6 left-6 inline-grid justify-self-start px-4 py-2 leading-tight sm:px-8 md:px-12 lg:px-16 xl:px-20"
+		>
+			<span className="font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
+				kunst
+			</span>
+			<span className="pl-3 font-light leading-none text-yellow-100 transition group-hover:translate-x-1">
+				räuber
+			</span>
+		</Link>
+	)
 }
 
 export function ErrorBoundary() {

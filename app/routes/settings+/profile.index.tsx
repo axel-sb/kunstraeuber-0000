@@ -236,7 +236,7 @@ function UpdateProfile() {
 
 	return (
 		<fetcher.Form method="POST" {...getFormProps(form)}>
-			<div className="grid grid-cols-6 gap-x-10">
+			<div className="grid grid-cols-6 gap-x-4">
 				<Field
 					className="col-span-3"
 					labelProps={{
@@ -361,3 +361,4 @@ function DeleteData() {
 		</div>
 	)
 }
+
