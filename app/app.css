@@ -26,7 +26,7 @@ p {
 }
 
 :root {
-	--clamped: clamp(106.25%, 1rem + 0.5vw, 1.35rem);
+	--clamped: clamp(81.25%, 1rem + 0.5vw, 1.15rem);
 	--padding-inline: 1rem;
 	font-size: var(--clamped);
 	--background: hsl(20 14.3 4.1);
@@ -79,14 +79,13 @@ p {
 	}
 } */
 
-
 /* GRID adapted from artworks.artworkId.css */
 .grid-container {
 	display: grid;
 	grid-template-columns:
 		var(--padding-inline) repeat(3, minmax(1rem, max-content))
 		var(--padding-inline);
-	grid-template-rows: 1.5rem minmax(3rem, max-content) auto min-content;
+	grid-template-rows: 1.5rem minmax(3rem, max-content) minmax(3rem, max-content) min-content;
 	justify-content: space-between;
 }
 
@@ -116,7 +115,7 @@ input[type='search' i]:enabled:read-write:-webkit-any(
 	opacity: 0.5 !important;
 	color: #ccc !important;
 	font-size: 1.25rem !important;
-	transform: translateX(-2rem);
+	transform: translateX(-4rem);
 
 	&:focus,
 	&:active {
@@ -802,7 +801,6 @@ body > div > header > form > button > svg .path {
 	}
 }
 
-
 /* route artworks.index ................................ */
 /* radio buttons - grid selection */
 
@@ -847,7 +845,6 @@ form > div {
 		}
 	}
 } */
-
 
 /* animated gradients with custom properties */
 
@@ -1089,3 +1086,49 @@ img:hover {
 #edit-profile-name {
 	padding-inline: 0;
 }
+
+/* MARK: view transition ◯
+ */
+
+.dark::view-transition-new(root) {
+	animation-name: reveal-dark;
+}
+
+@keyframes reveal-dark {
+	0% {
+		-webkit-clip-path: polygon(-30% 0, -30% 0, -15% 100%, -10% 115%);
+		clip-path: polygon(-30% 0, -30% 0, -15% 100%, -10% 115%);
+	}
+
+	to {
+		-webkit-clip-path: polygon(-30% 0, 130% 0, 115% 100%, -10% 115%);
+		clip-path: polygon(-30% 0, 130% 0, 115% 100%, -10% 115%);
+	}
+}
+
+@keyframes reveal-light {
+	0% {
+		-webkit-clip-path: polygon(130% 0, 130% 0, 115% 100%, 110% 115%);
+		clip-path: polygon(130% 0, 130% 0, 115% 100%, 110% 115%);
+	}
+
+	to {
+		-webkit-clip-path: polygon(130% 0, -30% 0, -15% 100%, 110% 115%);
+		clip-path: polygon(130% 0, -30% 0, -15% 100%, 110% 115%);
+	}
+}
+
+/* Other */
+
+.sea-gradient {
+	background-color: #0000;
+	background-image: none;
+}
+
+header form > div:nth-child(3) > button {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+#\:R12j5\: {border-top-right-radius: 0;
+	border-bottom-right-radius: 0;}

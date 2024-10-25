@@ -278,10 +278,12 @@ function App() {
 					<div className="grid-container m-auto h-full max-w-[calc(843px+8rem)]">
 						{/* MARK: Header 🧭
 						 */}
-						<header className="h-30 col-[1_/_-1] row-[2_/_4] flex w-full flex-wrap items-start justify-between">
+						<header className="h-30 col-[1_/_-1] row-[2_/_4] flex w-full flex-wrap items-center justify-between">
 							<Logo />
-							<div className="hidden w-full flex-1 sm:block">{searchBar}</div>
-							<div className="user flex gap-10 justify-self-end px-4 py-1 sm:px-8 md:px-12 lg:px-16 xl:px-20">
+							<div className="bg-slate-95 hidden w-full max-w-sm flex-1 rounded-[.5rem] border sm:block">
+								{searchBar}
+							</div>
+							<div className="user flex gap-6 justify-self-end items-center h-12 px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
 								{user ? (
 									<UserDropdown />
 								) : (
@@ -290,21 +292,21 @@ function App() {
 									</Button>
 								)}
 							</div>
-							<div className="search-bar-mobile block w-full px-4 py-4 sm:hidden">
+							<div className="search-bar-mobile block w-full max-w-sm mx-auto px-4 py-4 sm:hidden">
 								{searchBar}
 							</div>
 						</header>
 						{/* MARK: Figure 🖼️
 						 */}
 						<figure
-							className="col-[2_/_-2] row-[4_/_-2] flex !max-h-full flex-col items-center lg:row-[4_/_-1]"
+							className="col-[2_/_-2] row-[4_/_-2] mt-6 flex !max-h-full flex-col items-center self-center lg:row-[4_/_-1]"
 							style={{
 								containerType: 'inline-size',
 								containerName: 'figure',
 							}}
 						>
 							<img
-								className="animate-hue my-4 max-h-[calc(100dvh-12rem)] max-w-[calc(100vw_-_2rem)] rounded-sm object-contain sm:my-8 sm:max-h-[calc(100dvh-15rem)] sm:max-w-[clamp(283px,calc(100vw-2rem),min(843px,100%))]"
+								className="animate-hue my-4 max-h-[calc(100dvh-20rem)] max-w-[calc(100vw_-_2rem)] rounded-sm object-contain sm:my-8 sm:max-h-[calc(100dvh-20rem)] sm:max-w-[clamp(283px,calc(100vw-2rem),min(843px,100%))]"
 								alt="A work made of acrylic and silkscreen ink on linen."
 								src="four-mona-lisas.avif"
 								data-rdt-source="/Volumes/Samsung/_Projects-on-Samsung/Remix/artepic/app/routes/_artworks+/artworks.$artworkId.tsx:::247"
@@ -381,7 +383,7 @@ function UserDropdown() {
 						className="flex items-center gap-2 p-0"
 					>
 						<img
-							className="h-6 max-w-10 rounded-full object-cover"
+							className="h-10 max-w-10 rounded-full object-cover"
 							alt={user.name ?? user.username}
 							src={getUserImgSrc(user.image?.id)}
 						/>
@@ -431,9 +433,9 @@ function Logo() {
 	return (
 		<Link
 			to="/"
-			className="logo group inline-grid justify-self-start px-4 py-2 text-[90%] leading-tight sm:px-8 md:px-12 lg:px-16 xl:px-20"
+			className="logo group inline-grid justify-self-start px-6 py-2 leading-tight sm:px-8 md:px-12 lg:px-16 xl:px-20"
 		>
-			<span className="font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
+			<span className="animate-hue font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
 				kunst
 			</span>
 			<span className="pl-3 font-light leading-none text-yellow-100 transition group-hover:translate-x-1">
@@ -450,7 +452,7 @@ function Help() {
 		<Button variant="ghost" size="ghost" className="ml-auto place-self-center">
 			<Icon
 				name="question-mark-circled"
-				className="border-0"
+				className="animate-hue border-0 text-[#0ff]"
 				size="font"
 			></Icon>
 		</Button>

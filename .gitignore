@@ -44,3 +44,8 @@ app/routes/_artworks+/test.tsx
 other/svg-icons/grid-3b.svg
 app/routes/_artworks+/test.tsx
 app/routes/_artworks+/test.tsx
+other/svg-icons/turtle.svg
+other/svg-icons/zoom-in-col.svg
+other/svg-icons/zoom-in-inkscape.svg
+app/routes/_artworks+/artworks._details.artworkId.1.css
+app/routes/_artworks+/artworks._details.$artworkId.1.tsx

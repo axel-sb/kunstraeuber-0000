@@ -123,25 +123,25 @@ export default function ArtworksPage() {
 			{/*
            //§   ............................................   MARK:👑 Main
         */}
-			<main className="artworks-fade-in flex-col items-center justify-start px-4 pb-8 pt-0 sm:p-10 md:px-12 lg:px-16 xl:px-24 2xl:px-32">
+			<main className="artworks-fade-in flex-col items-center justify-start p-4 pb-8 sm:p-10 md:px-12 lg:px-16 xl:px-24 2xl:px-32">
 				{/*
            //§   ...........................................   MARK: Header
         */}
 
-				<header className="absolute left-0 right-0 top-0 grid h-16 w-full max-w-[calc(843px+4rem)] grid-cols-2 place-content-center gap-4 bg-black">
+				<header className="mx-auto grid h-16 w-full max-w-[calc(843px+4rem)] grid-cols-2 place-content-center gap-4 rounded-md bg-black text-lg 2xl:text-xl">
 					<Logo />
 
 					{/*
            //§   ...........................................   MARK: 🔘 radio-btns
         */}
 
-					<form className="form col-[2/3] grid h-12 place-self-center sm:px-8 md:px-12 lg:px-16 xl:px-20">
-						<div className="group/radio flex justify-around divide-y divide-slate-700 place-self-center rounded border-[0.5px] border-solid border-yellow-50/25 px-4 py-1 text-xl text-yellow-50/50 md:gap-4 md:text-lg">
+					<form className="form col-[2/3] mr-4 grid h-12 self-center justify-self-end md:mr-6 lg:mr-8">
+						<div className="group/radio flex justify-around divide-x-reverse divide-slate-700 place-self-center rounded border-[0.5px] border-solid border-yellow-50/25 py-1 pr-1 text-xl text-yellow-50/50 md:gap-4 2xl:text-2xl">
 							<RadioButton
 								name="grid-1"
 								value={grid}
 								onChange={handleGrid1Change}
-								className="self-center"
+								className="place-self-center"
 							/>
 							<RadioButton
 								name="grid-2"
@@ -159,7 +159,7 @@ export default function ArtworksPage() {
 						</div>
 					</form>
 				</header>
-				<ul className="3xl:gap-x-[5%] w-full gap-x-[3%] pt-40 [column-count:1] group-has-[label:nth-child(1)>input[type='radio']:checked]/body:[column-count:1] group-has-[label:nth-child(2)>input[type=radio]:checked]/body:[column-count:2] group-has-[label:nth-child(3)>input[type=radio]:checked]/body:[column-count:3] md:[column-count:2] lg:gap-x-12 lg:[column-count:4] xl:gap-x-[4%] xl:[column-count:5] 2xl:gap-x-20">
+				<ul className="w-full gap-x-[3%] pt-4 [column-count:1] group-has-[label:nth-child(1)>input[type='radio']:checked]/body:[column-count:1] group-has-[label:nth-child(2)>input[type=radio]:checked]/body:[column-count:2] group-has-[label:nth-child(3)>input[type=radio]:checked]/body:[column-count:3] md:pt-8 md:[column-count:2] lg:gap-x-12 lg:pt-10 lg:[column-count:4] xl:gap-x-[4%] xl:[column-count:5] xl:pt-14 2xl:gap-x-20 2xl:pt-20">
 					{data !== undefined && data.length > 0 ? (
 						data.map((artwork) => (
 							<li
@@ -266,7 +266,7 @@ function Logo() {
 		return (
 			<Link
 				to="/"
-				className="logo group inline-grid justify-self-start pl-4 pr-3 py-4 leading-tight sm:px-8 md:px-12 lg:px-16 xl:px-20 text-lg"
+				className="logo group inline-grid justify-self-start pl-4 pr-3 py-4 leading-tight md:px-6 lg:px-8"
 			>
 				<span className="font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
 					kunst

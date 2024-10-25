@@ -10,12 +10,12 @@ canvas#my-canvas {
 body {
 	display: grid;
 	grid-template-columns:
-		minmax(0, calc(100vw - (843px / 2))) minmax(3.5rem, auto) minmax(
+		minmax(0, calc(100vw - (843px / 2))) minmax(5rem, auto) minmax(
 			min-content,
 			calc(100vw - 2rem)
 		)
-		minmax(3.5rem, auto) minmax(0, calc(100vw - (843px / 2)));
-	grid-template-rows: 6rem minmax(max-content, 1fr) minmax(5rem, max-content);
+		minmax(5rem, auto) minmax(0, calc(100vw - (843px / 2)));
+	grid-template-rows: 8rem 1fr 8rem;
 	justify-content: center;
 	align-items: stretch;
 	height: 100dvh;
@@ -68,13 +68,6 @@ figure {
 	grid-row: 2 / 3;
 	width: clamp(283px, calc(100vw - 2rem), 843px);
 	place-self: center;
-	height: 100%;
-	/* display: grid;
-	grid-template-columns: subgrid;
-  grid-template-rows: 1fr min-content;
-	justify-content: center;
-	align-items: stretch; */
-	max-height: calc(100dvh - 6rem);
 }
 
 .image-wrapper {

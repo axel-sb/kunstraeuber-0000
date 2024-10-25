@@ -18,3 +18,7 @@
 div.flex-1 > button {
   text-shadow: 0 0 1px #000d, 0 0 2px #0008, 0 0 3px #0003
 }
+
+#search-spinner {
+    /* display:block; */
+}

@@ -136,13 +136,20 @@ export default function ColorSearch({
 						onChange={(e) => setcolor(e.target.value)}
 						placeholder="Search"
 						type="hidden"
+						list="dominantColors"
 					/>
+					<datalist id="dominantColors">
+						<option value="#800000"></option>
+						<option value="#8B0000"></option>
+						<option value="#A52A2A"></option>
+						<option value="#DC143C"></option>
+					</datalist>
 				</div>
 				<div>
 					<StatusButton
 						type="submit"
 						status={isSubmitting ? 'pending' : status}
-						className="-top-14} relative flex h-8 w-full items-center justify-center border-0 hover:bg-secondary/10"
+						className="relative -top-14 flex h-8 w-full items-center justify-center border-0 hover:bg-secondary/10"
 					>
 						<Icon
 							name="magnifying-glass"
@@ -169,7 +176,7 @@ export default function ColorSearch({
 						location.search === '' ? (
 							<li className="w-15rem relative flex max-w-sm flex-wrap justify-center whitespace-pre text-lg text-yellow-50">
 								<p className="px-4 font-normal opacity-100">
-									No search query provided
+									Select a color 🡕
 								</p>
 								<p className="px-4 font-semibold opacity-50">
 									(search type: <em> " {currentQueryKey} " </em>)
@@ -185,7 +192,7 @@ export default function ColorSearch({
 										className={({ isActive, isPending }) =>
 											isActive ? 'active' : isPending ? 'pending' : ''
 										}
-										to={`./${artwork.id}`}
+										to={`../artworks/${artwork.id}`}
 									>
 										{artwork.title ? (
 											<figure className="relative z-40 mx-auto grid max-h-full max-w-[281px] place-items-center gap-4 pt-4 lg:static lg:max-w-full lg:-translate-x-28 lg:grid-cols-2">

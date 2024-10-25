@@ -155,6 +155,7 @@
     "prettier": "^3.3.3",
     "prettier-plugin-sql": "^0.18.1",
     "prettier-plugin-tailwindcss": "^0.6.5",
+    "remix-development-tools": "^4.7.3",
     "remix-flat-routes": "^0.6.5",
     "tsx": "^4.16.2",
     "typescript": "^5.5.3",

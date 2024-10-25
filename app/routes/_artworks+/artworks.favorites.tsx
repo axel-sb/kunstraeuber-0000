@@ -73,6 +73,7 @@ export default function Favorites() {
 					<li>no data</li>
 				)}
 			</ul>
+            
 			<NavLink to="/" className="home fixed bottom-4 right-4">
 				<h1
 					data-heading
