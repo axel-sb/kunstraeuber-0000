@@ -34,7 +34,7 @@ export function SearchBar({
 	}, 400)
 
 	const [searchType, setSearchType] = useState<
-		'' | 'color' | 'style' | 'date' | 'all' | 'artist' | 'place' | 'type'
+		'' | 'color' | 'style' | 'date' | 'all' | 'artist' | 'place' | 'type' | 'weight'
 	>('')
 
 	return (
@@ -57,13 +57,44 @@ export function SearchBar({
 					/* placeholder={`Search ${searchType || 'all'}`} */
 					className="w-full bg-secondary"
 					autoFocus={autoFocus}
+					autoComplete="off"
+					list="artist"
 				/>
 			</div>
+			<datalist id="artist">
+				<option value="Picasso"></option>
+				<option value="Matisse"></option>
+				<option value="Monet"></option>
+				<option value="Van Gogh"></option>
+				<option value="Max Ernst"></option>
+				<option value="Richard Hawkins"></option>
+				<option value=""></option>
+				<option value=""></option>
+				<option value=""></option>
+				<option value=""></option>
+				<option value=""></option>
+				<option value=""></option>
+				<option value=""></option>
+			</datalist>
 
 			<div>
 				<SelectSearchType
 					searchType={searchType}
-					setSearchType={setSearchType}
+					setSearchType={
+						setSearchType as React.Dispatch<
+							React.SetStateAction<
+								| ''
+								| 'color'
+								| 'style'
+								| 'date'
+								| 'all'
+								| 'artist'
+								| 'place'
+								| 'type'
+								| 'weight'
+							>
+						>
+					}
 				/>
 			</div>
 			<div>
@@ -100,9 +131,18 @@ interface SelectSearchTypeProps {
 		| 'artist'
 		| 'place'
 		| 'type'
+		| 'weight'
 	setSearchType: React.Dispatch<
 		React.SetStateAction<
-			'' | 'color' | 'style' | 'date' | 'all' | 'artist' | 'place' | 'type'
+			| ''
+			| 'color'
+			| 'style'
+			| 'date'
+			| 'all'
+			| 'artist'
+			| 'place'
+			| 'type'
+			| 'weight'
 		>
 	>
 }
@@ -126,22 +166,24 @@ function SelectSearchType({
 					| 'date'
 					| 'type'
 					| 'color'
+                    | 'weight'
 
 				setSearchType(searchType)
-                if (searchType === 'color') {
-									window.location.href = '/artworks/colorSearch'
-								}
+				if (searchType === 'color') {
+					window.location.href = '/artworks/colorSearch'
+				}
 				const searchForm =
 					document.querySelector<HTMLFormElement>('#search-form')
 				const searchInput =
 					document.querySelector<HTMLInputElement>('#search-input')
 				if (searchForm && searchInput) {
-					searchForm.action =  `/artworks?searchType='color' ?? {
+					searchForm.action = `/artworks?searchType='color' ?? {
 												window.location.href =
 													'/artworks/colorSearch'
 											} :
                     { ${searchType}&search=${searchInput.value}`
-					searchForm.submit() }
+					searchForm.submit()
+				}
 			}}
 		>
 			<SelectTrigger className="absolute right-20 top-2 h-6 w-6 justify-between"></SelectTrigger>
@@ -150,7 +192,7 @@ function SelectSearchType({
 					<StatusButton
 						type="submit"
 						status={isPending ? 'pending' : 'idle'}
-						className="flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left shadow-none"
+						className="flex h-6 w-16 items-center justify-start border-0 text-left text-popover-foreground shadow-none"
 					>
 						Select ↓
 					</StatusButton>
@@ -159,7 +201,7 @@ function SelectSearchType({
 					<StatusButton
 						type="submit"
 						status={isPending ? 'pending' : 'idle'}
-						className="flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left shadow-none"
+						className="flex h-6 w-16 items-center justify-start border-0 text-left text-popover-foreground shadow-none"
 					>
 						Artist
 					</StatusButton>
@@ -168,7 +210,7 @@ function SelectSearchType({
 					<StatusButton
 						type="submit"
 						status={isPending ? 'pending' : 'idle'}
-						className="flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left shadow-none"
+						className="flex h-6 w-16 items-center justify-start border-0 text-popover-foreground text-left shadow-none"
 					>
 						Style
 					</StatusButton>
@@ -177,7 +219,7 @@ function SelectSearchType({
 					<StatusButton
 						type="submit"
 						status={isPending ? 'pending' : 'idle'}
-						className="w-16text-left flex h-6 items-center justify-start border-0 pl-4 pr-2 shadow-none"
+						className="w-16text-left flex h-6 items-center justify-start border-0 text-popover-foreground shadow-none"
 					>
 						Place
 					</StatusButton>
@@ -186,7 +228,7 @@ function SelectSearchType({
 					<StatusButton
 						type="submit"
 						status={isPending ? 'pending' : 'idle'}
-						className="w-16text-left flex h-6 items-center justify-start border-0 pl-4 pr-2 shadow-none"
+						className="w-16text-left flex h-6 items-center justify-start border-0 text-popover-foreground shadow-none"
 					>
 						Date
 					</StatusButton>
@@ -195,7 +237,7 @@ function SelectSearchType({
 					<StatusButton
 						type="submit"
 						status={isPending ? 'pending' : 'idle'}
-						className="w-16text-left flex h-6 items-center justify-start border-0 pl-4 pr-2 shadow-none"
+						className="w-16text-left flex h-6 items-center justify-start border-0 text-popover-foreground shadow-none"
 					>
 						Type
 					</StatusButton>
@@ -204,16 +246,25 @@ function SelectSearchType({
 					<StatusButton
 						type="submit"
 						status={isPending ? 'pending' : 'idle'}
-						className="w-16text-left flex h-6 items-center justify-start border-0 pl-4 pr-2 shadow-none"
+						className="w-16text-left flex h-6 items-center justify-start border-0 text-popover-foreground shadow-none"
 					>
 						Color
+					</StatusButton>
+				</SelectItem>
+				<SelectItem value="weight">
+					<StatusButton
+						type="submit"
+						status={isPending ? 'pending' : 'idle'}
+						className="w-16text-left flex h-6 items-center justify-start border-0 text-popover-foreground shadow-none"
+					>
+						Weight
 					</StatusButton>
 				</SelectItem>
 				<SelectItem value="all">
 					<StatusButton
 						type="submit"
 						status={isPending ? 'pending' : 'idle'}
-						className="w-16text-left flex h-6 items-center justify-start border-0 pl-4 pr-2 shadow-none"
+						className="w-16text-left flex h-6 items-center justify-start border-0 text-popover-foreground shadow-none"
 					>
 						All
 					</StatusButton>

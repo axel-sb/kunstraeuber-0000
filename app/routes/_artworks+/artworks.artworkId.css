@@ -5,6 +5,21 @@ canvas#my-canvas {
 	width: 100vw;
 }
 
+#regenerate {
+    animation    : rotate 3s linear;
+}
+
+@keyframes rotate {
+    from { rotate: 1 2 1 0deg; opacity: .5}
+    10% { rotate: 1 2 1 36deg; opacity: .6}
+    25% { rotate: 1 2 1 90deg; opacity: 1}
+    50% { rotate: 1 2 1 180deg; opacity: .15}
+    75% { rotate: 1 2 1 270deg; opacity: 0}
+    90% { rotate: 1 2 1 324deg; opacity: .1}
+    to { rotate: 1 2 1 360deg; opacity: .5}
+}
+
+
 /* #endregion */
 
 body {

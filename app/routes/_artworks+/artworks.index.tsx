@@ -1,21 +1,23 @@
 // #region  import export
+import { type Artwork } from '@prisma/client'
 import {
 	type LinksFunction,
 	type LoaderFunctionArgs,
 	json,
 } from '@remix-run/node'
 import { Link, NavLink, useLoaderData, useLocation } from '@remix-run/react'
-import chalk from 'chalk'
 import React from 'react'
 import SVGComponent from '#app/components/ui/eye.tsx'
 import { Icon } from '#app/components/ui/icon.js'
 import {
-	getAny,
+	searchArtworks,
+	/* getAny,
 	getArtist,
 	getStyle,
 	getPlace,
 	getDate,
 	getColor,
+    getMinWeight, */
 } from '../resources+/search-data.server'
 import artworks from './artworks.index.css?url'
 export const links: LinksFunction = () => [
@@ -30,33 +32,38 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 		url.searchParams.get('search') ?? 'search query input is missing'
 	const searchType =
 		url.searchParams.get('searchType') ?? 'search type is not yet selected'
+	const data = await searchArtworks(searchType, query)
 
-	let data
-	switch (searchType) {
-		case 'all':
-			data = await getAny(query)
-			break
-		case 'artist':
-			data = await getArtist(query)
-			break
-		case 'style':
-			data = await getStyle(query)
-			break
-		case 'place':
-			data = await getPlace(query)
-			break
-		case 'date':
-			data = await getDate(Number(query))
-			break
-		case 'color':
-			data = await getColor((query ?? '').toString())
-			break
+	/* let data
+        switch (searchType) {
+            case 'all':
+                data = await getAny(query)
+                break
+            case 'artist':
+                data = await getArtist(query)
+                break
+            case 'style':
+                data = await getStyle(query)
+                break
+            case 'place':
+                data = await getPlace(query)
+                break
+            case 'date':
+                data = await getDate(Number(query))
+                break
+            case 'color':
+                data = await getColor((query ?? '').toString())
+                break
 
-		default:
-			data = await getAny('Picasso') // break
-	}
-	// const colorHsl = Array.isArray(data) ? '' : (data as unknown as { colorHsl?: string })?.colorHsl ?? ''
-	return json({ searchType, query, data })
+            default:
+                data = await getAny('') // break
+        } */
+
+	return json<{ searchType: string; query: string; data: Artwork[] }>({
+		searchType,
+		query,
+		data
+	})
 }
 
 // #endregion import export
@@ -64,20 +71,13 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 //+                                            export default
 // MARK: Export default
 export default function ArtworksPage() {
-	const { data, query } = useLoaderData<typeof loader>()
-	const location = useLocation()
-	const searchType = useLoaderData<typeof loader>().searchType
+	const { data } = useLoaderData<typeof loader>()
+    console.log('🎒 data from useLoaderData →  ', data)
 	const colorHsl =
 		(useLoaderData<typeof loader>().data as { colorHsl?: string })?.colorHsl ??
 		''
 	console.log('🟡 colorHsl →', colorHsl)
 
-	console.log(
-		chalk.blue(
-			console.group('Object.entries(location).map(([k, v]) ➜ '),
-			Object.entries(location).map(([k, v]) => `${chalk.red(k)}: ${v}  \n`),
-		),
-	)
 	//§  .............................  MARK: radio btns hook
 	const [grid, setgrid] = React.useState('')
 
@@ -128,15 +128,15 @@ export default function ArtworksPage() {
            //§   ...........................................   MARK: Header
         */}
 
-				<header className="mx-auto grid h-16 w-full max-w-[calc(843px+4rem)] grid-cols-2 place-content-center gap-4 rounded-md bg-black text-lg 2xl:text-xl">
+				<header className="mx-auto grid h-16 w-full grid-cols-2 place-content-center text-lg 2xl:text-xl">
 					<Logo />
 
 					{/*
            //§   ...........................................   MARK: 🔘 radio-btns
         */}
 
-					<form className="form col-[2/3] mr-4 grid h-12 self-center justify-self-end md:mr-6 lg:mr-8">
-						<div className="group/radio flex justify-around divide-x-reverse divide-slate-700 place-self-center rounded border-[0.5px] border-solid border-yellow-50/25 py-1 pr-1 text-xl text-yellow-50/50 md:gap-4 2xl:text-2xl">
+					<form className="form col-[2/3] grid h-12 self-center justify-self-end">
+						<div className="group/radio flex justify-around divide-x-reverse divide-slate-700 place-self-center rounded border-[0.5px] border-solid border-yellow-50/25 pb-2 pr-1 pt-1 text-xl text-yellow-50/50 md:gap-4 2xl:text-2xl">
 							<RadioButton
 								name="grid-1"
 								value={grid}
@@ -159,100 +159,66 @@ export default function ArtworksPage() {
 						</div>
 					</form>
 				</header>
-				<ul className="w-full gap-x-[3%] pt-4 [column-count:1] group-has-[label:nth-child(1)>input[type='radio']:checked]/body:[column-count:1] group-has-[label:nth-child(2)>input[type=radio]:checked]/body:[column-count:2] group-has-[label:nth-child(3)>input[type=radio]:checked]/body:[column-count:3] md:pt-8 md:[column-count:2] lg:gap-x-12 lg:pt-10 lg:[column-count:4] xl:gap-x-[4%] xl:[column-count:5] xl:pt-14 2xl:gap-x-20 2xl:pt-20">
-					{data !== undefined && data.length > 0 ? (
-						data.map((artwork) => (
-							<li
-								key={artwork.id}
-								className="flex w-full items-center justify-center"
-								style={{
-									containerType: 'inline-size',
-									containerName: 'list-item',
-								}}
+				<ul className="w-full gap-x-[3%] pt-4 [column-count:1] group-has-[label:nth-child(1)>input[type='radio']:checked]/body:[column-count:1] group-has-[label:nth-child(2)>input[type=radio]:checked]/body:[column-count:2] group-has-[label:nth-child(3)>input[type=radio]:checked]/body:[column-count:3] md:pt-8 md:[column-count:2] lg:gap-x-12 lg:pt-10 lg:[column-count:4] xl:gap-x-[4%] xl:pt-14 xl:[column-count:5] 2xl:gap-x-20 2xl:pt-20">
+					{data.map((artwork: Artwork) => (
+						<li
+							key={artwork.id}
+							className="flex w-full items-center justify-center"
+							style={{
+								containerType: 'inline-size',
+								containerName: 'list-item',
+							}}
+						>
+							<NavLink
+								className={({ isActive, isPending }) =>
+									isActive ? 'active' : isPending ? 'pending' : '' + 'w-full'
+								}
+								to={`./${artwork.id}`}
 							>
-								<NavLink
-									className={({ isActive, isPending }) =>
-										isActive ? 'active' : isPending ? 'pending' : '' + 'w-full'
-									}
-									to={`./${artwork.id}`}
-								>
-									<figure className="group-has-[input[type=radio]]:grid-cols-1]:mb-40 relative mb-8 flex break-inside-avoid flex-col items-center justify-between xl:mb-20">
-										<img
-											alt={artwork.alt_text ?? undefined}
-											key={artwork.id}
-											src={artwork.image_url ?? '../dummy.jpeg'}
-											className="hover-[gradient-border] w-full max-w-full rounded-md object-contain object-center md:rounded-lg"
-										/>
+								<figure className="mx-auto group-has-[input[type=radio]]:grid-cols-1]:mb-40 relative mb-8 flex break-inside-avoid flex-col items-center justify-between xl:mb-20">
+									<img
+										alt={artwork.alt_text ?? undefined}
+										key={artwork.id}
+										src={artwork.image_url ?? '../dummy.jpeg'}
+										className="hover-[gradient-border] w-full max-w-full rounded-md object-contain object-center md:rounded-lg"
+									/>
 
-										{/*
+									{/*
                        //§   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    MARK: Figcaption
                   */}
-										<figcaption
-											className="z-50 my-4 flex w-full flex-wrap justify-between overflow-hidden rounded-md py-4 backdrop-blur-sm"
-											style={{
-												backgroundColor: '#0000',
-												backgroundImage:
-													(('radial-gradient(farthest-corner circle at -25% 0% in oklab, #0000 0% 45%, ' +
-														artwork.colorHsl) as string) +
-													'50%, #0000 55% 100% linear-gradient(180deg,  var(--bg-background) 0% 5%,  var(--bg-background) 45%, #0000,  var(--bg-background) 55%,  var(--bg-background) 95% 100%), linear-gradient(#000b, #000b))',
-												backgroundSize: '250%',
-											}}
-										>
-											<div className="group-has-[input[type=radio]]:grid-cols-2]:justify-self-start relative flex w-full flex-wrap font-light tracking-[-0.020rem] text-[#f2ece2]">
-												<div className="w-full">
-													{artwork.title} {'  '}
-												</div>
-												<div className="figcaption-artist w-[calc(100%-2rem)] font-medium leading-snug tracking-[-0.020rem] opacity-70">
-													{artwork.artist_title}
-												</div>
-												<span
-													className="ml-auto self-end overflow-hidden"
-													style={{
-														color: artwork.colorHsl as string,
-													}}
-												>
-													<SVGComponent className="h-[1lh] w-[1lh] sm:h-[.9lh] sm:w-[.9lh]" />
-													{/* h-3 w-3 sm:h-4 sm:w-4 md:h-6 md:w-6 */}
-												</span>
+									<figcaption
+										className="z-50 my-4 flex w-full flex-wrap justify-between overflow-hidden rounded-md py-4 backdrop-blur-sm"
+										style={{
+											backgroundColor: '#0000',
+											backgroundImage:
+												(('radial-gradient(farthest-corner circle at -25% 0% in oklab, #0000 0% 45%, ' +
+													artwork.colorHsl) as string) +
+												'50%, #0000 55% 100% linear-gradient(180deg,  var(--bg-background) 0% 5%,  var(--bg-background) 45%, #0000,  var(--bg-background) 55%,  var(--bg-background) 95% 100%), linear-gradient(#000b, #000b))',
+											backgroundSize: '250%',
+										}}
+									>
+										<div className="group-has-[input[type=radio]]:grid-cols-2]:justify-self-start relative flex w-full flex-wrap font-light tracking-[-0.020rem] text-[#f2ece2]">
+											<div className="w-full">
+												{artwork.title} {'  '}
 											</div>
-										</figcaption>
-									</figure>
-								</NavLink>
-							</li>
-						))
-					) : (
-						<div className="section-wrapper backgroundImage: 'url(avatars/sad-thief.png)', objectFit: 'contain', w-full">
-							<section
-								className="w-full p-6 font-semibold text-yellow-50"
-								style={{
-									columnSpan: 'all',
-								}}
-							>
-								<h2 className="mx-auto text-lg">
-									... couldn't find anything for <br />
-									{'  '}
-									<span className="inline-block pr-1 pt-3 opacity-80">
-										{' '}
-										Search term:{'  '}
-									</span>
-									<strong>
-										<em>
-											{' '}
-											{'  '}'{query} {'  '}'
-										</em>{' '}
-									</strong>
-									<br />
-									<span className="opacity-80">
-										{'  '}
-										Search type:{'  '}
-									</span>
-									<strong>
-										<em>'{searchType}'</em>
-									</strong>
-								</h2>
-							</section>
-						</div>
-					)}
+											<div className="figcaption-artist w-[calc(100%-2rem)] font-medium leading-snug tracking-[-0.020rem] opacity-70">
+												{artwork.artist_title}
+											</div>
+											<span
+												className="ml-auto self-end overflow-hidden"
+												style={{
+													color: artwork.colorHsl as string,
+												}}
+											>
+												<SVGComponent className="h-[1lh] w-[1lh] sm:h-[.9lh] sm:w-[.9lh]" />
+												{/* h-3 w-3 sm:h-4 sm:w-4 md:h-6 md:w-6 */}
+											</span>
+										</div>
+									</figcaption>
+								</figure>
+							</NavLink>
+						</li>
+					))}
 				</ul>
 				<Footer />
 			</main>
@@ -266,7 +232,7 @@ function Logo() {
 		return (
 			<Link
 				to="/"
-				className="logo group inline-grid justify-self-start pl-4 pr-3 py-4 leading-tight md:px-6 lg:px-8"
+				className="logo group inline-grid justify-self-startpr-3 py-4 leading-tight"
 			>
 				<span className="font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
 					kunst
@@ -284,7 +250,7 @@ function Footer() {
 	const searchType = useLoaderData<typeof loader>().searchType
 	const query = useLoaderData<typeof loader>().query
 	return (
-		<footer className="search-params mt-4 flex  translate-y-4 items-center justify-between gap-4 rounded-lg bg-black py-4">
+		<footer className="search-params mt-4 flex translate-y-4 items-center justify-between gap-4 rounded-lg bg-black p-4 text-sm">
 			<div className="text-left leading-none">
 				<span className="font-semibold opacity-50">search </span>
 				<span>

@@ -36,8 +36,7 @@ export function getArtwork({ id }: Pick<Artwork, 'id'>) {
 	})
 }
 
-//+  ___________              ___________________________ URL BY ID
-
+//+  ________________________________________________ URL BY ID
 export function getArtworkUrl({ id }: Pick<Artwork, 'id'>) {
 	return prisma.artwork.findFirst({
 		select: {
@@ -48,67 +47,40 @@ export function getArtworkUrl({ id }: Pick<Artwork, 'id'>) {
 	})
 }
 
-// +  _________________           ____________________   BY WEIGHT
-export function getWeight(q?: string | '') {
-	return prisma.artwork.findMany({
-		select: {
-			id: true,
-			artist_display: true,
-			artist_title: true,
-			title: true,
-			place_of_origin: true,
-			date_display: true,
-			date_end: true,
-			description: true,
-			style_titles: true,
-			artwork_type_title: true,
-			term_titles: true,
-			subject_titles: true,
-			classification_titles: true,
-			category_titles: true,
-			medium_display: true,
-			technique_titles: true,
-			provenance_text: true,
-			favorite: true,
-
-			image_url: true,
-			alt_text: true,
-			weight: true,
-			colorHsl: true,
-		},
-		where: { weight: { gt: Number(q) } },
-		skip: 0,
-		take: 20,
-	})
-}
-
-//+   ________________          __________________     BY FAVORITE
+//+   ____________________________________________  BY FAVORITE
 export function getFavorite() {
 	return prisma.artwork.findMany({
 		select: {
 			id: true,
+			title: true,
 			artist_display: true,
 			artist_title: true,
-			title: true,
-			place_of_origin: true,
-			date_display: true,
 			date_end: true,
-			description: true,
-			style_titles: true,
-			artwork_type_title: true,
-			term_titles: true,
-			subject_titles: true,
-			classification_titles: true,
-			category_titles: true,
+			date_display: true,
+			place_of_origin: true,
 			medium_display: true,
 			technique_titles: true,
-			provenance_text: true,
-			favorite: true,
-
+			description: true,
+			width: true,
+			height: true,
 			image_url: true,
+			term_titles: true,
+			subject_titles: true,
+			category_titles: true,
+			classification_titles: true,
+			provenance_text: true,
 			alt_text: true,
+			color_h: true,
+			color_s: true,
+			color_l: true,
+			artwork_type_title: true,
+			favorite: true,
 			weight: true,
 			colorHsl: true,
+			style_titles: true,
+			tags: true,
+			biography: true,
+			dimensions: true,
 		},
 		where: { favorite: { equals: true } },
 		skip: 0,
@@ -187,7 +159,6 @@ export function getArtist(q?: string | '') {
 	if (!q) {
 		q = 'Query cannot be null'
 	}
-	console.log(chalk.magenta('🟡🟡 q →', q))
 
 	return prisma.artwork.findMany({
 		select: {
@@ -195,30 +166,33 @@ export function getArtist(q?: string | '') {
 			title: true,
 			artist_display: true,
 			artist_title: true,
-			// date_end: true,
-			// date_display: true,
-			// place_of_origin: true,
-			// medium_display: true,
-			// technique_titles: true,
-			// description: true,
-			//
+			date_end: true,
+			date_display: true,
+			place_of_origin: true,
+			medium_display: true,
+			technique_titles: true,
+			description: true,
 			width: true,
 			height: true,
 			image_url: true,
-			// term_titles: true,
-			// subject_titles: true,
-			// category_titles: true,
-			// classification_titles: true,
-			// provenance_text: true,
+			term_titles: true,
+			subject_titles: true,
+			category_titles: true,
+			classification_titles: true,
+			provenance_text: true,
 			alt_text: true,
 			color_h: true,
 			color_s: true,
 			color_l: true,
-			// is_zoomable: true,
-			// artwork_type_title: true,
-			// favorite: true,
+			artwork_type_title: true,
+			favorite: true,
 			weight: true,
 			colorHsl: true,
+			style_titles: true,
+			tags: true,
+			biography: true,
+			dimensions: true,
+
 		},
 		where: {
 			OR: [
@@ -246,23 +220,30 @@ export function getArtworksBysubject_titles(querysubject_titles?: string | '') {
 			artist_title: true,
 			date_end: true,
 			date_display: true,
-
-			image_url: true,
+			place_of_origin: true,
 			medium_display: true,
+			technique_titles: true,
+			description: true,
+			width: true,
+			height: true,
+			image_url: true,
 			term_titles: true,
 			subject_titles: true,
 			category_titles: true,
-			style_titles: true,
-			artwork_type_title: true,
 			classification_titles: true,
-			technique_titles: true,
 			provenance_text: true,
 			alt_text: true,
-			description: true,
-			place_of_origin: true,
+			color_h: true,
+			color_s: true,
+			color_l: true,
+			artwork_type_title: true,
 			favorite: true,
 			weight: true,
 			colorHsl: true,
+			style_titles: true,
+			tags: true,
+			biography: true,
+			dimensions: true,
 		},
 		where: { subject_titles: { contains: querysubject_titles } },
 		orderBy: { weight: 'desc' },
@@ -281,26 +262,34 @@ export function getStyle(q?: string | '') {
 		select: {
 			id: true,
 			title: true,
-			artist_display: false,
+			artist_display: true,
 			artist_title: true,
-			date_end: false,
-			date_display: false,
+			date_end: true,
+			date_display: true,
+			place_of_origin: true,
+			medium_display: true,
+			technique_titles: true,
+			description: true,
+			width: true,
+			height: true,
 			image_url: true,
-			medium_display: false,
-			term_titles: false,
-			subject_titles: false,
-			category_titles: false,
-			style_titles: true,
-			artwork_type_title: false,
-			classification_titles: false,
-			technique_titles: false,
-			provenance_text: false,
+			term_titles: true,
+			subject_titles: true,
+			category_titles: true,
+			classification_titles: true,
+			provenance_text: true,
 			alt_text: true,
-			description: false,
-			place_of_origin: false,
+			color_h: true,
+			color_s: true,
+			color_l: true,
+			artwork_type_title: true,
 			favorite: true,
 			weight: true,
 			colorHsl: true,
+			style_titles: true,
+			tags: true,
+			biography: true,
+			dimensions: true,
 		},
 		where: { style_titles: { contains: q } },
 		orderBy: { weight: 'desc' },
@@ -319,26 +308,34 @@ export function getType(q?: string | '') {
 		select: {
 			id: true,
 			title: true,
-			artist_display: false,
+			artist_display: true,
 			artist_title: true,
-			date_end: false,
-			date_display: false,
+			date_end: true,
+			date_display: true,
+			place_of_origin: true,
+			medium_display: true,
+			technique_titles: true,
+			description: true,
+			width: true,
+			height: true,
 			image_url: true,
-			medium_display: false,
-			term_titles: false,
-			subject_titles: false,
-			category_titles: false,
-			style_titles: false,
-			artwork_type_title: true,
-			classification_titles: false,
-			technique_titles: false,
-			provenance_text: false,
+			term_titles: true,
+			subject_titles: true,
+			category_titles: true,
+			classification_titles: true,
+			provenance_text: true,
 			alt_text: true,
-			description: false,
-			place_of_origin: false,
+			color_h: true,
+			color_s: true,
+			color_l: true,
+			artwork_type_title: true,
 			favorite: true,
 			weight: true,
 			colorHsl: true,
+			style_titles: true,
+			tags: true,
+			biography: true,
+			dimensions: true,
 		},
 		where: { artwork_type_title: { contains: q } },
 		orderBy: { weight: 'desc' },
@@ -361,33 +358,40 @@ export function getPlace(qPlace?: string | '') {
 			artist_title: true,
 			date_end: true,
 			date_display: true,
-
-			image_url: true,
+			place_of_origin: true,
 			medium_display: true,
+			technique_titles: true,
+			description: true,
+			width: true,
+			height: true,
+			image_url: true,
 			term_titles: true,
 			subject_titles: true,
 			category_titles: true,
-			style_titles: true,
-			artwork_type_title: true,
 			classification_titles: true,
-			technique_titles: true,
 			provenance_text: true,
 			alt_text: true,
-			description: true,
-			place_of_origin: true,
+			color_h: true,
+			color_s: true,
+			color_l: true,
+			artwork_type_title: true,
 			favorite: true,
 			weight: true,
 			colorHsl: true,
+			style_titles: true,
+			tags: true,
+			biography: true,
+			dimensions: true,
 		},
-		where: { place_of_origin: { contains: qPlace } },
 		orderBy: { weight: 'desc' },
+		where: { place_of_origin: { contains: qPlace } },
+
 		skip: 0,
 		take: 20,
 	})
 }
 
 //+  _________________________________________________  BY DATEEND
-
 export function getDate(qDate?: number | 0) {
 	if (!qDate) {
 		qDate = 0
@@ -401,28 +405,87 @@ export function getDate(qDate?: number | 0) {
 			artist_title: true,
 			date_end: true,
 			date_display: true,
-			image_url: true,
+			place_of_origin: true,
 			medium_display: true,
+			technique_titles: true,
+			description: true,
+			width: true,
+			height: true,
+			image_url: true,
 			term_titles: true,
 			subject_titles: true,
 			category_titles: true,
-			style_titles: true,
-			artwork_type_title: true,
 			classification_titles: true,
-			technique_titles: true,
 			provenance_text: true,
 			alt_text: true,
-			description: true,
-			place_of_origin: true,
+			color_h: true,
+			color_s: true,
+			color_l: true,
+			artwork_type_title: true,
 			favorite: true,
 			weight: true,
 			colorHsl: true,
+			style_titles: true,
+			tags: true,
+			biography: true,
+			dimensions: true,
 		},
 		where: { date_end: { equals: qDate } },
 		orderBy: { weight: 'desc' },
 		skip: 0,
 		take: 20,
 	})
+}
+
+// +  ________________________________________________   BY WEIGHT
+export function getMinWeight(qWeight?: string | number) {
+    // Convert to number and provide default value
+    const weightValue = Number(qWeight) || 0
+
+    console.log('🔍 Searching for weight >', weightValue, typeof(weightValue)) // Debug log
+
+    return prisma.artwork.findMany({
+			select: {
+				id: true,
+				title: true,
+				artist_display: true,
+				artist_title: true,
+				date_end: true,
+				date_display: true,
+				place_of_origin: true,
+				medium_display: true,
+				technique_titles: true,
+				description: true,
+				width: true,
+				height: true,
+				image_url: true,
+				term_titles: true,
+				subject_titles: true,
+				category_titles: true,
+				classification_titles: true,
+				provenance_text: true,
+				alt_text: true,
+				color_h: true,
+				color_s: true,
+				color_l: true,
+				artwork_type_title: true,
+				favorite: true,
+				weight: true,
+				colorHsl: true,
+				style_titles: true,
+				tags: true,
+				biography: true,
+				dimensions: true,
+			},
+			where: {
+				weight: {
+					gte: weightValue, // Changed from gt to gte for consistency
+				},
+			},
+			orderBy: { weight: 'desc' },
+			skip: 0,
+			take: 20,
+		})
 }
 
 //+  ___________________________________________________  BY COLOR
@@ -437,31 +500,32 @@ export function getColor(q?: string | '') {
 				title: true,
 				artist_display: true,
 				artist_title: true,
-				// date_end: true,
+				date_end: true,
 				date_display: true,
 				place_of_origin: true,
 				medium_display: true,
 				technique_titles: true,
 				description: true,
-				style_titles: true,
-				artwork_type_title: true,
 				width: true,
 				height: true,
-				//
 				image_url: true,
-				//term_titles: true,
+				term_titles: true,
 				subject_titles: true,
-				// category_titles: true,
-				// classification_titles: true,
+				category_titles: true,
+				classification_titles: true,
 				provenance_text: true,
 				alt_text: true,
 				color_h: true,
 				color_s: true,
 				color_l: true,
-				colorHsl: true,
-				// is_zoomable: true,
+				artwork_type_title: true,
 				favorite: true,
 				weight: true,
+				colorHsl: true,
+				style_titles: true,
+				tags: true,
+				biography: true,
+				dimensions: true,
 			},
 			where: {
 				color_h: {
@@ -503,7 +567,6 @@ export async function updateArtwork(id: Artwork['id']) {
 }
 
 //+                                                 COUNT BY GROUP
-
 export function groupBy(q?: string | '') {
 	if (!q) {
 		q = 'Query cannot be null'
@@ -523,23 +586,39 @@ export function groupBy(q?: string | '') {
 	})
 }
 
-export async function searchArtworks(searchType: string, query: string) {
-	switch (searchType) {
-		case 'all':
-			return getAny(query)
-		case 'artist':
-			return getArtist(query)
-		case 'style':
-			return getStyle(query)
-		case 'type':
-			return getType(query)
-		case 'place':
-			return getPlace(query)
-		case 'date':
-			return getDate(Number(query))
-		case 'color':
-			return getColor(query)
-		default:
-			return getAny(query)
-	}
+
+
+export async function searchArtworks(searchType: string, query: string): Promise<Artwork[]> {
+    let data: Artwork[] | undefined
+    switch (searchType) {
+        case 'all':
+            data = await getAny(query)
+            break
+        case 'artist':
+            data = await getArtist(query)
+            break
+        case 'style':
+            data = await getStyle(query)
+            break
+        case 'type':
+            data = await getType(query)
+            break
+        case 'place':
+            data = await getPlace(query)
+            break
+        case 'date':
+            data = await getDate(Number(query))
+            break
+        case 'color':
+            data = await getColor(query) ?? []
+            break
+        case 'weight':
+            data = await getMinWeight(query)
+            break
+        default:
+            data = await getAny(query)
+    }
+    return data ?? []
 }
+
+// Yes, this is a common TypeScript issue when working with Prisma - the selected fields need to match the expected return type. Let me know if you need any other help! (after having included all fields in each search query).

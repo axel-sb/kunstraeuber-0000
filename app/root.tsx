@@ -38,15 +38,7 @@ import {
 	DropdownMenuTrigger,
 } from './components/ui/dropdown-menu.tsx'
 import { Icon, href as iconsHref } from './components/ui/icon.tsx'
-import {
-	getAny,
-	getArtist,
-	getStyle,
-	getPlace,
-	getDate,
-	getColor,
-	getType,
-} from './routes/resources+/search-data.server.tsx'
+import { searchArtworks } from './routes/resources+/search-data.server.tsx'
 import { ThemeSwitch } from './routes/resources+/theme-switch.tsx'
 
 import tailwindStyleSheetUrl from './styles/tailwind.css?url'
@@ -137,43 +129,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 	const honeyProps = honeypot.getInputProps()
 
 	const url = new URL(request.url)
-	const query = url.searchParams.get('search') ?? undefined
-	/* if (!query) {
-        url.searchParams.set('search', 'Picasso')
-        return redirect(url.pathname + url.search)
-    } */
+	const query = url.searchParams.get('search') ?? ''
 	const searchType = url.searchParams.get('searchType') ?? ''
-
-	let data
-	switch (searchType) {
-		case 'all':
-			data = await getAny(query)
-			break
-		case 'artist':
-			data = await getArtist(query)
-			break
-		case 'style':
-			data = await getStyle(query)
-			break
-		case 'type':
-			data = await getType(query)
-			break
-		case 'place':
-			data = await getPlace(query)
-			break
-		case 'date':
-			data = await getDate(Number(query))
-			break
-		case 'color':
-			data = await getColor((query ?? '').toString())
-			break
-
-		default:
-			data = await getAny('Picasso') // break
-		/* data = await getArtist('Picasso') */
-	}
-
-	/* console.log('🟡 searchType →', searchType) */
+	const data = await searchArtworks(searchType, query)
 
 	return json(
 		{
@@ -280,10 +238,10 @@ function App() {
 						 */}
 						<header className="h-30 col-[1_/_-1] row-[2_/_4] flex w-full flex-wrap items-center justify-between">
 							<Logo />
-							<div className="bg-slate-95 hidden w-full max-w-sm flex-1 rounded-[.5rem] border sm:block">
+							<div className="bg-slate-95 hidden w-full max-w-sm flex-1 rounded-[.5rem] border md:block">
 								{searchBar}
 							</div>
-							<div className="user flex gap-6 justify-self-end items-center h-12 px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
+							<div className="user flex gap-6 justify-self-end items-center h-12 pr-4 md:pr-6">
 								{user ? (
 									<UserDropdown />
 								) : (
@@ -292,7 +250,7 @@ function App() {
 									</Button>
 								)}
 							</div>
-							<div className="search-bar-mobile block w-full max-w-sm mx-auto px-4 py-4 sm:hidden">
+							<div className="search-bar-mobile block w-full max-w-md mx-auto px-4 py-4 md:hidden">
 								{searchBar}
 							</div>
 						</header>
@@ -373,7 +331,7 @@ function UserDropdown() {
 		<DropdownMenu>
 			<DropdownMenuTrigger
 				asChild
-				className="border-amber-950 radix-state-open:border-2 py-1 h-8"
+				className="border-amber-950 py-1 h-8"
 			>
 				<Button asChild variant="secondary">
 					<Link
@@ -433,7 +391,7 @@ function Logo() {
 	return (
 		<Link
 			to="/"
-			className="logo group inline-grid justify-self-start px-6 py-2 leading-tight sm:px-8 md:px-12 lg:px-16 xl:px-20"
+			className="logo group inline-grid justify-self-start px-6 py-4 leading-tight sm:px-4 md:px-6"
 		>
 			<span className="animate-hue font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
 				kunst

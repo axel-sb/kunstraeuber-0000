@@ -19,12 +19,13 @@ import {
 } from '@remix-run/react'
 import chalk from 'chalk'
 import { type FunctionComponent } from 'react'
+import { Halftone } from '#app/components/halftone.1.tsx'
 import { Button } from '#app/components/ui/button.tsx'
 import { Icon } from '#app/components/ui/icon.js'
 // import kunstraeuber from '../../../avatars/kunstraeuber.png'
 // import circles from '../../../circles.svg'
 import { getArtwork, updateArtwork } from '../resources+/search-data.server.tsx'
-import detailsStyles from './artworks.details.artworkId.css?url'
+import detailsStyles from './artworks._details.artworkId.1.css?url'
 
 // import { useNonce } from '#app//utils/nonce-provider.ts'
 // #endregion imports
@@ -126,6 +127,10 @@ export default function ArtworkDetails() {
 
 	const colorHsl = `hsl(${artwork.color_h}, ${artwork.color_s}%, 50%)`
 
+	// Define halftoneUrl
+	/* const halftoneUrl =
+		`url(${artwork.image_url}) no-repeat 50%/contain` as React.CSSProperties */
+
 	const artist = {
 		__html: `<li>
         <span class="artist-caption list-item opacity-80"> Artist:  </span>
@@ -144,32 +149,26 @@ export default function ArtworkDetails() {
 	 */
 
 	return (
-		<>
-			<div className="details-container 2xl:grid-rows-[minmax(min-content, 1fr)] grid w-screen items-center justify-around justify-items-center 2xl:grid-cols-[10%_30%_60%]">
-				<div className="first-half-wrapper justify-end-end col-span-full row-[1_/_2] max-h-[calc(100dvh)] max-w-[calc(100%-2rem)] grid-cols-[1fr_1fr] flex-wrap items-center self-start pb-12 2xl:col-[2_/_3] 2xl:row-span-full 2xl:ml-auto 2xl:mr-2 2xl:max-w-[45%] 2xl:justify-end">
-					{/* //   MARK:HEADER ▀▀▀
-					 */}
+		<div className="details-container grid-rows-[minmax(min-content, 1fr)] grid w-screen grid-cols-[30%_70%] items-center justify-around justify-items-center bg-background 2xl:ml-[10%]">
+			<div className="first-half-wrapper justify-end-end col-span-full row-[1_/_2] max-h-[calc(100dvh)] max-w-[calc(100%-2rem)] flex-wrap items-center self-start pb-12 2xl:col-[1_/_2] 2xl:row-span-full 2xl:ml-auto 2xl:mr-2 2xl:max-w-[45%] 2xl:justify-end">
+				{/* //   MARK:HEADER ▀▀▀
+				 */}
+				<header
+					className="flex h-28 items-center justify-between pb-6 2xl:mt-8 2xl:pb-0"
+					style={{ color: colorHsl }}
+				>
+					<Logo />
+				</header>
 
-					<header
-						className="flex h-28 items-center justify-between pb-6 2xl:mt-8 2xl:pb-0"
-						style={{ color: colorHsl }}
-					>
-						<Logo />
-					</header>
+				{/* MARK: ◐ HALFTONE ◑
+				 */}
 
-					{/* //   MARK:IMAGE 📸
-					 */}
-
-					<img
-						src={artwork.image_url ? artwork.image_url : 'undefined'}
-						className="rounded-md max-h-[calc(100dvh-9rem)] 2xl:mt-12 2xl:rounded-lg"
-					/>
-				</div>
+				<Halftone halftoneUrl={artwork.image_url ?? ''} />
 
 				{/* .MARK:DETAILS 📄 🎁
 				 */}
 
-				<div className="details-text-wrapper col-span-full row-[2_/_3] max-w-[calc(100%-2rem)] self-start pb-24 2xl:col-[3_/_4] 2xl:row-span-full 2xl:ml-2 2xl:mr-auto 2xl:justify-start">
+				<div className="details-text-wrapper col-span-full row-[2_/_3] max-w-[calc(100%-2rem)] self-start pb-4 2xl:col-[2_/_3] 2xl:row-span-full 2xl:ml-2 2xl:mr-auto 2xl:justify-start">
 					<header className="flex h-28 w-full items-center justify-between 2xl:mt-8 2xl:px-12 2xl:pb-0">
 						<Button
 							className="btn-back relative z-50 flex h-10 w-10 cursor-pointer justify-self-center rounded-full p-0 active:opacity-50"
@@ -302,7 +301,7 @@ export default function ArtworkDetails() {
 					</div>
 				</div>
 			</div>
-		</>
+		</div>
 	)
 }
 

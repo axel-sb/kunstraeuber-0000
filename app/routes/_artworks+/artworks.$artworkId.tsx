@@ -205,8 +205,8 @@ export default function ArtworkId() {
 						variant="ghost"
 						size="ghost"
 						onClick={() => {
-							navigate('../artworks')
-							/* navigate(-1) */
+							/* navigate('../artworks') */
+							 navigate(-1)
 						}}
 					>
 						<Icon
