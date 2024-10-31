@@ -146,12 +146,12 @@ export default function ArtworkDetails() {
 	return (
 		<>
 			<div className="details-container 2xl:grid-rows-[minmax(min-content, 1fr)] grid w-screen items-center justify-around justify-items-center 2xl:grid-cols-[10%_30%_60%]">
-				<div className="first-half-wrapper justify-end-end col-span-full row-[1_/_2] max-h-[calc(100dvh)] max-w-[calc(100%-2rem)] grid-cols-[1fr_1fr] flex-wrap items-center self-start pb-12 2xl:col-[2_/_3] 2xl:row-span-full 2xl:ml-auto 2xl:mr-2 2xl:max-w-[45%] 2xl:justify-end">
+				<div className="first-half-wrapper col-span-full row-[1_/_2] max-h-[calc(100dvh)] max-w-[calc(100%-2rem)] grid-cols-[1fr_1fr] flex-wrap items-center self-start pb-12 2xl:col-[2_/_3] 2xl:row-span-full 2xl:ml-auto 2xl:mr-2 2xl:max-w-[45%]">
 					{/* //   MARK:HEADER ▀▀▀
 					 */}
 
 					<header
-						className="flex h-28 items-center justify-between pb-6 2xl:mt-8 2xl:pb-0"
+						className="flex w-screen h-28 items-center justify-between pb-6 2xl:mt-8 2xl:pb-0"
 						style={{ color: colorHsl }}
 					>
 						<Logo />
@@ -162,7 +162,7 @@ export default function ArtworkDetails() {
 
 					<img
 						src={artwork.image_url ? artwork.image_url : 'undefined'}
-						className="rounded-md max-h-[calc(100dvh-9rem)] 2xl:mt-12 2xl:rounded-lg"
+						className="rounded-md mx-auto !max-h-[25vh] 2xl:mt-1 2xl:rounded-lg"
 					/>
 				</div>
 
@@ -175,7 +175,7 @@ export default function ArtworkDetails() {
 							className="btn-back relative z-50 flex h-10 w-10 cursor-pointer justify-self-center rounded-full p-0 active:opacity-50"
 							variant="ghost"
 							onClick={() => {
-								navigate(-1)
+								navigate(-2)
 							}}
 						>
 							<Icon
@@ -209,7 +209,7 @@ export default function ArtworkDetails() {
 					{/* .MARK:► UL ◯
                         (details) */}
 					<div
-						className="list-wrapper 2xl:rounded-lg 2xl:py-8"
+						className="list-wrapper rounded-md 2xl:rounded-lg 2xl:py-8"
 						style={
 							{
 								'--colorHsl': colorHsl,
@@ -217,7 +217,7 @@ export default function ArtworkDetails() {
 							} as React.CSSProperties
 						}
 					>
-						<ul className="mx-auto flex max-w-prose flex-col gap-2 overflow-y-auto px-6 py-3 leading-relaxed 2xl:mx-0 2xl:max-h-[70vh] 2xl:px-12">
+						<ul className="mx-auto flex max-w-prose flex-col gap-2 overflow-y-auto px-4  py-3 leading-relaxed 2xl:mx-0 2xl:max-h-[70vh] 2xl:px-12">
 							<li dangerouslySetInnerHTML={artist} />
 
 							{Object.entries({

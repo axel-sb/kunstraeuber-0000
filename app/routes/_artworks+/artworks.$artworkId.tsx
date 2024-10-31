@@ -206,13 +206,13 @@ export default function ArtworkId() {
 						size="ghost"
 						onClick={() => {
 							/* navigate('../artworks') */
-							 navigate(-1)
+							 navigate(-3)
 						}}
 					>
 						<Icon
 							name="arrow-left"
 							size="font"
-							className="text-[2rem] xl:text-3xl"
+							className="text-3xl"
 						/>
 					</Button>
 					{/*// .MARK: ⃝ info-circled ℹ️

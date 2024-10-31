@@ -245,6 +245,13 @@ body {
 	height: 100%;
 }
 
+body:has(input:focus) {
+     figure {
+        opacity: 50%;
+        filter:blur(3px) grayscale(.8) brightness(.5)
+    }
+}
+
 .animate-hue {
 	animation: hue 60s 5s linear infinite;
 }

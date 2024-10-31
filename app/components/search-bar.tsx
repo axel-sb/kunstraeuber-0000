@@ -61,7 +61,7 @@ export function SearchBar({
 					list="artist"
 				/>
 			</div>
-			<datalist id="artist">
+			<datalist id="artist" className="ring-8 ring-slate-950">
 				<option value="Picasso"></option>
 				<option value="Matisse"></option>
 				<option value="Monet"></option>

@@ -175,7 +175,7 @@ export default function ArtworksPage() {
 								}
 								to={`./${artwork.id}`}
 							>
-								<figure className="mx-auto group-has-[input[type=radio]]:grid-cols-1]:mb-40 relative mb-8 flex break-inside-avoid flex-col items-center justify-between xl:mb-20">
+								<figure className="mx-auto relative mb-8 flex break-inside-avoid flex-col items-center justify-between xl:mb-20">
 									<img
 										alt={artwork.alt_text ?? undefined}
 										key={artwork.id}

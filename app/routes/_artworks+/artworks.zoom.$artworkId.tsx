@@ -52,7 +52,7 @@ export default function Zoom() {
 	console.log('🧶', artworkId)
 	return (
 		<>
-			<div className="absolute bottom-6 left-8 z-10 inline-flex h-9 w-9 rounded-full text-xl">
+			<div className="absolute bottom-7 left-8 z-10 inline-flex h-9 w-9 rounded-full text-xl">
 				<NavLink
 					className={`$({ isActive, isPending }) => isActive ? 'active' : 'pending' z-10 inline-flex h-10 w-10 place-items-center rounded-full`}
 					to={`../artworks/${artworkId}`}
