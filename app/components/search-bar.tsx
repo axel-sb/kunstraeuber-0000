@@ -61,13 +61,13 @@ export function SearchBar({
 					list="artist"
 				/>
 			</div>
-			<datalist id="artist" className="ring-8 ring-slate-950">
+			<datalist id="artist">
 				<option value="Picasso"></option>
 				<option value="Matisse"></option>
 				<option value="Monet"></option>
 				<option value="Van Gogh"></option>
 				<option value="Max Ernst"></option>
-				<option value="Richard Hawkins"></option>
+				<option value="Jay Wolke"></option>
 				<option value=""></option>
 				<option value=""></option>
 				<option value=""></option>

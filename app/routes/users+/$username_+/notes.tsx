@@ -30,7 +30,7 @@ export default function NotesRoute() {
 	const isOwner = user?.id === data.owner.id
 	const ownerDisplayName = data.owner.name ?? data.owner.username
 	const navLinkDefaultClassName =
-		'line-clamp-2 block rounded-l-full py-2 pl-2 pr-6 text-base lg:text-xl'
+		'line-clamp-2 block rounded-l-md py-2 pl-2 pr-6 text-base lg:text-lg'
 	return (
 		<main className="container flex h-full min-h-[400px] px-0 pb-12 md:px-8">
 			<div className="grid w-full grid-cols-4 bg-muted pl-2 md:container md:rounded-3xl md:pr-0">
@@ -43,9 +43,9 @@ export default function NotesRoute() {
 							<img
 								src={getUserImgSrc(data.owner.image?.id)}
 								alt={ownerDisplayName}
-								className="h-16 w-16 rounded-full object-cover lg:h-24 lg:w-24"
+								className="h-12 w-12 rounded-full object-cover lg:h-16 lg:w-16"
 							/>
-							<h1 className="text-center text-base font-bold md:text-lg lg:text-left lg:text-2xl">
+							<h1 className="text-center text-base font-bold md:text-base lg:text-left lg:text-lg">
 								{ownerDisplayName}'s Notes
 							</h1>
 						</Link>
@@ -58,7 +58,9 @@ export default function NotesRoute() {
 											cn(navLinkDefaultClassName, isActive && 'bg-accent')
 										}
 									>
-										<Icon name="plus">New Note</Icon>
+										<Icon name="plus">
+											<span className="text-muted-foreground">New Note</span>
+										</Icon>
 									</NavLink>
 								</li>
 							) : null}

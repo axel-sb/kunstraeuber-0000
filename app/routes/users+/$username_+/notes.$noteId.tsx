@@ -111,7 +111,9 @@ export default function NoteRoute() {
 
 	return (
 		<div className="absolute inset-0 flex flex-col px-10">
-			<h2 className="mb-2 pt-12 text-h2 lg:mb-6">{data.note.title}</h2>
+			<h2 className="mb-2 pt-12 text-lg font-bold lg:mb-6">
+				{data.note.title}
+			</h2>
 			<div className={`${displayBar ? 'pb-24' : 'pb-12'} overflow-y-auto`}>
 				<ul className="flex flex-wrap gap-5 py-5">
 					{data.note.images.map((image) => (
@@ -126,7 +128,7 @@ export default function NoteRoute() {
 						</li>
 					))}
 				</ul>
-				<p className="whitespace-break-spaces text-sm md:text-lg">
+				<p className="whitespace-break-spaces text-sm md:text-base">
 					{data.note.content}
 				</p>
 			</div>

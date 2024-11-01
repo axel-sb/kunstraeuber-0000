@@ -46,7 +46,7 @@ export default function ProfileRoute() {
 							<img
 								src={getUserImgSrc(data.user.image?.id)}
 								alt={userDisplayName}
-								className="h-52 w-52 rounded-full object-cover"
+								className="h-52 w-52 rounded-full object-cover contrast-150"
 							/>
 						</div>
 					</div>
@@ -114,7 +114,7 @@ function Logo() {
 	return (
 		<Link
 			to="/"
-			className="logo group absolute bottom-6 left-6 inline-grid justify-self-start px-4 py-2 leading-tight sm:px-8 md:px-12 lg:px-16 xl:px-20"
+			className="logo group absolute bottom-6 left-6 inline-grid justify-self-start px-4 py-2 leading-tight sm:px-8 md:px-12 lg:px-16 xl:px-20 text-body-md lg:text-body-xl"
 		>
 			<span className="font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
 				kunst

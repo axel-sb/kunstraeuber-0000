@@ -168,6 +168,10 @@ function Document({
 				<Meta />
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width,initial-scale=1" />
+				<meta
+					name="google-site-verification"
+					content="gkdcYpCVklTKiaFQJfpZlMV1FcnZ59IM1fOPkwkjF50"
+				/>
 				{allowIndexing ? null : (
 					<meta name="robots" content="noindex, nofollow" />
 				)}
