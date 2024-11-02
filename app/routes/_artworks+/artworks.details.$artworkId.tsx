@@ -124,7 +124,7 @@ export default function ArtworkDetails() {
 	const { artwork } = useLoaderData<typeof loader>()
 	const navigate = useNavigate()
 
-	const colorHsl = `hsl(${artwork.color_h}, ${artwork.color_s}%, 50%)`
+	const colorRgb = `rgb(${HSLToRGB(artwork.color_h ?? 0, artwork.color_s ?? 0, 50)})`
 
 	const artist = {
 		__html: `<li>
@@ -152,7 +152,7 @@ export default function ArtworkDetails() {
 
 					<header
 						className="flex w-screen h-28 items-center justify-between pb-6 2xl:mt-8 2xl:pb-0"
-						style={{ color: colorHsl }}
+						style={{ color: colorRgb }}
 					>
 						<Logo />
 					</header>
@@ -181,7 +181,7 @@ export default function ArtworkDetails() {
 							<Icon
 								name="arrow-left"
 								className="h-8 w-8 text-[1.8rem] ring-[var(--colorHsl)] transition-all duration-200 hover:cursor-pointer hover:ring-2 hover:ring-offset-2"
-								style={{ borderRadius: '50%', color: colorHsl }}
+								style={{ borderRadius: '50%', color: colorRgb }}
 							/>
 						</Button>
 
@@ -197,7 +197,7 @@ export default function ArtworkDetails() {
 									className="text-[2rem]"
 									size="font"
 									style={{
-										color: colorHsl,
+										color: colorRgb,
 									}}
 								/>
 							</NavLink>
@@ -209,14 +209,14 @@ export default function ArtworkDetails() {
 					{/* .MARK:► UL ◯
                         (details) */}
 					<div
-						className="list-wrapper rounded-md 2xl:rounded-lg 2xl:py-8"
-						style={
-							{
-								'--colorHsl': colorHsl,
-								'--colorHslOp50': 'hsl(from var(--colorHsl) h s 10 )',
-							} as React.CSSProperties
-						}
-					>
+							className="list-wrapper rounded-md 2xl:rounded-lg 2xl:py-8"
+							style={
+								{
+									'--colorHsl': colorRgb,
+									'--colorHslOp50': 'hsl(from var(--colorHsl) h s 10 )',
+								} as React.CSSProperties
+							}
+						>
 						<ul className="mx-auto flex max-w-prose flex-col gap-2 overflow-y-auto px-4  py-3 leading-relaxed 2xl:mx-0 2xl:max-h-[70vh] 2xl:px-12">
 							<li dangerouslySetInnerHTML={artist} />
 
@@ -314,7 +314,7 @@ export default function ArtworkDetails() {
 
 function Logo() {
 	const { artwork } = useLoaderData<typeof loader>()
-	const colorHsl = `hsl(${artwork.color_h}, ${artwork.color_s}%, 50%)`
+	const colorRgb = `rgb(${HSLToRGB(artwork.color_h ?? 0, artwork.color_s ?? 0, 50)})`
 
 	return (
 		<Link
@@ -323,7 +323,7 @@ function Logo() {
 		>
 			<span
 				className="inline-block justify-self-start text-xl font-medium leading-none transition group-hover:translate-x-1"
-				style={{ color: colorHsl }}
+				style={{ color: colorRgb }}
 			>
 				kunst
 			</span>
@@ -332,4 +332,13 @@ function Logo() {
 			</div>
 		</Link>
 	)
+}
+
+function HSLToRGB(h: number, s: number, l: number): string {
+	s /= 100;
+	l /= 100;
+	const k = (n: number) => (n + h / 30) % 12;
+	const a = s * Math.min(l, 1 - l);
+	const f = (n: number) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+	return `${Math.round(255 * f(0))}, ${Math.round(255 * f(8))}, ${Math.round(255 * f(4))}`;
 }
