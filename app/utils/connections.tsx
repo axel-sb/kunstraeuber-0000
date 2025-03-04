@@ -1,4 +1,4 @@
-import { Form } from '@remix-run/react'
+import { Form } from 'react-router'
 import { z } from 'zod'
 import { Icon } from '#app/components/ui/icon.tsx'
 import { StatusButton } from '#app/components/ui/status-button.tsx'
@@ -10,19 +10,19 @@ export const GITHUB_PROVIDER_NAME = 'github'
 
 export const providerNames = [
 	GOOGLE_PROVIDER_NAME,
-	GITHUB_PROVIDER_NAME,
+	// GITHUB_PROVIDER_NAME,
 ] as const
 export const ProviderNameSchema = z.enum(providerNames)
 export type ProviderName = z.infer<typeof ProviderNameSchema>
 
 export const providerLabels: Record<ProviderName, string> = {
 	[GOOGLE_PROVIDER_NAME]: 'Google',
-	[GITHUB_PROVIDER_NAME]: 'GitHub',
+	// [GITHUB_PROVIDER_NAME]: 'GitHub',
 } as const
 
 export const providerIcons: Record<ProviderName, React.ReactNode> = {
 	[GOOGLE_PROVIDER_NAME]: <Icon name="google-logo" />,
-	[GITHUB_PROVIDER_NAME]: <Icon name="github-logo" />,
+	// [GITHUB_PROVIDER_NAME]: <Icon name="github-logo" />,
 } as const
 
 export function ProviderConnectionForm({

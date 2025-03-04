@@ -1,4 +1,5 @@
-/* #region MARK:mesh-gradients */
+/* MARK: Canvas
+ */
 
 canvas#my-canvas {
 	height: 100vh;
@@ -7,6 +8,8 @@ canvas#my-canvas {
 
 #regenerate {
     animation    : rotate 3s linear;
+    background-size: 230%;
+    box-shadow: 0px 0px 10px 3px #385650;
 }
 
 @keyframes rotate {
@@ -19,9 +22,6 @@ canvas#my-canvas {
     to { rotate: 1 2 1 360deg; opacity: .5}
 }
 
-
-/* #endregion */
-
 body {
 	display: grid;
 	grid-template-columns:
@@ -30,7 +30,7 @@ body {
 			calc(100vw - 2rem)
 		)
 		minmax(5rem, auto) minmax(0, calc(100vw - (843px / 2)));
-	grid-template-rows: 8rem 1fr 8rem;
+	grid-template-rows: 4rem 1fr 4rem;
 	justify-content: center;
 	align-items: stretch;
 	height: 100dvh;
@@ -50,7 +50,8 @@ body {
 	}
 }
 
-/* MARK: Header */
+/* MARK: Header
+ */
 
 header {
 	grid-column: 2 / -2 !important;
@@ -67,16 +68,6 @@ header {
 	grid-row: 1 / 2;
 }
 
-#regenerate {
-	background-size: 230%;
-    box-shadow: 0px 0px 10px 3px #000;
-}
-
-.favorite {
-	grid-column: 3 / 4 !important;
-	grid-row: 1 / 2;
-	justify-self: end;
-}
 
 figure {
 	grid-column: 1 / -1 !important;
@@ -113,19 +104,18 @@ figcaption {
 	grid-row: 3 / 4;
 }
 
+/* MARK: Footer
+ */
+
 footer {
 	grid-column: 2 / -2 !important;
 	grid-row: 3 / 4;
-	/* text-align: center;
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-end;
-	padding: 1.5rem 1rem; */
 	display: grid;
 	grid-template-columns: subgrid;
 	grid-template-rows: subgrid;
 	align-items: center;
 	justify-content: space-between;
+  backdrop-filter: blur(10px);
 }
 
 .toolbar {
@@ -134,6 +124,7 @@ footer {
 	grid-template-rows: subgrid;
 	align-items: center;
 	justify-content: space-between;
+  padding-bottom: 1rem;
 }
 
 /* shades of a color variable */

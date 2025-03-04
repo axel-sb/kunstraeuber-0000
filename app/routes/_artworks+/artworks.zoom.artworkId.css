@@ -15,13 +15,17 @@ div.c-ihwAQz-sfUOo-hasPlaceholder-false {
 	top: auto;
 	right: 1rem;
 	gap: 1.25rem;
-	padding: .5rem !important;
+	padding-right: 2rem !important;
 	border-radius: 1rem !important;
 	width: calc(100% - 2rem);
 	height: 3.5rem;
-	backdrop-filter: contrast(0.8);
-	background-color: #3333;
+	/* backdrop-filter: contrast(0.8); */
+	background-color: #0001;
 	z-index: 1;
+	&:hover {
+		filter: invert(1) sepia(1);
+		/* box-shadow */
+	}
 	button.c-fuvPUR {
 		filter: sepia(1.5);
 		background-color: #000a;
@@ -32,14 +36,15 @@ div.c-ihwAQz-sfUOo-hasPlaceholder-false {
 		width: 2.25rem !important;
 		border-radius: 50% !important;
 	}
-    svg {
-        filter: brightness(1.5)
-    }
+
+	svg {
+		filter: brightness(1.5);
+	}
 }
 
 .c-fzAQyx {
 	z-index: 1;
-	top: 0.5rem!important;
+	top: 0.5rem !important;
 	left: auto !important;
 	right: 0.5rem !important;
 	z-index: 1;

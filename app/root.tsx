@@ -1,33 +1,38 @@
-// #region imports, links, meta
-import {
-	json,
+// #region imports
+// and links, meta
+/* import {
+	data,
 	type LoaderFunctionArgs,
-	type HeadersFunction,
+	type    ,
 	type LinksFunction,
 	type MetaFunction,
-} from '@remix-run/node'
+} from 'react-router'
+
 import {
 	Form,
 	Link,
 	Links,
 	Meta,
 	Outlet,
-	// redirect,
 	Scripts,
 	ScrollRestoration,
 	useLoaderData,
 	useLocation,
 	useMatches,
+	useNavigate,
+  useNavigation,
 	useSubmit,
-} from '@remix-run/react'
+} from 'react-router'
 import { withSentry } from '@sentry/remix'
 import { useRef } from 'react'
+import { RouterProvider } from 'react-aria-components'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import globalStyles from './app.css?url'
 import appleTouchIconAssetUrl from './assets/favicons/apple-touch-icon.png'
 import faviconAssetUrl from './assets/favicons/favicon.svg'
 import { GeneralErrorBoundary } from './components/error-boundary.tsx'
 import { SearchBar } from './components/search-bar.tsx'
+import { Combobox } from './components/search-combobox.tsx'
 import { useToast } from './components/toaster.tsx'
 import { Button } from './components/ui/button.tsx'
 import {
@@ -38,7 +43,7 @@ import {
 	DropdownMenuTrigger,
 } from './components/ui/dropdown-menu.tsx'
 import { Icon, href as iconsHref } from './components/ui/icon.tsx'
-import { searchArtworks } from './routes/resources+/search-data.server.tsx'
+// import { searchArtworks } from './routes/resources+/search-data.server.tsx'
 import { ThemeSwitch } from './routes/resources+/theme-switch.tsx'
 
 import tailwindStyleSheetUrl from './styles/tailwind.css?url'
@@ -52,9 +57,61 @@ import { useNonce } from './utils/nonce-provider.ts'
 import { type Theme, getTheme } from './utils/theme.server.ts'
 import { makeTimings, time } from './utils/timing.server.ts'
 import { getToast } from './utils/toast.server.ts'
+import { useOptionalUser, useUser } from './utils/user.ts' */
+
+import { Combobox } from './components/search-combobox.tsx'
+import { withSentry } from '@sentry/remix'
+import {
+    data,
+    Form,
+    HeadersFunction,
+    Link,
+    Links,
+    Meta,
+    Outlet,
+    Scripts,
+    ScrollRestoration,
+    useLoaderData,
+    useLocation,
+    useMatches,
+    useNavigation,
+    useSubmit
+} from 'react-router'
+import { HoneypotProvider } from 'remix-utils/honeypot/react'
+import { type Route } from './+types/root.ts'
+import globalStyles from './app.css?url'
+import appleTouchIconAssetUrl from './assets/favicons/apple-touch-icon.png'
+import faviconAssetUrl from './assets/favicons/favicon.svg'
+import { GeneralErrorBoundary } from './components/error-boundary.tsx'
+import { useToast } from './components/toaster.tsx'
+import { Button } from './components/ui/button.tsx'
+import { Icon, href as iconsHref } from './components/ui/icon.tsx'
+import {
+    ThemeSwitch
+} from './routes/resources+/theme-switch.tsx'
+import tailwindStyleSheetUrl from './styles/tailwind.css?url'
+import { getUserId, logout } from './utils/auth.server.ts'
+import { ClientHintCheck, getHints } from './utils/client-hints.tsx'
+import { prisma } from './utils/db.server.ts'
+import { getEnv } from './utils/env.server.ts'
+import { honeypot } from './utils/honeypot.server.ts'
+import { combineHeaders, getDomainUrl, getUserImgSrc } from './utils/misc.tsx'
+import { useNonce } from './utils/nonce-provider.ts'
+import { type Theme, getTheme } from './utils/theme.server.ts'
+import { makeTimings, time } from './utils/timing.server.ts'
+import { getToast } from './utils/toast.server.ts'
 import { useOptionalUser, useUser } from './utils/user.ts'
 
-export const links: LinksFunction = () => {
+import { useRef } from 'react'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuPortal,
+    DropdownMenuTrigger,
+} from './components/ui/dropdown-menu.tsx'
+
+export const links: Route.LinksFunction = () => {
 	return [
 		// Preload svg sprite as a resource to avoid render blocking
 		{ rel: 'preload', href: iconsHref, as: 'image' },
@@ -75,9 +132,9 @@ export const links: LinksFunction = () => {
 	].filter(Boolean)
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta: Route.MetaFunction = ({ data }) => {
 	return [
-		{ title: data ? '* Kunsträuber' : 'Error | Kunsträuber' },
+		{ title: data ? 'Kunsträuber' : 'Error | Kunsträuber' },
 		{
 			name: 'description',
 			content: `Good Artists Borrow, Great Artists Steal`,
@@ -88,7 +145,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 
 //   ...........................   MARK: Loader
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
 	const timings = makeTimings('root loader')
 	const userId = await time(() => getUserId(request), {
 		timings,
@@ -131,12 +188,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
 	const url = new URL(request.url)
 	const query = url.searchParams.get('search') ?? ''
 	const searchType = url.searchParams.get('searchType') ?? ''
-	const data = await searchArtworks(searchType, query)
+	// const data = await searchArtworks(searchType, query)
 
-	return json(
+	return data(
 		{
 			user,
-			data,
+			// data,
+			query,
 			searchType,
 			requestInfo: {
 				hints: getHints(request),
@@ -171,18 +229,18 @@ export const headers: HeadersFunction = ({ loaderHeaders }) => {
 function Document({
 	children,
 	nonce,
-	theme = 'dark',
+	//theme = 'dark',
 	env = {},
 	allowIndexing = true,
 }: {
 	children: React.ReactNode
 	nonce: string
 	theme?: Theme
-	env?: Record<string, string>
+	env?: Record<string, string | undefined>
 	allowIndexing?: boolean
 }) {
 	return (
-		<html lang="en" className={`${theme} h-full overflow-x-hidden`}>
+		<html lang="en" className={`h-full overflow-x-hidden`}>
 			<head>
 				<ClientHintCheck nonce={nonce} />
 				<Meta />
@@ -191,7 +249,11 @@ function Document({
 					name="google-site-verification"
 					content="gkdcYpCVklTKiaFQJfpZlMV1FcnZ59IM1fOPkwkjF50"
 				/>
-				<meta name="viewport" content="width=device-width,initial-scale=1" />
+				{/* <meta name="viewport" content="width=device-width,initial-scale=1" /> */}
+				<meta
+					name="viewport"
+					content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+				/>
 				{allowIndexing ? null : (
 					<meta name="robots" content="noindex, nofollow" />
 				)}
@@ -226,10 +288,12 @@ function App() {
 	const user = useOptionalUser()
 	const matches = useMatches()
 	const isOnSearchPage = matches.find((m) => m.id === 'routes/users+/index')
-	const searchBar = isOnSearchPage ? null : <SearchBar status="idle" />
+const combobox = isOnSearchPage ? null : <Combobox status="idle" />
 	const allowIndexing = data.ENV.ALLOW_INDEXING !== 'false'
 	useToast(data.toast)
 	const location = useLocation()
+  const navigation = useNavigation()
+	const isNavigating = Boolean(navigation.location)
 
 	//   ......................................   MARK: return  ⮐
 
@@ -242,10 +306,11 @@ function App() {
 						 */}
 						<header className="h-30 col-[1_/_-1] row-[2_/_4] flex w-full flex-wrap items-center justify-between">
 							<Logo />
-							<div className="bg-slate-95 hidden w-full max-w-sm flex-1 rounded-[.5rem] border md:block">
-								{searchBar}
+							<div className="bg-slate-95 hidden w-full max-w-sm flex-1 md:block">
+								{/* {searchBar} */}
+								{combobox}
 							</div>
-							<div className="user flex gap-6 justify-self-end items-center h-12 pr-4 md:pr-6">
+							<div className="user flex h-12 items-center gap-6 justify-self-end pr-4 md:pr-6">
 								{user ? (
 									<UserDropdown />
 								) : (
@@ -254,8 +319,9 @@ function App() {
 									</Button>
 								)}
 							</div>
-							<div className="search-bar-mobile block w-full max-w-md mx-auto px-4 py-4 md:hidden">
-								{searchBar}
+							<div className="search-bar-combobox-mobile mx-auto block w-full max-w-md px-4 py-4 md:hidden">
+								{/* {searchBar} */}
+								{combobox}
 							</div>
 						</header>
 						{/* MARK: Figure 🖼️
@@ -268,7 +334,7 @@ function App() {
 							}}
 						>
 							<img
-								className="animate-hue my-4 max-h-[calc(100dvh-20rem)] max-w-[calc(100vw_-_2rem)] rounded-sm object-contain sm:my-8 sm:max-h-[calc(100dvh-20rem)] sm:max-w-[clamp(283px,calc(100vw-2rem),min(843px,100%))]"
+								className="animate-hue relative top-10 my-4 max-h-[calc(100dvh-20rem)] max-w-[calc(100vw_-_2rem)] rounded-sm object-contain sm:my-8 sm:max-h-[calc(100dvh-20rem)] sm:max-w-[clamp(283px,calc(100vw-2rem),min(843px,100%))]"
 								alt="A work made of acrylic and silkscreen ink on linen."
 								src="four-mona-lisas.avif"
 								data-rdt-source="/Volumes/Samsung/_Projects-on-Samsung/Remix/artepic/app/routes/_artworks+/artworks.$artworkId.tsx:::247"
@@ -278,8 +344,8 @@ function App() {
 							</figcaption>
 						</figure>{' '}
 						{/*
-         // ,  ........................................   MARK: Footer ┗━┛
-      */}
+               MARK: Footer┗━┛
+              */}
 						<div className="footer col-[2_/_-2] row-[5_/_6] flex h-12 w-full max-w-[843px+4rem] flex-initial items-center justify-between self-end px-4 pb-6">
 							<ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />{' '}
 							<Help />
@@ -288,7 +354,7 @@ function App() {
 					</div>
 				</>
 			) : null}
-
+			{isNavigating && <GlobalSpinner />}
 			<Outlet />
 
 			{/* <div className="footer container flex items-center justify-between py-3">
@@ -321,11 +387,7 @@ function AppWithProviders() {
 
 export default withSentry(AppWithProviders)
 
-{
-	/*
-    //   ..........................................   MARK: User Dropdown
-  */
-}
+//   ...................   MARK: User Dropdown
 
 function UserDropdown() {
 	const user = useUser()
@@ -333,16 +395,13 @@ function UserDropdown() {
 	const formRef = useRef<HTMLFormElement>(null)
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger
-				asChild
-				className="border-amber-950 py-1 h-8"
-			>
+			<DropdownMenuTrigger asChild className="h-10 border-amber-950 py-1">
 				<Button asChild variant="secondary">
 					<Link
 						to={`/users/${user.username}`}
 						// this is for progressive enhancement
 						onClick={(e) => e.preventDefault()}
-						className="flex items-center gap-2 p-0"
+						className="flex items-center gap-2 py-2"
 					>
 						<img
 							className="h-10 max-w-10 rounded-full object-cover"
@@ -395,12 +454,16 @@ function Logo() {
 	return (
 		<Link
 			to="/"
-			className="logo group inline-grid justify-self-start px-6 py-4 leading-tight sm:px-4 md:px-6"
+			className="logo group inline-grid rounded-md bg-secondary px-6 py-2 leading-tight sm:px-4 md:px-6"
+			style={{
+				backgroundImage:
+					'linear-gradient(90deg, transparent, #0c0a09, transparent), linear-gradient(350deg, transparent, #0c0a09, transparent)',
+			}}
 		>
-			<span className="animate-hue font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
+			<span className="animate-hue font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1 group-hover:font-light">
 				kunst
 			</span>
-			<span className="pl-3 font-light leading-none text-yellow-100 transition group-hover:translate-x-1">
+			<span className="pl-3 font-light leading-none text-yellow-100 transition group-hover:translate-x-1 group-hover:font-bold">
 				räuber
 			</span>
 		</Link>
@@ -414,7 +477,7 @@ function Help() {
 		<Button variant="ghost" size="ghost" className="ml-auto place-self-center">
 			<Icon
 				name="question-mark-circled"
-				className="animate-hue border-0 text-[#0ff]"
+				className="animate-hue border-0 text-cyan-200"
 				size="font"
 			></Icon>
 		</Button>
@@ -438,4 +501,13 @@ export function ErrorBoundary() {
 			<GeneralErrorBoundary />
 		</Document>
 	)
+}
+
+
+function GlobalSpinner() {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div id="spinner"></div>
+    </div>
+  )
 }

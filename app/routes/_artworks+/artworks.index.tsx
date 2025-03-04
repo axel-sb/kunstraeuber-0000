@@ -1,94 +1,79 @@
 // #region  import export
-import { type Artwork } from '@prisma/client'
-import {
-	type LinksFunction,
-	type LoaderFunctionArgs,
-	json,
-} from '@remix-run/node'
-import { Link, NavLink, useLoaderData, useLocation } from '@remix-run/react'
-import React from 'react'
-import SVGComponent from '#app/components/ui/eye.tsx'
+import { Button } from '#app/components/ui/button.js'
+import SVGComponent from '#app/components/ui/eye1.tsx'
 import { Icon } from '#app/components/ui/icon.js'
+import { type Artwork } from '@prisma/client'
+import React from 'react'
 import {
-	searchArtworks,
-	/* getAny,
-	getArtist,
-	getStyle,
-	getPlace,
-	getDate,
-	getColor,
-    getMinWeight, */
-} from '../resources+/search-data.server'
+    Link, type LinksFunction, NavLink,
+    useLoaderData,
+    useNavigate,
+    useSearchParams
+} from 'react-router'
+import type { Route } from '../../+types/root'
+import { searchArtworks } from '../resources+/search-data.server'
 import artworks from './artworks.index.css?url'
+
 export const links: LinksFunction = () => [
 	{ rel: 'stylesheet', href: artworks },
 ]
 
-/* //§   _________________________________ MARK: Loader
-   This function is only ever run on the server. On the initial server render, it will provide data to the HTML document. On navigations in the browser, Remix will call the function via fetch from the browser. This means you can talk directly to your database, use server-only API secrets, etc. Any code that isn't used to render the UI will be removed from the browser bundle. */
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export async function loader({ request }: Route.LoaderArgs) {
 	const url = new URL(request.url)
-	const query =
-		url.searchParams.get('search') ?? 'search query input is missing'
+	const query = url.searchParams.get('search') ?? ''
 	const searchType =
 		url.searchParams.get('searchType') ?? 'search type is not yet selected'
-	const data = await searchArtworks(searchType, query)
+	const limit = 6
+	const page = url.searchParams.get('page')
+	const pageNumber: number = page !== null ? Number(page) : 1
+	console.log('🔢 pageNumber', pageNumber)
+	const data = await searchArtworks(query, searchType, limit, pageNumber)
 
-	/* let data
-        switch (searchType) {
-            case 'all':
-                data = await getAny(query)
-                break
-            case 'artist':
-                data = await getArtist(query)
-                break
-            case 'style':
-                data = await getStyle(query)
-                break
-            case 'place':
-                data = await getPlace(query)
-                break
-            case 'date':
-                data = await getDate(Number(query))
-                break
-            case 'color':
-                data = await getColor((query ?? '').toString())
-                break
-
-            default:
-                data = await getAny('') // break
-        } */
-
-	return json<{ searchType: string; query: string; data: Artwork[] }>({
-		searchType,
+	return {
 		query,
-		data
-	})
+		searchType,
+		limit: Number(limit),
+		page: pageNumber,
+		data,
+	}
 }
+// #endregion
 
-// #endregion import export
+// MARK: export default
 
-//+                                            export default
-// MARK: Export default
-export default function ArtworksPage() {
-	const { data } = useLoaderData<typeof loader>()
-    console.log('🎒 data from useLoaderData →  ', data)
-	const colorHsl =
-		(useLoaderData<typeof loader>().data as { colorHsl?: string })?.colorHsl ??
-		''
-	console.log('🟡 colorHsl →', colorHsl)
+export default function Index() {
+	// #region Index
+	const {
+		data: artworks,
+		page,
+		query,
+		searchType,
+	} = useLoaderData<typeof loader>()
+	console.log('artworks, page', artworks, page)
 
-	//§  .............................  MARK: radio btns hook
-	const [grid, setgrid] = React.useState('')
+	const [searchParams] = useSearchParams()
+	const nextPage = page + 1
+	const nextPageUrl = new URLSearchParams(searchParams)
+	nextPageUrl.set('page', nextPage.toString())
+
+	const handleNextPageClick = () => {
+		window.location.search = nextPageUrl.toString()
+	}
+
+	const navigate = useNavigate()
+	// #endregion Index
+	// #region radio btns
+
+	const [grid, setGrid] = React.useState('')
 
 	const handleGrid1Change = () => {
-		setgrid('grid-1')
+		setGrid('grid-1')
 	}
 	const handleGrid2Change = () => {
-		setgrid('grid-2')
+		setGrid('grid-2')
 	}
 	const handleGrid3Change = () => {
-		setgrid('grid-3')
+		setGrid('grid-3')
 	}
 
 	type RadioButtonProps = {
@@ -97,7 +82,12 @@ export default function ArtworksPage() {
 		onChange: () => void
 		className?: string
 	}
-	const RadioButton = ({ value, name, onChange, className }: RadioButtonProps) => {
+	const RadioButton = ({
+		value,
+		name,
+		onChange,
+		className,
+	}: RadioButtonProps) => {
 		const checked = value === name
 
 		return (
@@ -112,31 +102,31 @@ export default function ArtworksPage() {
 				<Icon
 					name={name}
 					size="font"
-					className="!group-has-[input[type='radio']:checked]:text-yellow-300 text-yellow-100/50 group-has-[input[type='radio']:checked]:inline-flex group-has-[input[type='radio']:checked]:animate-pulse px-1 w-12 visible"
+					className="!group-has-[input[type='radio']:checked]:text-yellow-300 visible w-12 px-1 text-yellow-100/50 group-has-[input[type='radio']:checked]:inline-flex group-has-[input[type='radio']:checked]:animate-pulse"
 				/>
 			</label>
 		)
 	}
+	// #endregion radio btns
+	// MARK: return
 
 	return (
 		<>
-			{/*
-           //§   ............................................   MARK:👑 Main
-        */}
-			<main className="artworks-fade-in flex-col items-center justify-start p-4 pb-8 sm:p-10 md:px-12 lg:px-16 xl:px-24 2xl:px-32">
-				{/*
-           //§   ...........................................   MARK: Header
-        */}
-
-				<header className="mx-auto grid h-16 w-full grid-cols-2 place-content-center text-lg 2xl:text-xl">
+			<main className="artworks-fade-in p-4 pb-8 sm:p-10 md:px-12 lg:px-16 xl:px-24 2xl:px-32">
+				<header className="mx-auto grid h-16 w-full grid-cols-3 place-content-center text-lg 2xl:text-xl">
 					<Logo />
 
-					{/*
-           //§   ...........................................   MARK: 🔘 radio-btns
-        */}
+					<div className="navlink-map flex h-10 w-14 cursor-pointer justify-center justify-self-start self-center rounded-md -translate-x-2">
+						<NavLink
+							className={`$({ isActive, isPending }) => isActive ? 'active' : 'pending' z-10 inline-flex h-10 w-10 justify-center text-foreground`}
+							to={`../artworks/cluster/?search=${query}&searchType=${searchType}`}
+						>
+							<Icon name="map" className="text-[1.7rem]" size="font" />
+						</NavLink>
+					</div>
 
-					<form className="form col-[2/3] grid h-12 self-center justify-self-end">
-						<div className="group/radio flex justify-around divide-x-reverse divide-slate-700 place-self-center rounded border-[0.5px] border-solid border-yellow-50/25 pb-2 pr-1 pt-1 text-xl text-yellow-50/50 md:gap-4 2xl:text-2xl">
+					<form className="form col-[3/4] grid h-12 self-center justify-self-end">
+						<div className="group/radio flex justify-around place-self-center rounded-md pb-2 pr-1 pt-1 text-xl text-yellow-50/50 md:gap-4 2xl:text-2xl">
 							<RadioButton
 								name="grid-1"
 								value={grid}
@@ -149,7 +139,6 @@ export default function ArtworksPage() {
 								onChange={handleGrid2Change}
 								className="place-self-center"
 							/>
-
 							<RadioButton
 								name="grid-3"
 								value={grid}
@@ -159,11 +148,12 @@ export default function ArtworksPage() {
 						</div>
 					</form>
 				</header>
-				<ul className="w-full gap-x-[3%] pt-4 [column-count:1] group-has-[label:nth-child(1)>input[type='radio']:checked]/body:[column-count:1] group-has-[label:nth-child(2)>input[type=radio]:checked]/body:[column-count:2] group-has-[label:nth-child(3)>input[type=radio]:checked]/body:[column-count:3] md:pt-8 md:[column-count:2] lg:gap-x-12 lg:pt-10 lg:[column-count:4] xl:gap-x-[4%] xl:pt-14 xl:[column-count:5] 2xl:gap-x-20 2xl:pt-20">
-					{data.map((artwork: Artwork) => (
+
+				<ul className="relative min-h-[calc(100vh-8rem)] w-full gap-x-[3%] overflow-auto pt-4 [column-count:1] group-has-[label:nth-child(1)>input[type='radio']:checked]/body:[column-count:1] group-has-[label:nth-child(2)>input[type=radio]:checked]/body:[column-count:2] group-has-[label:nth-child(3)>input[type=radio]:checked]/body:[column-count:3] md:py-8 md:[column-count:2] lg:gap-x-12 lg:pt-10 lg:[column-count:4] xl:gap-x-[4%] xl:pt-14 xl:[column-count:5] 2xl:gap-x-20 2xl:pt-20">
+					{artworks.map((artwork: Artwork) => (
 						<li
 							key={artwork.id}
-							className="flex w-full items-center justify-center"
+							className="my-4 w-full xl:my-10"
 							style={{
 								containerType: 'inline-size',
 								containerName: 'list-item',
@@ -175,7 +165,11 @@ export default function ArtworksPage() {
 								}
 								to={`./${artwork.id}`}
 							>
-								<figure className="mx-auto relative mb-8 flex break-inside-avoid flex-col items-center justify-between xl:mb-20">
+								{/*
+                MARK: Figure
+                */}
+
+								<figure className="relative mx-auto mb-8 flex break-inside-avoid flex-col items-center justify-between xl:mb-20">
 									<img
 										alt={artwork.alt_text ?? undefined}
 										key={artwork.id}
@@ -183,35 +177,21 @@ export default function ArtworksPage() {
 										className="hover-[gradient-border] w-full max-w-full rounded-md object-contain object-center md:rounded-lg"
 									/>
 
-									{/*
-                       //§   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    MARK: Figcaption
-                  */}
-									<figcaption
-										className="z-50 my-4 flex w-full flex-wrap justify-between overflow-hidden rounded-md py-4 backdrop-blur-sm"
-										style={{
-											backgroundColor: '#0000',
-											backgroundImage:
-												(('radial-gradient(farthest-corner circle at -25% 0% in oklab, #0000 0% 45%, ' +
-													artwork.colorHsl) as string) +
-												'50%, #0000 55% 100% linear-gradient(180deg,  var(--bg-background) 0% 5%,  var(--bg-background) 45%, #0000,  var(--bg-background) 55%,  var(--bg-background) 95% 100%), linear-gradient(#000b, #000b))',
-											backgroundSize: '250%',
-										}}
-									>
-										<div className="group-has-[input[type=radio]]:grid-cols-2]:justify-self-start relative flex w-full flex-wrap font-light tracking-[-0.020rem] text-[#f2ece2]">
-											<div className="w-full">
+									<figcaption className="z-50 my-4 flex w-full flex-wrap justify-between overflow-hidden rounded-md px-[1cqw] backdrop-blur-sm">
+										<div className="group-has-[input[type=radio]]:grid-cols-2]:justify-self-start relative flex w-full flex-wrap justify-between font-light tracking-[-0.020rem] text-[#f2ece2]">
+											<div className="w-full after:absolute after:right-0 after:h-full after:w-full after:bg-[linear-gradient(268deg,_#0c0a09,_#0c0a0920,_transparent_30%)]">
 												{artwork.title} {'  '}
 											</div>
-											<div className="figcaption-artist w-[calc(100%-2rem)] font-medium leading-snug tracking-[-0.020rem] opacity-70">
+											<div className="figcaption-artist bottom-0 right-0 top-0 w-[calc(100%-1.8rem)] font-medium leading-snug tracking-[-0.020rem] opacity-90 after:absolute after:left-0 after:h-full after:w-full after:bg-[linear-gradient(270deg,_#0c0a09_1rem,_#0c0a0920,_transparent_50%)] after:from-black after:from-10% after:via-20% after:to-transparent after:to-100%">
 												{artwork.artist_title}
 											</div>
 											<span
-												className="ml-auto self-end overflow-hidden"
+												className="z-50 grid place-items-center rounded-full bg-black"
 												style={{
-													color: artwork.colorHsl as string,
+													color: `hsl( from ${artwork.colorHsl} h 100% 50% )`,
 												}}
 											>
-												<SVGComponent className="h-[1lh] w-[1lh] sm:h-[.9lh] sm:w-[.9lh]" />
-												{/* h-3 w-3 sm:h-4 sm:w-4 md:h-6 md:w-6 */}
+												<SVGComponent/>
 											</span>
 										</div>
 									</figcaption>
@@ -219,54 +199,82 @@ export default function ArtworksPage() {
 							</NavLink>
 						</li>
 					))}
+					<li>
+						<Button
+							className="btn-back absolute bottom-0 left-0 inline-flex h-10 w-10 cursor-pointer justify-center justify-self-center rounded-full p-0"
+							variant="ghost"
+							size="ghost"
+							onClick={() => {
+								/* navigate('../artworks') */
+								navigate(-1)
+							}}
+						>
+							<Icon name="arrow-left" size="font" className="text-3xl" />
+							{/* <NavLink
+						className={`$({ isActive, isPending }) => isActive ? 'active' : 'pending' transition-x-0 relative col-[1_/_2] inline-flex h-10 w-10 translate-y-0 place-items-center justify-center justify-self-center rounded-full p-0 p-1.5`}
+						to={'./'}
+					>
+						<Icon name="arrow-left" size="font" className="text-3xl" />
+					</NavLink> */}
+						</Button>
+					</li>
 				</ul>
-				<Footer />
 			</main>
+			{/* //+ MARK: Next Page
+			 */}
+			<button
+				className="group sticky top-[100dvh] z-10 mb-4 ml-auto flex h-12 w-1/2 items-center justify-end rounded-lg px-4 text-base leading-none text-yellow-100/50 opacity-60 transition hover:opacity-100 sm:h-16 md:px-12 lg:px-16 xl:px-24 2xl:px-32 2xl:text-xl"
+				onClick={handleNextPageClick}
+			>
+				<span className="leading-none text-yellow-100/80 opacity-60 duration-200 group-hover:translate-x-0 group-hover:opacity-100">
+					next page
+				</span>
+				<Icon
+					name="arrow-right"
+					size="font"
+					className="group-hover: ml-3 scale-x-110 pt-1 text-4xl leading-none text-yellow-100/80 duration-300 group-hover:translate-x-2 group-hover:stroke-cyan-200 group-hover:stroke-1"
+				/>
+			</button>{' '}
+			<Footer />
 		</>
 	)
 }
 
-//§   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    MARK: Logo
+ 	// #region Logo, Footer
 
 function Logo() {
-		return (
-			<Link
-				to="/"
-				className="logo group inline-grid justify-self-startpr-3 py-4 leading-tight"
-			>
-				<span className="font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
-					kunst
-				</span>
-				<span className="pl-3 font-light leading-none text-yellow-100 transition group-hover:translate-x-1">
-					räuber
-				</span>
-			</Link>
+	return (
+		<Link
+			to="/"
+			className="logo justify-self-startpr-3 group inline-grid py-4 leading-tight"
+		>
+			<span className="font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
+				kunst
+			</span>
+			<span className="pl-3 font-light leading-none text-yellow-100 transition group-hover:translate-x-1">
+				räuber
+			</span>
+		</Link>
 	)
 }
 
-//§   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    MARK: Footer
-
 function Footer() {
-	const searchType = useLoaderData<typeof loader>().searchType
-	const query = useLoaderData<typeof loader>().query
+	const { searchType, query } = useLoaderData<typeof loader>()
 	return (
-		<footer className="search-params mt-4 flex translate-y-4 items-center justify-between gap-4 rounded-lg bg-black p-4 text-sm">
-			<div className="text-left leading-none">
-				<span className="font-semibold opacity-50">search </span>
+		<footer className="search-params sticky top-[100dvh] mb-4 flex items-center justify-between gap-4 rounded-lg bg-black p-4 text-base leading-none sm:p-6 md:px-12 lg:px-16 xl:px-24 2xl:px-32 2xl:text-xl">
+			<div className="text-left leading-none text-yellow-100/50">
+				{/* <Icon
+					name="magnifying-glass"
+					className="text-[x-large] leading-[.75] opacity-60"
+				/> */}
 				<span>
-					<em className="font-normal opacity-100">
-						{searchType}
-						{': '}
+					<em className="font-normal leading-none opacity-60">
+						{searchType}:{' '}
 					</em>{' '}
 				</span>
-				{query || ' '}{' '}
-				{/* same as: {location.search.split('&')[0].split('=')[1]} */}
-			</div>
-
-			<div className="text-right leading-none">
-				<span className="font-semibold opacity-50">page: </span>{' '}
-				<em className="font-normal opacity-100">{useLocation().pathname} </em>{' '}
+				{query || ' '}
 			</div>
 		</footer>
 	)
 }
+// #endregion Logo, Footer

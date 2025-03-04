@@ -1,11 +1,11 @@
-import { json, redirect, type LoaderFunctionArgs } from '@remix-run/node'
-import { Link, useLoaderData } from '@remix-run/react'
+import { data, redirect, Link } from 'react-router'
 import { z } from 'zod'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
 import { ErrorList } from '#app/components/forms.tsx'
 import { SearchBar } from '#app/components/search-bar.tsx'
 import { prisma } from '#app/utils/db.server.ts'
 import { cn, getUserImgSrc, useDelayedIsPending } from '#app/utils/misc.tsx'
+import { type Route } from './+types/index.ts'
 
 const UserSearchResultSchema = z.object({
 	id: z.string(),
@@ -16,7 +16,7 @@ const UserSearchResultSchema = z.object({
 
 const UserSearchResultsSchema = z.array(UserSearchResultSchema)
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
 	const searchTerm = new URL(request.url).searchParams.get('search')
 	if (searchTerm === '') {
 		return redirect('/users')
@@ -41,40 +41,39 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 	const result = UserSearchResultsSchema.safeParse(rawUsers)
 	if (!result.success) {
-		return json({ status: 'error', error: result.error.message } as const, {
+		return data({ status: 'error', error: result.error.message } as const, {
 			status: 400,
 		})
 	}
-	return json({ status: 'idle', users: result.data } as const)
+	return { status: 'idle', users: result.data } as const
 }
 
-export default function UsersRoute() {
-	const data = useLoaderData<typeof loader>()
+export default function UsersRoute({ loaderData }: Route.ComponentProps) {
 	const isPending = useDelayedIsPending({
 		formMethod: 'GET',
 		formAction: '/users',
 	})
 
-	if (data.status === 'error') {
-		console.error(data.error)
+	if (loaderData.status === 'error') {
+		console.error(loaderData.error)
 	}
 
 	return (
 		<div className="container mb-48 mt-36 flex flex-col items-center justify-center gap-6">
 			<h1 className="text-h1">Epic Notes Users</h1>
 			<div className="w-full max-w-[700px]">
-				<SearchBar status={data.status} autoFocus autoSubmit />
+				<SearchBar status={loaderData.status} autoFocus autoSubmit />
 			</div>
 			<main>
-				{data.status === 'idle' ? (
-					data.users.length ? (
+				{loaderData.status === 'idle' ? (
+					loaderData.users.length ? (
 						<ul
 							className={cn(
 								'flex w-full flex-wrap items-center justify-center gap-4 delay-200',
 								{ 'opacity-50': isPending },
 							)}
 						>
-							{data.users.map((user) => (
+							{loaderData.users.map((user) => (
 								<li key={user.id}>
 									<Link
 										to={user.username}
@@ -100,7 +99,7 @@ export default function UsersRoute() {
 					) : (
 						<p>No users found</p>
 					)
-				) : data.status === 'error' ? (
+				) : loaderData.status === 'error' ? (
 					<ErrorList errors={['There was an error parsing the results']} />
 				) : null}
 			</main>

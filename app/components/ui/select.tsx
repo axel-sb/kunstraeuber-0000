@@ -19,7 +19,7 @@ const SelectTrigger = React.forwardRef<
 	<SelectPrimitive.Trigger
 		ref={ref}
 		className={cn(
-			'flex max-h-6 w-full flex-1 items-center justify-between rounded-md border border-input bg-black px-0 py-0 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
+			'flex max-h-10 w-full flex-1 items-center justify-between rounded !border !border-input bg-[field] px-0 py-0 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
 			className,
 		)}
 		{...props}
@@ -29,7 +29,7 @@ const SelectTrigger = React.forwardRef<
 			<Icon
 				name="chevron-down"
 				size="sm"
-				className="h-6 w-6 text-[#0ff] opacity-75"
+				className="animate-hue submit flex h-10 w-10 items-center justify-center gap-4 rounded-none rounded-br rounded-tr border border-l-0 border-input bg-black py-2 text-cyan-200 shadow outline-none ring-ring ring-offset-2 ring-offset-background transition-colors focus-within:ring-2 focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50"
 			/>
 		</SelectPrimitive.Icon>
 	</SelectPrimitive.Trigger>
@@ -65,7 +65,7 @@ const SelectScrollDownButton = React.forwardRef<
 		)}
 		{...props}
 	>
-		<Icon name="chevron-down" className="h-4 w-4" />
+		<Icon name="chevron-down" className="h-4 w-4 animate-hue" />
 	</SelectPrimitive.ScrollDownButton>
 ))
 SelectScrollDownButton.displayName =
@@ -79,7 +79,7 @@ const SelectContent = React.forwardRef<
 		<SelectPrimitive.Content
 			ref={ref}
 			className={cn(
-				'relative z-50 max-h-96 min-w-[fit] p-2 overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
+				'relative z-[500] max-h-fit min-w-[fit] overflow-hidden rounded-md border bg-popover p-2 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
 				position === 'popper' &&
 					'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
 				className,

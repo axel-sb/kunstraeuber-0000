@@ -3,12 +3,14 @@
 	--alpha-pointer-box-shadow: rgb(0 0 0 / 37%) 0px 1px 4px 0px !important;
 }
 
-.w-color-hue {
-	height: 4rem !important;
+input[type='radio']:checked + svg {
+	color: #cbd5e1 !important;
 }
 
 .w-color-alpha-fill {
 	background: #0000 !important;
+    backdrop-filter: opacity(0);
+    border: 3px solid #fff0;
 }
 
 .editing-view-port {
@@ -16,9 +18,12 @@
 }
 
 div.flex-1 > button {
-  text-shadow: 0 0 1px #000d, 0 0 2px #0008, 0 0 3px #0003
-}
+    /* text-shadow:
+    		0 0 1px #000d,
+    		0 0 2px #0008,
+    		0 0 3px #0003; */
+    }
 
 #search-spinner {
-    display:block;
+	display: block;
 }

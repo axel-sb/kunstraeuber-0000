@@ -1,13 +1,7 @@
 import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
-import {
-	json,
-	type ActionFunctionArgs,
-	type LoaderFunctionArgs,
-	type MetaFunction,
-} from '@remix-run/node'
-import { Form, Link, useActionData, useSearchParams } from '@remix-run/react'
+import { data, Form, Link, useSearchParams } from 'react-router'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
 import { z } from 'zod'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
@@ -22,6 +16,7 @@ import {
 import { checkHoneypot } from '#app/utils/honeypot.server.ts'
 import { useIsPending } from '#app/utils/misc.tsx'
 import { PasswordSchema, UsernameSchema } from '#app/utils/user-validation.ts'
+import { type Route } from './+types/login.ts'
 import { handleNewSession } from './login.server.ts'
 
 export const handle: SEOHandle = {
@@ -35,15 +30,15 @@ const LoginFormSchema = z.object({
 	remember: z.boolean().optional(),
 })
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
 	await requireAnonymous(request)
-	return json({})
+	return {}
 }
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request }: Route.ActionArgs) {
 	await requireAnonymous(request)
 	const formData = await request.formData()
-	checkHoneypot(formData)
+	await checkHoneypot(formData)
 	const submission = await parseWithZod(formData, {
 		schema: (intent) =>
 			LoginFormSchema.transform(async (data, ctx) => {
@@ -64,7 +59,7 @@ export async function action({ request }: ActionFunctionArgs) {
 	})
 
 	if (submission.status !== 'success' || !submission.value.session) {
-		return json(
+		return data(
 			{ result: submission.reply({ hideFields: ['password'] }) },
 			{ status: submission.status === 'error' ? 400 : 200 },
 		)
@@ -80,8 +75,7 @@ export async function action({ request }: ActionFunctionArgs) {
 	})
 }
 
-export default function LoginPage() {
-	const actionData = useActionData<typeof action>()
+export default function LoginPage({ actionData }: Route.ComponentProps) {
 	const isPending = useIsPending()
 	const [searchParams] = useSearchParams()
 	const redirectTo = searchParams.get('redirectTo')
@@ -201,7 +195,7 @@ export default function LoginPage() {
 	)
 }
 
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = () => {
 	return [{ title: 'Login to Epic Notes' }]
 }
 

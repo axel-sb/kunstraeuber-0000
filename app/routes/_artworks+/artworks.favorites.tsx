@@ -1,10 +1,6 @@
 // #region import-export
-import {
-	type LinksFunction,
-	type LoaderFunctionArgs,
-	json,
-} from '@remix-run/node'
-import { NavLink, useLoaderData } from '@remix-run/react'
+import { type LinksFunction, type LoaderFunctionArgs, } from 'react-router'
+import { NavLink, useLoaderData } from 'react-router'
 import { Icon } from '#app/components/ui/icon.tsx'
 import { getFavorite } from '../resources+/search-data.server'
 import favorites from './artworks.favorites.css?url'
@@ -15,7 +11,7 @@ export const links: LinksFunction = () => [
 
 export const loader = async ({}: LoaderFunctionArgs) => {
 	const data = await getFavorite()
-	return json({ data })
+	return { data }
 }
 
 // #endregion import export
@@ -35,7 +31,7 @@ export default function Favorites() {
 						<li key={artwork.id} className="md:max-w-sm">
 							<NavLink
 								className={({ isActive, isPending }) =>
-									isActive ? 'active' : isPending ? 'pending' : ''
+									isActive ? 'active' : isPending ? 'pending animate-pulse' : ''
 								}
 								to={`/artworks/${artwork.id}`}
 							>
@@ -73,7 +69,7 @@ export default function Favorites() {
 					<li>no data</li>
 				)}
 			</ul>
-            
+
 			<NavLink to="/" className="home fixed bottom-4 right-4">
 				<h1
 					data-heading

@@ -1,11 +1,8 @@
 import { invariantResponse } from '@epic-web/invariant'
-import {
-	json,
-	type LinksFunction,
-	type LoaderFunctionArgs,
-} from '@remix-run/node'
-import { useLoaderData, NavLink, type MetaFunction } from '@remix-run/react'
+import { data, type LinksFunction, type LoaderFunctionArgs } from 'react-router'
+import { useLoaderData, useNavigate, type MetaFunction } from 'react-router'
 import { ClientOnly } from 'remix-utils/client-only'
+import { Button } from '#app/components/ui/button.tsx'
 import { Icon } from '#app/components/ui/icon.js'
 import Viewer from '../../components/viewer.client'
 import { getArtworkUrl } from '../resources+/search-data.server'
@@ -42,20 +39,22 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 		? identifier
 		: 'https://www.artic.edu/iiif/2/f8fd76e9-c396-5678-36ed-6a348c904d27' */
 
-	return json({ identifier, artworkId })
+	return { identifier, artworkId }
 }
 
 export default function Zoom() {
-
 	const { identifier } = useLoaderData() as { identifier: string }
 	const { artworkId } = useLoaderData() as { artworkId: string }
-	console.log('🧶', artworkId)
+	const navigate = useNavigate()
+	console.log('🚏 zoom.artworkId:', artworkId)
 	return (
 		<>
-			<div className="absolute bottom-7 left-8 z-10 inline-flex h-9 w-9 rounded-full text-xl">
-				<NavLink
-					className={`$({ isActive, isPending }) => isActive ? 'active' : 'pending' z-10 inline-flex h-10 w-10 place-items-center rounded-full`}
-					to={`../artworks/${artworkId}`}
+			<div className="absolute bottom-7 left-8 z-10 inline-flex h-9 w-9 rounded-full text-xl sepia hover:invert">
+				<Button
+					className="border-0"
+					onClick={() => {
+						navigate(-1)
+					}}
 				>
 					<Icon
 						name="x"
@@ -63,7 +62,7 @@ export default function Zoom() {
 						size="font"
 						style={{ background: `radial-gradient(#fff, #000)` }}
 					/>
-				</NavLink>
+				</Button>
 			</div>
 			<ClientOnly fallback={<div>Loading...</div>}>
 				{() => <Viewer src={identifier} isTiledImage={true} />}

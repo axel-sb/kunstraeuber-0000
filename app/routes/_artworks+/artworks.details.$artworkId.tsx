@@ -1,26 +1,25 @@
 // region imports
-import { invariantResponse } from '@epic-web/invariant'
-import { type Artwork } from '@prisma/client'
-import {
-	type LinksFunction,
-	type LoaderFunctionArgs,
-	json,
-	redirect,
-	type MetaFunction,
-	type ActionFunctionArgs,
-} from '@remix-run/node'
-import {
-	Link,
-	NavLink,
-	// NavLink,
-	useFetcher,
-	useLoaderData,
-	useNavigate,
-} from '@remix-run/react'
-import chalk from 'chalk'
-import { type FunctionComponent } from 'react'
+import { MeshGradients } from '#app/components/mesh-gradients.tsx'
 import { Button } from '#app/components/ui/button.tsx'
 import { Icon } from '#app/components/ui/icon.js'
+import SVGComponent from '#app/components/ui/puzzle.tsx'
+import { invariantResponse } from '@epic-web/invariant'
+import { type Artwork } from '@prisma/client'
+import chalk from 'chalk'
+import { type FunctionComponent } from 'react'
+import {
+    Link,
+    NavLink,
+    redirect,
+    // NavLink,
+    useFetcher,
+    useLoaderData,
+    useNavigate,
+    type ActionFunctionArgs,
+    type LinksFunction,
+    type LoaderFunctionArgs,
+    type MetaFunction
+} from 'react-router'
 // import kunstraeuber from '../../../avatars/kunstraeuber.png'
 // import circles from '../../../circles.svg'
 import { getArtwork, updateArtwork } from '../resources+/search-data.server.tsx'
@@ -81,7 +80,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 	)
 	console.groupEnd()
 
-	return json({ artwork: filteredArtwork })
+	return { artwork: filteredArtwork }
 }
 
 //  MARK: FAVORITE
@@ -99,14 +98,18 @@ const Favorite: FunctionComponent<{
 	} = useLoaderData<typeof loader>()
 
 	return (
-		<fetcher.Form method="post" className="favorite z-50">
+		<fetcher.Form
+			method="post"
+			className="favorite z-50"
+			style={{
+				color: colorHsl || undefined,
+			}}
+		>
 			<Button
 				name="favorite"
-				variant="ghost"
-				size="ghost"
-				className="z-50 mr-4 inline-flex w-8 px-0 pt-2 text-[1.65rem]"
+				className="z-50 mr-0 inline-flex w-8 border-0 px-0 pt-2 text-[1.6rem]"
 				style={{
-					color: `hsl(from ${colorHsl as unknown as string} h s 50 `,
+					color: colorHsl || undefined,
 					strokeDasharray: 50,
 				}}
 			>
@@ -122,57 +125,86 @@ const Favorite: FunctionComponent<{
 
 export default function ArtworkDetails() {
 	const { artwork } = useLoaderData<typeof loader>()
+
+	/*const colorHsl = `hsl(${artwork.colorHsl}`
+	 const gradientBtnStyle = {
+        '--colorHsl': colorHsl,
+    } as React.CSSProperties */
+	const colorHslIcon = `hsl(${artwork.color_h}, ${artwork.color_s}%, 50%)`
+	console.log('colorHslIcon', colorHslIcon)
+	const colorH = parseInt(`${artwork.color_h}`)
+	const colorS = parseInt(`${artwork.color_s}`)
+	const colorL = parseInt(`${artwork.color_l}`)
+
 	const navigate = useNavigate()
 
 	const colorRgb = `rgb(${HSLToRGB(artwork.color_h ?? 0, artwork.color_s ?? 0, 50)})`
 
 	const artist = {
-		__html: `<li>
-        <span class="artist-caption list-item opacity-80"> Artist:  </span>
-		<span class="artist-name detail-content inline-block "> ${artwork.artist_display} </span>`,
+		__html: `
+        <span class="artist-caption list-item opacity-80 font-medium"> Artist:  </span>
+		    <span class="artist-name detail-content inline-block w-full pb-2"> <svg class="w-[1em] h-[1em] inline self-center mb-1 mr-2"><use href="/app/components/ui/icons/sprite.svg#magnifying-glass"></use></svg>  ${artwork.artist_display} </span>
+        `,
 	}
 
 	const description = {
 		__html:
 			artwork.description && artwork.description !== 'null'
-				? '<div class="text-base opacity-80">Description: </div>' +
+				? '<div class="opacity-80 font-medium">Description: </div>' +
 					artwork.description
 				: '',
 	}
 
-	/* MARK: ⮐ RETURN ⮐
+	/*
+        //. MARK: RETURN ⮐ .
 	 */
 
 	return (
 		<>
-			<div className="details-container 2xl:grid-rows-[minmax(min-content, 1fr)] grid w-screen items-center justify-around justify-items-center 2xl:grid-cols-[10%_30%_60%]">
-				<div className="first-half-wrapper col-span-full row-[1_/_2] max-h-[calc(100dvh)] max-w-[calc(100%-2rem)] grid-cols-[1fr_1fr] flex-wrap items-center self-start pb-12 2xl:col-[2_/_3] 2xl:row-span-full 2xl:ml-auto 2xl:mr-2 2xl:max-w-[45%]">
-					{/* //   MARK:HEADER ▀▀▀
-					 */}
+			<div className="details-container grid-rows-[max-content minmax(max-content,1fr)] 2xl:grid-rows-[8rem calc(100vh-8rem)] grid items-start justify-center justify-items-center gap-4 px-5 2xl:grid-cols-[20%_25%_55%]">
+				{/*
+                // .                                MARK: . . . . . . . . . .    ⓵   🢃 .
+				 */}
+
+				<div className="first-half-wrapper col-span-full row-[1_/_2] max-w-[clamp(300px,max-w-prose,calc(100vw-2rem))] flex-wrap items-center self-start pb-12 2xl:col-[2_/_3] 2xl:row-span-full 2xl:ml-auto 2xl:mr-2 2xl:max-h-[65dvh] 2xl:max-w-full">
+					{/*
+                    //. MARK:header 1 .
+					  */}
 
 					<header
-						className="flex w-screen h-28 items-center justify-between pb-6 2xl:mt-8 2xl:pb-0"
+						className="flex h-28 w-full items-center justify-between pb-6 2xl:mt-8 2xl:justify-end 2xl:pb-4"
 						style={{ color: colorRgb }}
 					>
 						<Logo />
 					</header>
 
-					{/* //   MARK:IMAGE 📸
-					 */}
+					{/*
+            // .  MARK:🏞️  .
+					  */}
 
-					<img
-						src={artwork.image_url ? artwork.image_url : 'undefined'}
-						className="rounded-md mx-auto !max-h-[25vh] 2xl:mt-1 2xl:rounded-lg"
-					/>
+					<NavLink
+						className={`$({ isActive, isPending }) => isActive ? 'active' : 'pending'`}
+						to={`../artworks/zoom/${artwork.id}`}
+					>
+						<img
+							src={artwork.image_url ? artwork.image_url : 'undefined'}
+							className="mx-auto !max-h-[65dvh] rounded-md object-contain 2xl:mt-1 2xl:self-end 2xl:rounded-lg"
+						/>
+					</NavLink>
 				</div>
 
-				{/* .MARK:DETAILS 📄 🎁
-				 */}
+				{/*
+                // .                                 MARK: . . . . . . . . .    ⓶   🢃 .
+				  */}
 
-				<div className="details-text-wrapper col-span-full row-[2_/_3] max-w-[calc(100%-2rem)] self-start pb-24 2xl:col-[3_/_4] 2xl:row-span-full 2xl:ml-2 2xl:mr-auto 2xl:justify-start">
-					<header className="flex h-28 w-full items-center justify-between 2xl:mt-8 2xl:px-12 2xl:pb-0">
+				<div className="details-text-wrapper relative col-span-full max-w-[calc(100vw-2rem)] row-[2_/_3] overflow-y-auto 2xl:col-[3_/_4] 2xl:row-span-full 2xl:ml-2 2xl:mr-auto 2xl:max-h-[95dvh] 2xl:max-w-[clamp(30vw,65ch,50vw)]">
+					{/*
+          // .MARK:header 2
+					  */}
+
+					<header className="sticky top-0 mb-8 flex items-end justify-between overflow-hidden 2xl:mb-10 2xl:mr-16 2xl:h-28 2xl:pl-11">
 						<Button
-							className="btn-back relative z-50 flex h-10 w-10 cursor-pointer justify-self-center rounded-full p-0 active:opacity-50"
+							className="btn-back relative z-50 flex h-10 w-10 cursor-pointer justify-self-center rounded-full p-0 text-body-2xs active:opacity-50"
 							variant="ghost"
 							onClick={() => {
 								navigate(-2)
@@ -180,21 +212,24 @@ export default function ArtworkDetails() {
 						>
 							<Icon
 								name="arrow-left"
-								className="h-8 w-8 text-[1.8rem] ring-[var(--colorHsl)] transition-all duration-200 hover:cursor-pointer hover:ring-2 hover:ring-offset-2"
+								size="font"
 								style={{ borderRadius: '50%', color: colorRgb }}
+								className="text-[1.95rem] ring-[var(--colorHsl)] transition-all duration-200 hover:cursor-pointer hover:ring-2 hover:ring-offset-2"
 							/>
 						</Button>
 
-						{/*//. MARK: ⃝ ZOOM 🔎
-						 */}
-						<div className="navlink-zoom col-[3_/_4] inline-flex h-10 w-10 cursor-pointer justify-end justify-self-center rounded-full pb-0.5">
+						{/*
+                        //. MARK: Zoom 🔎 .
+						  */}
+
+						<div className="navlink-zoom col-[3_/_4] inline-flex h-10 w-10 cursor-pointer justify-self-center rounded-full pb-0.5">
 							<NavLink
-								className={`$({ isActive, isPending }) => isActive ? 'active' : 'pending' z-10 inline-flex h-10 w-10 place-items-center text-foreground`}
+								className={`$({ isActive, isPending }) => isActive ? 'active' : 'pending' z-10 inline-grid h-10 w-10 place-items-center text-foreground`}
 								to={`../artworks/zoom/${artwork.id}`}
 							>
 								<Icon
 									name="zoom-in"
-									className="text-[2rem]"
+									className="text-[1.9rem]"
 									size="font"
 									style={{
 										color: colorRgb,
@@ -206,25 +241,57 @@ export default function ArtworkDetails() {
 						<Favorite artwork={artwork} />
 					</header>
 
-					{/* .MARK:► UL ◯
-                        (details) */}
 					<div
-							className="list-wrapper rounded-md 2xl:rounded-lg 2xl:py-8"
-							style={
-								{
-									'--colorHsl': colorRgb,
-									'--colorHslOp50': 'hsl(from var(--colorHsl) h s 10 )',
-								} as React.CSSProperties
-							}
-						>
-						<ul className="mx-auto flex max-w-prose flex-col gap-2 overflow-y-auto px-4  py-3 leading-relaxed 2xl:mx-0 2xl:max-h-[70vh] 2xl:px-12">
-							<li dangerouslySetInnerHTML={artist} />
+						className="list-wrapper relative max-w-prose overflow-y-auto overscroll-contain pb-8 pl-3 2xl:h-[calc(95dvh-9rem)] 2xl:p-0"
+						style={
+							{
+								'--colorHsl': colorRgb,
+								'--colorHslOp50': 'hsl(from var(--colorHsl) h s 10 )',
+							} as React.CSSProperties
+						}
+					>
+						{/* // . MARK:► DETAILS <UL>
+                        // #region column defs
+                        • artwork_type_title string - The kind of object or work (e.g. Painting, Sculpture, Book)
+                        • style_titles array - The names of all style terms related to this artwork
+                        •
+                        • subject_titles array - The names of all subject terms related to this artwork
+                        •
+                        // #endregion
+						 */}
+
+						<ul className="mx-auto flex max-w-prose flex-col gap-2 pb-10 leading-relaxed md:text-xl 2xl:mx-0 2xl:max-w-full 2xl:px-12">
+							<NavLink
+								to={`../artworks?search=${artwork.artist_title}&searchType=artist`}
+							>
+								<span dangerouslySetInnerHTML={artist}></span>
+							</NavLink>
 
 							{Object.entries({
 								Title: artwork.title,
 								Date: artwork.date_display,
-								Place: artwork.place_of_origin,
-								Medium: artwork.medium_display,
+								Place: (
+									<NavLink
+										to={`../artworks?search=${artwork.place_of_origin}&searchType=place`}
+										className="group"
+									>
+										<Icon name="magnifying-glass" className="mb-1 mr-2" />
+										<span className="group-hover:underline">
+											{artwork.place_of_origin}
+										</span>
+									</NavLink>
+								),
+								Medium: (
+									<NavLink
+										to={`../artworks?search=${artwork.medium_display}&searchType=medium`}
+										className="group"
+									>
+										<Icon name="magnifying-glass" className="mb-1 mr-2" />
+										<span className="pr-2 group-hover:underline">
+											{artwork.medium_display}
+										</span>
+									</NavLink>
+								),
 							})
 								.filter(
 									([key, value]) =>
@@ -256,7 +323,6 @@ export default function ArtworkDetails() {
 										'date_display',
 										'place_of_origin',
 										'medium_display',
-										,
 									]
 									const indexA = order.indexOf(keyA)
 									const indexB = order.indexOf(keyB)
@@ -264,8 +330,10 @@ export default function ArtworkDetails() {
 								})
 								.map(([key, value]) => (
 									<li key={key} className="pb-3 2xl:pb-0">
-										<span className="list-item opacity-80">{key}:</span>{' '}
-										<span className="detail-content inline-block">{value}</span>
+										<span className="list-item font-medium opacity-80">
+											{key}:
+										</span>{' '}
+										<span className="detail-content list-item">{value}</span>
 									</li>
 								))}
 							<li
@@ -280,6 +348,7 @@ export default function ArtworkDetails() {
 								Type: artwork.artwork_type_title,
 								Technique: artwork.technique_titles,
 								Provenance: artwork.provenance_text,
+								Term: artwork.term_titles,
 							})
 								.filter(
 									([_, value]) =>
@@ -289,8 +358,8 @@ export default function ArtworkDetails() {
 										value !== 'null',
 								)
 								.map(([key, value]) => (
-									<li key={key}>
-										<span className="list-item opacity-80">
+									<li key={key} className="pb-3 2xl:pb-0">
+										<span className="list-item font-medium opacity-80">
 											{key}
 											{': '}
 										</span>
@@ -298,19 +367,75 @@ export default function ArtworkDetails() {
 										<span className="detail-content inline-block">{value}</span>
 									</li>
 								))}
+							<li className="pb-3 2xl:pb-0">
+								<span className="list-item pr-12 font-medium opacity-80">
+									Color:
+								</span>
+								<span className="detail-content list-item w-fit" style={{}}>
+									<NavLink
+										className={({ isActive, isPending }) =>
+											isActive
+												? 'active'
+												: isPending
+													? 'pending'
+													: 'underline decoration-[var(--colorHsl)] underline-offset-8'
+										}
+										to={`/artworks/colorSearch?search=${artwork.color_h}&searchType=color`}
+									>
+										<Icon name="magnifying-glass" className="mb-1 mr-2" />
+										{artwork.colorHsl}
+									</NavLink>
+								</span>
+							</li>
 						</ul>
+						{/* MARK: Footer
+						 */}
+						<div className="flex items-center justify-between">
+							<Button
+								className="btn-back relative z-50 flex h-10 w-10 cursor-pointer justify-start rounded-full p-0 text-body-2xs"
+								variant="ghost"
+								onClick={() => {
+									navigate(-2)
+								}}
+							>
+								<Icon
+									name="arrow-left"
+									size="font"
+									style={{ borderRadius: '50%', color: colorRgb }}
+									className="text-[1.95rem] ring-[var(--colorHsl)] transition-all duration-200 hover:cursor-pointer"
+								/>
+							</Button>
+							<NavLink
+								className={({ isActive, isPending }) =>
+									isActive
+										? 'active'
+										: isPending
+											? 'pending'
+											: '' + 'mb-1 mr-6 h-8 w-8'
+								}
+								to={`../artworks/puzzle/${artwork.id}`}
+							>
+								<SVGComponent
+									className="h-[1em] w-[1em] text-4xl"
+									style={{
+										borderRadius: '50%',
+										color: colorRgb,
+										stroke: '#121212',
+										strokeWidth: '0.25px',
+									}}
+								/>
+							</NavLink>
+						</div>
 					</div>
 				</div>
 			</div>
+			{MeshGradients(colorH, colorS, colorL)}
 		</>
 	)
 }
 
-{
-	/*
-	MARK: LOGO FN
-*/
-}
+/* // .MARK: LOGO fn
+ */
 
 function Logo() {
 	const { artwork } = useLoaderData<typeof loader>()
@@ -319,7 +444,7 @@ function Logo() {
 	return (
 		<Link
 			to="/"
-			className="logo group z-10 grid justify-start p-0 pt-4 leading-snug"
+			className="logo group z-10 grid justify-start p-0 leading-snug"
 		>
 			<span
 				className="inline-block justify-self-start text-xl font-medium leading-none transition group-hover:translate-x-1"
@@ -334,11 +459,15 @@ function Logo() {
 	)
 }
 
+/* // .MARK: HSLToRGB fn
+ */
+
 function HSLToRGB(h: number, s: number, l: number): string {
-	s /= 100;
-	l /= 100;
-	const k = (n: number) => (n + h / 30) % 12;
-	const a = s * Math.min(l, 1 - l);
-	const f = (n: number) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
-	return `${Math.round(255 * f(0))}, ${Math.round(255 * f(8))}, ${Math.round(255 * f(4))}`;
+	s /= 100
+	l /= 100
+	const k = (n: number) => (n + h / 30) % 12
+	const a = s * Math.min(l, 1 - l)
+	const f = (n: number) =>
+		l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)))
+	return `${Math.round(255 * f(0))}, ${Math.round(255 * f(8))}, ${Math.round(255 * f(4))}`
 }

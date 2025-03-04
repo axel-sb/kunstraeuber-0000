@@ -1,64 +1,17 @@
-import { vitePlugin as remix } from '@remix-run/dev'
+import { reactRouter } from '@react-router/dev/vite'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
-import { glob } from 'glob'
-import { remixDevTools } from 'remix-development-tools'
-import { flatRoutes } from 'remix-flat-routes'
-import { defineConfig } from 'vite'
+
 import { envOnlyMacros } from 'vite-env-only'
+/* import { defineConfig, type ViteUserConfig } from 'vitest/config' */
+import { reactRouterDevTools } from 'react-router-devtools'
+/* import tsconfigPaths from 'vite-tsconfig-paths' */
+
 
 const MODE = process.env.NODE_ENV
 
-export default defineConfig({
-	plugins: [
-		remixDevTools(),
-		envOnlyMacros(),
-		// it would be really nice to have this enabled in tests, but we'll have to
-		// wait until https://github.com/remix-run/remix/issues/9871 is fixed
-		process.env.NODE_ENV === 'test'
-			? null
-			: remix({
-					ignoredRouteFiles: ['**/*'],
-					serverModuleFormat: 'esm',
-					routes: async (defineRoutes) => {
-						return flatRoutes('routes', defineRoutes, {
-							ignoredRouteFiles: [
-								'.*',
-								'**/*.css',
-								'**/*.test.{js,jsx,ts,tsx}',
-								'**/__*.*',
-								// This is for server-side utilities you want to colocate
-								// next to your routes without making an additional
-								// directory. If you need a route that includes "server" or
-								// "client" in the filename, use the escape brackets like:
-								// my-route.[server].tsx
-								'**/*.server.*',
-								'**/*.client.*',
-							],
-						})
-					},
-				}),
-		process.env.SENTRY_AUTH_TOKEN
-			? sentryVitePlugin({
-					disable: MODE !== 'production',
-					authToken: process.env.SENTRY_AUTH_TOKEN,
-					org: process.env.SENTRY_ORG,
-					project: process.env.SENTRY_PROJECT,
-					release: {
-						name: process.env.COMMIT_SHA,
-						setCommits: {
-							auto: true,
-						},
-					},
-					sourcemaps: {
-						filesToDeleteAfterUpload: await glob([
-							'./build/**/*.map',
-							'.server-build/**/*.map',
-						]),
-					},
-				})
-			: null,
-	],
+export default {
 	build: {
+		target: 'es2022',
 		cssMinify: MODE === 'production',
 
 		rollupOptions: {
@@ -82,7 +35,33 @@ export default defineConfig({
 			ignored: ['**/playwright-report/**'],
 		},
 	},
-
+	plugins: [
+		/* reactRouterDevTools(), reactRouter(), tsconfigPaths(), */
+		envOnlyMacros(),
+		// it would be really nice to have this enabled in tests, but we'll have to
+		// wait until https://github.com/remix-run/remix/issues/9871 is fixed
+		process.env.NODE_ENV === 'test' ? null : reactRouter(),
+		process.env.SENTRY_AUTH_TOKEN
+			? sentryVitePlugin({
+					disable: MODE !== 'production',
+					authToken: process.env.SENTRY_AUTH_TOKEN,
+					org: process.env.SENTRY_ORG,
+					project: process.env.SENTRY_PROJECT,
+					release: {
+						name: process.env.COMMIT_SHA,
+						setCommits: {
+							auto: true,
+						},
+					},
+					sourcemaps: {
+						filesToDeleteAfterUpload: [
+							'./build/**/*.map',
+							'.server-build/**/*.map',
+						],
+					},
+				})
+			: null,
+	],
 	test: {
 		include: ['./app/**/*.test.{ts,tsx}'],
 		setupFiles: ['./tests/setup/setup-test-env.ts'],
@@ -93,4 +72,4 @@ export default defineConfig({
 			all: true,
 		},
 	},
-})
+} 

@@ -25,6 +25,7 @@ node_modules
 
 # generated files
 /app/components/ui/icons
+.react-router/
 app/routes/_marketing+/about.tsx
 app/routes/_marketing+/index.tsx
 app/routes/_marketing+/privacy.tsx
@@ -49,3 +50,33 @@ other/svg-icons/zoom-in-col.svg
 other/svg-icons/zoom-in-inkscape.svg
 app/routes/_artworks+/artworks._details.artworkId.1.css
 app/routes/_artworks+/artworks._details.$artworkId.1.tsx
+.cursor/rules/kunstraeuber.mdc
+app/assets/mapstyle-greyish.ts
+app/assets/red-filled-marker.svg
+app/assets/red-stroke-marker.svg
+public/104896.avif
+public/229361.avif
+public/border-image copy.svg
+public/border-image.svg
+public/marker-icon-2x.png
+public/marker-shadow.png
+public/site.webmanifest
+public/img/1.gif
+public/img/61680987-alte-statue-symbol-in-einfachen-stil-auf-weißem-hintergrund-art-symbol.jpg
+public/img/arrow-right.svg
+public/img/marker-monalisa.png
+public/img/ml-square.png
+public/img/ml.png
+public/img/mona-cubes.png
+public/img/ninja-red-72.png
+public/img/ninja-red.png
+public/img/noun-artwork-26864 copy.png
+public/img/noun-artwork-26864.png
+public/img/noun-artwork-26864.svg
+public/img/noun-camera-7440064.png
+public/img/noun-camera-7440064.svg
+public/img/sad-thief.png
+public/img/statue.png
+public/img/stumping,hatching,stippling.jpg
+other/bruno-kr/bruno.json
+other/bruno-kr/Get Artists.bru

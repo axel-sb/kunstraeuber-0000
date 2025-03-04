@@ -22,9 +22,15 @@ test('Users can add 2FA to their account and use it when logging in', async ({
 	const otpUri = new URL(otpUriString)
 	const options = Object.fromEntries(otpUri.searchParams)
 
-	await main
-		.getByRole('textbox', { name: /code/i })
-		.fill(generateTOTP(options).otp)
+	await main.getByRole('textbox', { name: /code/i }).fill(
+		(
+			await generateTOTP({
+				...options,
+				// the algorithm will be "SHA1" but we need to generate the OTP with "SHA-1"
+				algorithm: 'SHA-1',
+			})
+		).otp,
+	)
 	await main.getByRole('button', { name: /submit/i }).click()
 
 	await expect(main).toHaveText(/You have enabled two-factor authentication./i)
@@ -42,7 +48,7 @@ test('Users can add 2FA to their account and use it when logging in', async ({
 
 	await page
 		.getByRole('textbox', { name: /code/i })
-		.fill(generateTOTP(options).otp)
+		.fill((await generateTOTP(options)).otp)
 
 	await page.getByRole('button', { name: /submit/i }).click()
 

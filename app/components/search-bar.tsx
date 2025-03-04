@@ -1,14 +1,16 @@
-import { Form, useSearchParams, useSubmit } from '@remix-run/react'
+import { Form, NavLink, useSearchParams, useSubmit } from 'react-router'
 import { useId, useState } from 'react'
 import { useDebounce, useIsPending } from '#app/utils/misc.tsx'
 import { Icon } from './ui/icon.tsx'
 import { Input } from './ui/input.tsx'
 import { Label } from './ui/label.tsx'
+// import SearchComboBox from './search-combobox'
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
+	SelectValue,
 } from './ui/select.tsx'
 import { StatusButton } from './ui/status-button.tsx'
 
@@ -26,7 +28,7 @@ export function SearchBar({
 	const submit = useSubmit()
 	const isSubmitting = useIsPending({
 		formMethod: 'GET',
-		formAction: '/artworks',
+		formAction: '/users',
 	})
 
 	const handleFormChange = useDebounce((form: HTMLFormElement) => {
@@ -34,14 +36,24 @@ export function SearchBar({
 	}, 400)
 
 	const [searchType, setSearchType] = useState<
-		'' | 'color' | 'style' | 'date' | 'all' | 'artist' | 'place' | 'type' | 'weight'
+		| ''
+		| 'all'
+		| 'artist'
+		| 'color'
+		| 'date'
+		| 'place'
+		| 'style'
+		| 'type'
+		| 'subject'
+		| 'tags'
+		| 'technique'
 	>('')
 
 	return (
 		<Form
 			method="GET"
 			action="/artworks"
-			className="animation: animate-hue; relative flex w-full items-center justify-between gap-0 bg-black/90"
+			className="flex flex-wrap items-center justify-center"
 			onChange={(e) => autoSubmit && handleFormChange(e.currentTarget)}
 		>
 			<div className="flex-1">
@@ -53,48 +65,15 @@ export function SearchBar({
 					name="search"
 					id={id}
 					defaultValue={searchParams.get('search') ?? ''}
-					placeholder="Search..."
-					/* placeholder={`Search ${searchType || 'all'}`} */
-					className="w-full bg-secondary"
+					placeholder={`Search ${searchType || 'all'}`}
+					className="w-full border-r-0"
 					autoFocus={autoFocus}
-					autoComplete="off"
-					list="artist"
 				/>
 			</div>
-			<datalist id="artist">
-				<option value="Picasso"></option>
-				<option value="Matisse"></option>
-				<option value="Monet"></option>
-				<option value="Van Gogh"></option>
-				<option value="Max Ernst"></option>
-				<option value="Jay Wolke"></option>
-				<option value=""></option>
-				<option value=""></option>
-				<option value=""></option>
-				<option value=""></option>
-				<option value=""></option>
-				<option value=""></option>
-				<option value=""></option>
-			</datalist>
-
 			<div>
 				<SelectSearchType
 					searchType={searchType}
-					setSearchType={
-						setSearchType as React.Dispatch<
-							React.SetStateAction<
-								| ''
-								| 'color'
-								| 'style'
-								| 'date'
-								| 'all'
-								| 'artist'
-								| 'place'
-								| 'type'
-								| 'weight'
-							>
-						>
-					}
+					setSearchType={setSearchType}
 				/>
 			</div>
 			<div>
@@ -107,16 +86,6 @@ export function SearchBar({
 					<span className="sr-only">Search</span>
 				</StatusButton>
 			</div>
-			{searchType ? (
-				<div className="absolute left-0 top-12 px-3 text-sm text-muted-foreground">
-					{' '}
-					in:{' '}
-					<span className="px-2 font-bold italic text-yellow-100">
-						{' '}
-						{`${searchType || 'all'}`}{' '}
-					</span>
-				</div>
-			) : null}
 		</Form>
 	)
 }
@@ -124,25 +93,30 @@ export function SearchBar({
 interface SelectSearchTypeProps {
 	searchType:
 		| ''
-		| 'color'
-		| 'style'
-		| 'date'
 		| 'all'
 		| 'artist'
+		| 'color'
+		| 'date'
 		| 'place'
+		| 'style'
 		| 'type'
-		| 'weight'
+		| 'subject'
+		| 'tags'
+		| 'technique'
+
 	setSearchType: React.Dispatch<
 		React.SetStateAction<
 			| ''
-			| 'color'
-			| 'style'
-			| 'date'
 			| 'all'
 			| 'artist'
+			| 'color'
+			| 'date'
 			| 'place'
+			| 'style'
 			| 'type'
-			| 'weight'
+			| 'subject'
+			| 'tags'
+			| 'technique'
 		>
 	>
 }
@@ -159,49 +133,41 @@ function SelectSearchType({
 			value={searchType}
 			onValueChange={(value) => {
 				const searchType = value as
+					| ''
 					| 'all'
 					| 'artist'
-					| 'style'
-					| 'place'
-					| 'date'
-					| 'type'
 					| 'color'
-                    | 'weight'
+					| 'date'
+					| 'place'
+					| 'style'
+					| 'subject'
+					| 'tags'
+					| 'technique'
+					| 'type'
 
 				setSearchType(searchType)
-				if (searchType === 'color') {
-					window.location.href = '/artworks/colorSearch'
-				}
 				const searchForm =
 					document.querySelector<HTMLFormElement>('#search-form')
 				const searchInput =
 					document.querySelector<HTMLInputElement>('#search-input')
 				if (searchForm && searchInput) {
 					searchForm.action = `/artworks?searchType='color' ?? {
-												window.location.href =
-													'/artworks/colorSearch'
+          navigate("/artworks/colorSearch")
 											} :
                     { ${searchType}&search=${searchInput.value}`
 					searchForm.submit()
 				}
 			}}
 		>
-			<SelectTrigger className="absolute right-20 top-2 h-6 w-6 justify-between"></SelectTrigger>
+			<SelectTrigger className="h-10 w-24 justify-between border-0">
+				<SelectValue placeholder={searchType ? `${searchType}` : ''} />
+			</SelectTrigger>
 			<SelectContent>
-				<SelectItem value="Select...">
-					<StatusButton
-						type="submit"
-						status={isPending ? 'pending' : 'idle'}
-						className="flex h-6 w-16 items-center justify-start border-0 text-left text-popover-foreground shadow-none"
-					>
-						Select ↓
-					</StatusButton>
-				</SelectItem>
 				<SelectItem value="artist">
 					<StatusButton
 						type="submit"
 						status={isPending ? 'pending' : 'idle'}
-						className="flex h-6 w-16 items-center justify-start border-0 text-left text-popover-foreground shadow-none"
+						className="flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left shadow-none"
 					>
 						Artist
 					</StatusButton>
@@ -210,7 +176,7 @@ function SelectSearchType({
 					<StatusButton
 						type="submit"
 						status={isPending ? 'pending' : 'idle'}
-						className="flex h-6 w-16 items-center justify-start border-0 text-popover-foreground text-left shadow-none"
+						className="flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left shadow-none"
 					>
 						Style
 					</StatusButton>
@@ -219,7 +185,7 @@ function SelectSearchType({
 					<StatusButton
 						type="submit"
 						status={isPending ? 'pending' : 'idle'}
-						className="w-16text-left flex h-6 items-center justify-start border-0 text-popover-foreground shadow-none"
+						className="flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left shadow-none"
 					>
 						Place
 					</StatusButton>
@@ -228,7 +194,7 @@ function SelectSearchType({
 					<StatusButton
 						type="submit"
 						status={isPending ? 'pending' : 'idle'}
-						className="w-16text-left flex h-6 items-center justify-start border-0 text-popover-foreground shadow-none"
+						className="flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left shadow-none"
 					>
 						Date
 					</StatusButton>
@@ -237,34 +203,76 @@ function SelectSearchType({
 					<StatusButton
 						type="submit"
 						status={isPending ? 'pending' : 'idle'}
-						className="w-16text-left flex h-6 items-center justify-start border-0 text-popover-foreground shadow-none"
+						className="flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left shadow-none"
 					>
 						Type
 					</StatusButton>
 				</SelectItem>
-				<SelectItem value="color">
+				<SelectItem value="subject">
 					<StatusButton
 						type="submit"
 						status={isPending ? 'pending' : 'idle'}
-						className="w-16text-left flex h-6 items-center justify-start border-0 text-popover-foreground shadow-none"
+						className="flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left shadow-none"
 					>
-						Color
+						Subject
 					</StatusButton>
 				</SelectItem>
-				<SelectItem value="weight">
+				<SelectItem value="tags">
 					<StatusButton
 						type="submit"
 						status={isPending ? 'pending' : 'idle'}
-						className="w-16text-left flex h-6 items-center justify-start border-0 text-popover-foreground shadow-none"
+						className="flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left shadow-none"
 					>
-						Weight
+						Tags
 					</StatusButton>
+				</SelectItem>
+				<SelectItem value="medium">
+					<StatusButton
+						type="submit"
+						status={isPending ? 'pending' : 'idle'}
+						className="flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left shadow-none"
+					>
+						Medium
+					</StatusButton>
+				</SelectItem>
+
+				<SelectItem value="technique">
+					<StatusButton
+						type="submit"
+						status={isPending ? 'pending' : 'idle'}
+						className="flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left shadow-none"
+					>
+						Technique
+					</StatusButton>
+				</SelectItem>
+
+				<SelectItem value="color">
+					{/* <StatusButton
+						type="submit"
+						status={isPending ? 'pending' : 'idle'}
+						className="flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left shadow-none"
+					>
+						Color
+					</StatusButton> */}
+					<NavLink
+						className={({ isActive, isPending }) =>
+							isActive
+								? 'active flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left shadow-none'
+								: isPending
+									? 'pending'
+									: '' +
+										'flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left text-foreground shadow-none'
+						}
+						to="/artworks/colorSearch"
+					>
+						Color
+					</NavLink>
 				</SelectItem>
 				<SelectItem value="all">
 					<StatusButton
 						type="submit"
 						status={isPending ? 'pending' : 'idle'}
-						className="w-16text-left flex h-6 items-center justify-start border-0 text-popover-foreground shadow-none"
+						className="flex h-6 w-16 items-center justify-start border-0 pl-4 pr-2 text-left shadow-none"
 					>
 						All
 					</StatusButton>
@@ -273,3 +281,15 @@ function SelectSearchType({
 		</Select>
 	)
 }
+
+/* const searchInput =
+          document.querySelector<HTMLInputElement>('#search-input')
+        if (searchForm && searchInput) {
+          searchForm.action = `/artworks?searchType='color' ?? {
+                        window.location.href =
+                          '/artworks/colorSearch'
+                      } :
+                    { ${searchType}&search=${searchInput.value}`
+          searchForm.submit()
+        }
+      } */

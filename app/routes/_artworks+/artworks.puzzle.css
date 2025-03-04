@@ -1,0 +1,124 @@
+/* div {
+	transform: translate(calc(50vw - 50%), 0px);
+  width: fit-content;
+} */
+
+canvas#canvas {
+	margin-inline: auto;
+}
+
+img {
+	position: absolute;
+	top: 3rem;
+	margin-left: 50%;
+	margin-right: 50%;
+	transform: translate(-50%, 0px);
+	right: 1rem;
+	max-width: 50%;
+	height: auto;
+	max-height: 70dvh;
+	margin: 1rem;
+	margin: auto;
+	border: 0.5px solid #fff;
+	box-shadow:
+		0 0 1rem 0.5rem #000d,
+		0 0 2rem 1rem #000a,
+		0 0 3rem 2rem #0005;
+}
+
+/* #puzzleImage {
+	position: relative;
+	max-width: calc(100vw - 2rem);
+	&::before {
+		content: url(https: //www.artic.edu/iiif/2/07c7d00b-7b8a-7a77-6337-65241c04fa50/full/843,/0/default.jpg);
+		position: absolute;
+		top: auto;
+		left: 0;
+		width: 100%;
+		height: auto;
+	}
+} */
+
+/*................................. MARK: Slider
+*/
+
+input[type='range']::-webkit-slider-runnable-track {
+	background: hsl(189, 35%, 22%);
+	height: 1rem;
+}
+
+/* #region slider reset */
+/*********** Baseline, reset styles ***********/
+input[type='range'] {
+	background: transparent;
+	cursor: pointer;
+	padding-block: 1rem;
+}
+
+/* Removes default focus */
+input[type='range']:focus {
+	outline: none;
+}
+/* #endregion */
+
+/******** Chrome, Safari, Opera and Edge Chromium styles ********/
+/* slider track */
+input[type='range']::-webkit-slider-runnable-track {
+	background-color: #add8e6;
+	border-radius: 0.5rem;
+	height: 0.5rem;
+}
+
+/* slider thumb */
+input[type='range']::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	/* Override default look */
+	appearance: none;
+	margin-top: -6px;
+	/* Centers thumb on the track */
+	background-color: #808080;
+	border-radius: 0.5rem;
+	height: 1.25rem;
+	width: 1.25rem;
+}
+
+input[type='range']:has(:focus)::-webkit-slider-thumb {
+	margin-top: -6px;
+}
+
+input[type='range']:focus::-webkit-slider-thumb {
+	outline: 3px solid #add8e6;
+	outline-offset: 0.25rem;
+	height: 1.1rem;
+	width: 1.1rem;
+	margin-top: -4px;
+	box-shadow:
+		0 0 0.5px 0.5px #393939,
+		0 0 0.5px 1px #808080,
+		0 2px 0.5rem 2px #000a,
+		2px 4px 1rem 5px #0005;
+}
+
+/* #region Firefox styles ***********/
+/* slider track */
+input[type='range']::-moz-range-track {
+	background-color: #add8e6;
+	border-radius: 0.5rem;
+	height: 0.5rem;
+}
+
+/* slider thumb */
+input[type='range']::-moz-range-thumb {
+	background-color: #808080;
+	border: none;
+	/*Removes extra border that FF applies*/
+	border-radius: 0.5rem;
+	height: 1rem;
+	width: 1rem;
+}
+
+input[type='range']:focus::-moz-range-thumb {
+	outline: 3px solid #808080;
+	outline-offset: 0.125rem;
+}
+/* #endregion */

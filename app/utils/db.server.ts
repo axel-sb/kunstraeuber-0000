@@ -1,5 +1,6 @@
 import { remember } from '@epic-web/remember'
-import { PrismaClient } from '@prisma/client'
+// Changed import due to issue: https://github.com/remix-run/react-router/pull/12644
+import { PrismaClient } from '@prisma/client/index.js'
 import chalk from 'chalk'
 
 export const prisma = remember('prisma', () => {
@@ -19,13 +20,13 @@ export const prisma = remember('prisma', () => {
 	client.$on('query', async (e) => {
 		if (e.duration < logThreshold) return
 		const color =
-			e.duration < logThreshold * 1.1
+			e.duration < logThreshold * 1.5
 				? 'green'
-				: e.duration < logThreshold * 1.2
+				: e.duration < logThreshold * 2
 					? 'blue'
-					: e.duration < logThreshold * 1.3
+					: e.duration < logThreshold * 3
 						? 'yellow'
-						: e.duration < logThreshold * 1.4
+						: e.duration < logThreshold * 4
 							? 'redBright'
 							: 'red'
 		const dur = chalk[color](`${e.duration}ms`)

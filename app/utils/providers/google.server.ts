@@ -1,5 +1,5 @@
 import { createId as cuid } from '@paralleldrive/cuid2'
-import { redirect } from '@remix-run/node'
+import { redirect } from 'react-router'
 import { OIDCStrategy } from 'web-oidc/remix'
 import { connectionSessionStorage } from '../connections.server.ts'
 import { redirectWithToast } from '../toast.server.ts'
@@ -15,7 +15,7 @@ export class GoogleProvider implements AuthProvider {
 				client_secret: process.env.GOOGLE_CLIENT_SECRET,
 				redirect_uri:
 					// ❗️ 'http://localhost:3000/auth/google/callback',
-					'https://kunstraeuber2–0000-staging.fly.dev/auth/google/callback',
+					'https://kunstraeuber2-0000-staging.fly.dev/auth/google/callback',
 				authorizationParams: {
 					scope: ['openid', 'email'],
 				},

@@ -18,6 +18,12 @@
       "directory": "./components",
       "postinstall": [],
       "transformers": []
+    },
+    {
+      "name": "draft-ui",
+      "directory": "./components",
+      "postinstall": [],
+      "transformers": []
     }
   ]
 }

@@ -176,6 +176,8 @@ model Artwork {
   date_end              Int?
   date_display          String?
   place_of_origin       String?
+  latitude              Float?
+  longitude             Float?
   medium_display        String?
   provenance_text       String?
   dimensions            String?

@@ -5,7 +5,7 @@ import { marketingPreset } from './app/routes/_artworks+/tailwind-preset'
 import { extendedTheme } from './app/utils/extended-theme.ts'
 
 export default {
-	content: ['./app/**/*.{ts,tsx,jsx,js}'],
+	content: ['./app/**/*.{ts,tsx,jsx,js}', './stories/*.{ts,tsx}'],
 	darkMode: 'class',
 	theme: {
 		container: {
@@ -18,5 +18,9 @@ export default {
 		extend: extendedTheme,
 	},
 	presets: [marketingPreset],
-	plugins: [animatePlugin, radixPlugin],
+	plugins: [
+		animatePlugin,
+		radixPlugin,
+		require('tailwindcss-react-aria-components'),
+	],
 } satisfies Config

@@ -38,7 +38,7 @@ const SVGComponent = (
 		/>
 
 		<path
-			fill="#fff8"
+			fill="#fff"
 			stroke="#000"
 			strokeWidth={1}
 			fillRule="nonzero"

@@ -1,4 +1,4 @@
-body {
+/* body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -6,9 +6,4 @@ body {
 	max-width: calc(65dvh / 1.26);
 	height: 100dvh;
 	margin: 0 auto;
-}
-
-/* home link "kunst räuber" on front page */
-.container > a {
-	/* display: none; */
-}
+} */

@@ -1,27 +1,37 @@
 {
-  "typescript.preferences.autoImportFileExcludePatterns": [
-    "@remix-run/server-runtime",
-    "@remix-run/router",
-    "express",
-    "@radix-ui/**",
-    "@react-email/**",
-    "react-router-dom",
-    "react-router",
-    "node:stream/consumers",
-    "node:test",
-    "node:console"
-  ],
-  "workbench.editorAssociations": {
-    "*.db": "sqlite-viewer.view"
-  },
-  "workbench.colorCustomizations": {
-    "commandCenter.border": "#e7e7e799",
-    "sash.hoverBorder": "#832561",
-    "tab.activeBorder": "#832561",
-    "titleBar.activeBackground": "#832561",
-    "titleBar.activeForeground": "#e7e7e7",
-    "titleBar.inactiveBackground": "#83256199",
-    "titleBar.inactiveForeground": "#e7e7e799"
-  },
-  "peacock.color": "#832561"
+	"typescript.preferences.autoImportFileExcludePatterns": [
+		"@remix-run/server-runtime",
+		"express",
+		"@radix-ui/**",
+		"@react-email/**",
+		"node:stream/consumers",
+		"node:test",
+		"node:console"
+	],
+	"workbench.editorAssociations": {
+		"*.db": "sqlite-viewer.view"
+	},
+	"workbench.colorCustomizations": {
+        "editor.foldBackground": "#1e1e2e11",
+        "commandCenter.border": "#e7e7e799",
+        "sash.hoverBorder": "#616100",
+        "tab.activeBorder": "#616100",
+        "titleBar.activeBackground": "#616100",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#61610099",
+        "titleBar.inactiveForeground": "#e7e7e799"
+    },
+	"peacock.color": "#616100",
+	"editor.fontWeight": "normal",
+	"editor.fontSize": 16,
+	"svg.preview.background": "dark-transparent",
+	"mdx-preview.preview.useVscodeMarkdownStyles": false,
+	"editor.fontFamily": "'Operator Mono Lig Light', 'Operator Mono Lig', 'Operator Mono Ssm Light', 'Operator Mono Lig', 'Operator Mono Ssm Lig', 'Operator Mono', 'M PLUS 1 Code', 'SF Mono', 'Inconsolata XL', 'Input Mono Condensed', Menlo, Monaco, 'Courier New', monospace",
+	"editor.lineHeight": 23,
+	"editor.fontSize": 17,
+	"editor.fontWeight": 300,
+	"editor.fontLigatures": "'calt', 'liga', 'dlig', 'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08'",
+	"workbench.colorCustomizations": {
+		"editor.foldBackground": "#1e1e2e11"
+	}
 }

@@ -1,6 +1,6 @@
 import crypto from 'node:crypto'
-import { createRequestHandler } from '@remix-run/express'
-import { type ServerBuild } from '@remix-run/node'
+import { createRequestHandler } from '@react-router/express'
+import * as Sentry from '@sentry/node'
 import { ip as ipAddress } from 'address'
 import chalk from 'chalk'
 import closeWithGrace from 'close-with-grace'
@@ -10,13 +10,15 @@ import rateLimit from 'express-rate-limit'
 import getPort, { portNumbers } from 'get-port'
 import helmet from 'helmet'
 import morgan from 'morgan'
+import { type ServerBuild } from 'react-router'
 
 const MODE = process.env.NODE_ENV ?? 'development'
 const IS_PROD = MODE === 'production'
 const IS_DEV = MODE === 'development'
 const ALLOW_INDEXING = process.env.ALLOW_INDEXING !== 'false'
+const SENTRY_ENABLED = IS_PROD && process.env.SENTRY_DSN
 
-if (IS_PROD && process.env.SENTRY_DSN) {
+if (SENTRY_ENABLED) {
 	void import('./utils/monitoring.js').then(({ init }) => init())
 }
 
@@ -115,10 +117,17 @@ app.use(
 					MODE === 'development' ? 'ws:' : null,
 					process.env.SENTRY_DSN ? '*.sentry.io' : null,
 					"'self'",
+					'*.githubusercontent.com',
 				].filter(Boolean),
 				'font-src': ["'self'"],
 				'frame-src': ["'self'"],
-				'img-src': ["'self'", 'data:', 'https://*.artic.edu'],
+				'img-src': [
+					"'self'",
+					'data:',
+					'blob:',
+					'https://*.artic.edu',
+					'https://*.openstreetmap.org',
+				],
 				'script-src': [
 					"'strict-dynamic'",
 					"'self'",
@@ -142,11 +151,11 @@ const maxMultiple =
 	!IS_PROD || process.env.PLAYWRIGHT_TEST_BASE_URL ? 10_000 : 1
 const rateLimitDefault = {
 	windowMs: 60 * 1000,
-	max: 1000 * maxMultiple,
+	limit: 1000 * maxMultiple,
 	standardHeaders: true,
 	legacyHeaders: false,
 	validate: { trustProxy: false },
-	// Malicious users can spoof their IP address which means we should not deault
+	// Malicious users can spoof their IP address which means we should not default
 	// to trusting req.ip when hosted on Fly.io. However, users cannot spoof Fly-Client-Ip.
 	// When sitting behind a CDN such as cloudflare, replace fly-client-ip with the CDN
 	// specific header such as cf-connecting-ip
@@ -158,13 +167,13 @@ const rateLimitDefault = {
 const strongestRateLimit = rateLimit({
 	...rateLimitDefault,
 	windowMs: 60 * 1000,
-	max: 10 * maxMultiple,
+	limit: 10 * maxMultiple,
 })
 
 const strongRateLimit = rateLimit({
 	...rateLimitDefault,
 	windowMs: 60 * 1000,
-	max: 100 * maxMultiple,
+	limit: 100 * maxMultiple,
 })
 
 const generalRateLimit = rateLimit(rateLimitDefault)
@@ -199,9 +208,8 @@ app.use((req, res, next) => {
 async function getBuild() {
 	try {
 		const build = viteDevServer
-			? await viteDevServer.ssrLoadModule('virtual:remix/server-build')
-			: // @ts-expect-error - the file might not exist yet but it will
-				// eslint-disable-next-line import/no-unresolved
+			? await viteDevServer.ssrLoadModule('virtual:react-router/server-build')
+			: // @ts-expect-error - the file might not exist yet but it will (and	add? eslint-disable-next-line import/no-unresolved)
 
 				await import('../build/server/index.js')
 
@@ -277,8 +285,16 @@ ${chalk.bold('Press Ctrl+C to stop')}
 	)
 })
 
-closeWithGrace(async () => {
+closeWithGrace(async ({ err }) => {
 	await new Promise((resolve, reject) => {
 		server.close((e) => (e ? reject(e) : resolve('ok')))
 	})
+	if (err) {
+		console.error(chalk.red(err))
+		console.error(chalk.red(err.stack))
+		if (SENTRY_ENABLED) {
+			Sentry.captureException(err)
+			await Sentry.flush(500)
+		}
+	}
 })

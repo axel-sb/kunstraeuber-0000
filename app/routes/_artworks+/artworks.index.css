@@ -5,7 +5,7 @@ body {
 }
 
 /* radio-group */
-header > form > div {
+header > form > div, .navlink-map {
 	background: conic-gradient(from -90deg at top left, #0001, #fff1);
 }
 
@@ -64,7 +64,7 @@ input[type='radio']:checked + svg {
 @container list-item (min-width: 0) {
 	figcaption {
 		font-size: clamp(11px, 10px + 2cqw, 20px) !important;
-		padding: 2cqi 3cqi 1cqi !important;
+		/* padding: 2cqi 3cqi 1cqi; */
 		/* border-top-left-radius: 0 !important;
 		border-top-right-radius: 0 !important; */
 
@@ -72,34 +72,33 @@ input[type='radio']:checked + svg {
 			white-space: nowrap !important;
 			overflow: hidden;
 		}
-
-		&span {
-			padding-left: 5cqi !important;
-			margin-left: auto !important;
-			margin-right: 3cqi !important;
-		}
+	}
+  svg {
+		width: 0.5lh;
+		height: 0.5lh;
 	}
 }
 
 @container list-item (min-width: 150px) {
 	figcaption {
-		padding-block: 10cqi;
-		padding-inline: 2cqi;
+		/* padding-block: 10cqi;
+		padding-inline: 0.5cqi; */
 		font-size: small;
-	}
-	div.w-full.pt-2 {
-		width: auto;
-		padding-top: 0.25rem;
+
+		div.w-full.pt-2 {
+			width: auto;
+			padding-top: 0.25rem;
+		}
 	}
 	svg {
-		width: 0.7lh;
-		height: 0.7lh;
+		width: 0.5lh;
+		height: 0.5lh;
 	}
 }
 
 @container list-item (min-width: 300px) {
 	figure {
-		margin-bottom: 10rem!important;
+		margin-bottom: 10rem !important;
 	}
 	li {
 		padding-bottom: 25cqb;
@@ -110,7 +109,7 @@ input[type='radio']:checked + svg {
 		padding-top: 0.25rem;
 	}
 	svg {
-		width: 1lh;
-		height: 1lh;
+		width: 0.5lh;
+		height: 0.5lh;
 	}
 }

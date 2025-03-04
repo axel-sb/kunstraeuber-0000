@@ -1,21 +1,17 @@
 // #region imports
-import {
-	type LinksFunction,
-	type LoaderFunctionArgs,
-	json,
-} from '@remix-run/node'
+import { type Artwork } from '@prisma/client'
+import { type LinksFunction, type LoaderFunctionArgs,} from 'react-router'
 import {
 	Form,
 	Link,
 	NavLink,
 	useLoaderData,
-	useLocation,
 	useNavigation,
+	useSearchParams,
 	useSubmit,
-} from '@remix-run/react'
+} from 'react-router'
 
 import Hue from '@uiw/react-color-hue'
-import chalk from 'chalk'
 import { useEffect, useState } from 'react'
 import SVGComponent from '#app/components/ui/eye.tsx'
 import { Icon } from '#app/components/ui/icon.js'
@@ -36,13 +32,27 @@ export const links: LinksFunction = () => [
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const url = new URL(request.url)
-	const q = url.searchParams.get('q') ?? '200'
-	let data = await getColor((q ?? '200').toString())
-	return json({ q, data })
+	const query = url.searchParams.get('search')
+	const qNumber = query !== null ? Number(query) : 0
+	const searchType = 'color'
+	const limit = 6
+	const page = url.searchParams.get('page')
+	const pageNumber: number = page !== null ? Number(page) : 1
+
+	const data = await getColor(qNumber, searchType, limit, pageNumber)
+
+	return {
+		query,
+		searchType,
+		limit: Number(limit),
+		page: pageNumber,
+		data: data,
+	}
 }
+
 // #endregion
 
-// //§ ______________________ MARK: exp.default 🌈
+// //§ ______________________ MARK: Export default 🌈
 // https://uiwjs.github.io/react-color/#/hue
 
 export default function ColorSearch({
@@ -53,30 +63,28 @@ export default function ColorSearch({
 	autoFocus?: boolean
 	autoSubmit?: boolean
 }) {
-	const { q, data } = useLoaderData<typeof loader>()
+	const { data } = useLoaderData<typeof loader>()
+	console.log('🚀 [colorSearch useLoaderData] data: ', {
+		data,
+	})
 	const navigation = useNavigation()
-
 	const [color, setcolor] = useState('')
+	const {
+		data: artworks,
+		page,
+		query,
+		searchType,
+	} = useLoaderData<typeof loader>()
+	console.log('artworks, page', artworks, page)
 
-	function HueSlider() {
-		const [hsva, setHsva] = useState({ h: 0, s: 0, v: 68, a: 1 })
-		return (
-			<Hue
-				hue={hsva.h}
-				onChange={(newHue) => {
-					setHsva({ ...hsva, ...newHue })
-					setcolor(JSON.stringify(newHue.h))
-				}}
-			/>
-		)
+	const [searchParams] = useSearchParams()
+	const nextPage = page + 1
+	const nextPageUrl = new URLSearchParams(searchParams)
+	nextPageUrl.set('page', nextPage.toString())
+
+	const handleNextPageClick = () => {
+		window.location.search = nextPageUrl.toString()
 	}
-
-	useEffect(() => {
-		const searchField = document.getElementById('q')
-		if (searchField instanceof HTMLInputElement) {
-			searchField.value = q || ''
-		}
-	}, [q])
 
 	// We've seen useNavigate already, we'll use its cousin, useSubmit (https://remix.run/docs/en/main/hooks/use-submit), for this.
 	const submit = useSubmit()
@@ -94,34 +102,29 @@ export default function ColorSearch({
 		submit(form)
 	}, 400)
 
-	const location = useLocation()
+	// MARK: Hue Slider
 
-	/* const colorHsl = data?.length > 0 ? data[0]?.colorHsl : 'hsl(0, 0%, 0%)' ?? 'hsl(0, 0%, 0%)'; */
+	function HueSlider() {
+		const [hsva, setHsva] = useState({ h: 0, s: 0, v: 68, a: 1 })
+		return (
+			<Hue
+				className="h-8 p-2 2xl:h-10 2xl:p-4"
+				hue={hsva.h}
+				onChange={(newHue) => {
+					setHsva({ ...hsva, ...newHue })
+					setcolor(JSON.stringify(newHue.h))
+				}}
+			/>
+		)
+	}
 
-	/* const currentQueryKey = location.search
-		.split('&')
-		.find((part) => part.startsWith('='))
-		?.split('=')[1] */
+	useEffect(() => {
+		const searchField = document.getElementById('query')
+		if (searchField instanceof HTMLInputElement) {
+			searchField.setAttribute('value', query ? query.toString() : '')
+		}
+	}, [query])
 
-	//§  __________________________________ MARK: return
-	//§   Color Picker 🌈
-
-	// adapted from artworks.index
-
-	/* const { data, query } = useLoaderData<typeof loader>()
-const location = useLocation()
-	const searchType = useLoaderData<typeof loader>().searchType */
-	const colorHsl =
-		(useLoaderData<typeof loader>().data as { colorHsl?: string })?.colorHsl ??
-		''
-	console.log('🟡 colorHsl →', colorHsl)
-
-	console.log(
-		chalk.blue(
-			console.group('Object.entries(location).map(([k, v]) ➜ '),
-			Object.entries(location).map(([k, v]) => `${chalk.red(k)}: ${v}  \n`),
-		),
-	)
 	//§  .............................  MARK: radio btns hook
 	const [grid, setgrid] = useState('')
 
@@ -156,253 +159,92 @@ const location = useLocation()
 					name={name}
 					checked={checked}
 					onChange={() => onChange()}
-					className="group invisible h-0 w-0 has-[input[type='radio']:checked]:text-yellow-300"
+					className="group invisible h-0 w-0"
 				/>
 				<Icon
 					name={name}
 					size="font"
-					className="!group-has-[input[type='radio']:checked]:text-yellow-300 visible w-12 px-1 text-yellow-100/50 group-has-[input[type='radio']:checked]:inline-flex group-has-[input[type='radio']:checked]:animate-pulse"
+					className="!group-has-[label:nth-child(1)>input[type='radio']:checked]:text-slate-300 group-has-[input[type='radio']:checked]:animate-pulse![animation-duration:300ms] visible w-12 px-1 text-slate-500 group-has-[input[type='radio']:checked]:inline-flex"
 				/>
 			</label>
 		)
 	}
 
-	{
-		/* return (
-		<>
-			<header className="hidden py-6">
-				<nav className="flex flex-wrap items-center justify-between gap-4 sm:flex-nowrap md:gap-8"></nav>
-			</header>
-			<HueSlider />
-			<Form
-				id="search-form"
-				className="flex flex-wrap items-center justify-center gap-2"
-				onChange={(e) => autoSubmit && handleFormChange(e.currentTarget)}
-				role="search"
-			>
-				<div className="flex w-full">
-					<label
-						htmlFor="picker"
-						className="inline-block h-16 w-full"
-						style={{
-							background: `linear-gradient(to right, hsl(${color}, 100%, 35%) 40%, hsl(${color}, 100%, 50%) 60%, hsl(${color}, 100%, 85%)`,
-							color: `hsl(${color}, 100%, 50%)`,
-						}}
-					></label>
-					<Input
-						autoFocus
-						aria-label="Search by color"
-						id="q"
-						name="q"
-						value={color}
-						onChange={(e) => setcolor(e.target.value)}
-						placeholder="Search"
-						//type="hidden"
-						list="dominantColors"
-					/>
-					<datalist id="dominantColors">
-						<option value="37"></option>
-						<option value="#8B0000"></option>
-						<option value="#A52A2A"></option>
-						<option value="#DC143C"></option>
-					</datalist>
-				</div>
-				<div>
-					<StatusButton
-						type="submit"
-						status={isSubmitting ? 'pending' : status}
-						className="relative -top-14 flex h-8 w-full items-center justify-center border-0 hover:bg-secondary/10"
-					>
-						<Icon
-							name="magnifying-glass"
-							size="xl"
-							style={{
-								color: color ? `hsl(${color}, 100%, 50%)` : undefined,
-								filter: 'invert(.1)',
-							}}
-						/>
-						<span className="sr-only">Search</span>
-					</StatusButton>
-				</div>
-				<div aria-hidden hidden={!searching} id="search-spinner" />
-			</Form>
-			<label htmlFor="b">Choose a browser: </label>
-			<input list="list" id="b" name="browser" />
-			<datalist id="list">
-				<option value="Chrome"></option>
-				<option value="Firefox"></option>
-				<option value="Internet Explorer"></option>
-				<option value="Opera"></option>
-				<option value="Safari"></option>
-				<option value="Microsoft Edge"></option>
-			</datalist>{' '}
-
-			//§§  ______________________________________  MARK main
-
-			<main className="flex flex-col items-center overscroll-contain px-4">
-				<ul className="artworks-fade-in grid grid-cols-2 gap-2 md:grid-cols-4">
-					{/* className="artworks-fade-in flex w-full touch-pan-y snap-y list-none flex-col items-center justify-start gap-y-28 overflow-y-auto overflow-x-visible overscroll-contain pb-28 pt-12"
-
-					{data ? (
-						location.search === '' ? (
-							<li className="w-15rem relative flex max-w-sm flex-wrap justify-center whitespace-pre text-lg text-yellow-50">
-								<p className="px-4 font-normal opacity-100">Select a color 🡕</p>
-								<p className="px-4 font-semibold opacity-50">
-									(search type: <em> " {currentQueryKey} " </em>)
-								</p>
-							</li>
-						) : (
-							data.map((artwork) => (
-								<li
-									key={artwork.id}
-									className="flex max-h-fit snap-center items-center"
-								>
-									<NavLink
-										className={({ isActive, isPending }) =>
-											isActive ? 'active' : isPending ? 'pending' : ''
-										}
-										to={`../artworks/${artwork.id}`}
-									>
-										{artwork.title ? (
-											<figure className="relative z-40 mx-auto grid max-h-full max-w-[281px] place-items-center gap-4 pt-4 lg:static lg:max-w-full lg:-translate-x-28 lg:grid-cols-2">
-												// todo https://pagedone.io/docs/image
-												<img
-													alt={artwork.alt_text ?? undefined}
-													key={artwork.id}
-													src={artwork.image_url ?? '../dummy.jpeg'}
-												/>
-
-												{/*
-                                            //§§   .  .  .  .  .  .  .  .  .  .    MARK Figcaption
-                                            */
-	}
-	{
-		/*
-												<figcaption className="z-50 flex w-full justify-between pt-2 lg:absolute lg:-right-8 lg:top-32 lg:max-w-fit lg:translate-x-full">
-													<div className="relative flex w-full flex-wrap text-sm">
-														<div className="max-w-full">{artwork.title}</div>
-
-														<div className="w-[calc(100%-1rem)] font-semibold opacity-50">
-															{artwork.artist_title}
-														</div>
-														<Icon
-															name="eye-open"
-															className="icon-eye absolute -right-6 top-0 hidden h-6 w-6 opacity-90 lg:hidden"
-															style={{
-																color: artwork.colorHsl as string,
-															}}
-														/>
-														<Icon
-															name="arrow-right"
-															className="icon-arrow h-4 w-4 justify-self-end lg:ml-[calc(100%-3rem)] lg:mt-4 lg:block"
-															style={{
-																color: artwork.colorHsl as string,
-															}}
-														/>
-													</div>
-												</figcaption>
-											</figure>
-										) : (
-											<i>No Artworks found for query {q} </i>
-										)}
-									</NavLink>
-								</li>
-							))
-						)
-					) : (
-						<li className="w-15rem relative flex max-w-sm flex-wrap justify-center whitespace-pre text-lg text-yellow-50">
-							<p className="px-4 font-normal opacity-100">
-								Nothing found for query: <em> " {q} " </em>
-							</p>
-							<p className="px-4 font-semibold opacity-50">
-								(search type: <em> " {currentQueryKey} " </em>)
-							</p>
-						</li>
-					)}
-				</ul>
-			</main>
-			<div className="footer container flex items-center justify-between pb-0 pt-16">
-				<Logo />
-				<div className="relative flex">
-					<h2 className="pb-4 text-center leading-none">
-						<span className="font-semibold opacity-50">
-							query{' '}
-							<em className="font-normal opacity-100">
-								{' '}
-								{currentQueryKey}
-								{': '}
-							</em>{' '}
-						</span>
-						{q || ' '}{' '}
-						{/* same as: {location.search.split('&')[0].split('=')[1]} */
-	}
-	{
-		/*
-					</h2>
-				</div>
-			</div>
-		</>
-	) */
-	}
+	// MARK: Return
 
 	return (
 		<>
-			{/*
-           //   MARK:👑 Main
-        */}
-			<main className="artworks-fade-in flex-col items-center justify-start p-4 pb-8 sm:p-10 md:px-12 lg:px-16 xl:px-24 2xl:px-32">
+			<main className="artworks-fade-in flex-col items-center justify-start p-4 pb-8 sm:p-10 md:px-12 lg:px-16 xl:px-24 2xl:px-32 2xl:py-8">
 				{/*
            //§   ...........................................   MARK: Header
         */}
-
-				<header className="mx-auto grid h-16 w-full grid-cols-2 place-content-center gap-4 rounded-md bg-black px-4 text-lg 2xl:text-xl">
+				<header className="mx-auto grid w-full grid-cols-3 place-content-center gap-4 rounded-md pb-6 text-lg 2xl:text-xl">
 					<Logo />
 
+					<div className="navlink-map inline-flex h-10 w-14 cursor-pointer justify-center self-center justify-self-center rounded-md">
+						<NavLink
+							className={`$({ isActive, isPending }) => isActive ? 'active' : 'pending' z-10 inline-flex h-10 w-10 justify-center text-foreground`}
+							to={`../artworks/cluster/?search=${query}&searchType=${searchType}`}
+						>
+							<Icon
+								name="map"
+								className="text-[1.9rem] text-slate-500"
+								size="font"
+							/>
+						</NavLink>
+					</div>
+
 					{/*
-           //§   ...........................................   MARK: 🔘 radio-btns
+           //§  MARK: 🔘 radio-btns
         */}
 
-					<form className="form col-[2/3] mr-4 grid h-12 self-center justify-self-end md:mr-6 lg:mr-8">
-						<div className="group/radio flex justify-around divide-x-reverse divide-slate-700 place-self-center rounded border-[0.5px] border-solid border-yellow-50/25 py-1 pr-1 text-xl text-yellow-50/50 md:gap-4 2xl:text-2xl">
+					<form className="form col-[3/3] grid h-12 self-center justify-self-end">
+						<div className="flex justify-around place-self-center rounded border-[0.5px] pb-2 pt-1 text-xl text-slate-500 md:gap-4 2xl:text-2xl">
 							<RadioButton
 								name="grid-1"
 								value={grid}
 								onChange={handleGrid1Change}
-								className="place-self-center"
+								className="group place-self-center"
 							/>
 							<RadioButton
 								name="grid-2"
 								value={grid}
 								onChange={handleGrid2Change}
-								className="place-self-center"
+								className="group place-self-center"
 							/>
 
 							<RadioButton
 								name="grid-3"
 								value={grid}
 								onChange={handleGrid3Change}
-								className="place-self-center"
+								className="group place-self-center"
 							/>
 						</div>
 					</form>
 				</header>
+
+				{/*
+        //§ Color Picker 🌈
+        */}
+
 				<HueSlider />
+
 				<Form
 					id="search-form"
-					className="flex flex-wrap items-center justify-center gap-2"
+					className="flex flex-wrap items-center justify-center gap-2 pt-2"
 					onChange={(e) => autoSubmit && handleFormChange(e.currentTarget)}
 					role="search"
 				>
-					<div className="flex w-full">
+					<div className="flex w-full pt-4">
 						<label
 							htmlFor="picker"
-							className="inline-block h-16 w-full"
+							className="inline-block h-12 w-full"
 							/* style={{
 								background: `linear-gradient(to right, hsl(${color}, 100%, 35%) 40%, hsl(${color}, 100%, 50%) 60%, hsl(${color}, 100%, 85%)`,
 								color: `hsl(${color}, 100%, 50%)`,
 							}} */
 							style={{
-								background: `ltransparent`,
+								background: `transparent`,
 								color: `hsl(${color}, 100%, 50%)`,
 							}}
 						></label>
@@ -410,7 +252,7 @@ const location = useLocation()
 							autoFocus
 							aria-label="Search by color"
 							id="q"
-							name="q"
+							name="search"
 							value={color}
 							onChange={(e) => setcolor(e.target.value)}
 							placeholder="Search"
@@ -418,20 +260,23 @@ const location = useLocation()
 						/>
 					</div>
 					<div>
+						{/*
+           //§   ...........................................   MARK: 🔎 Submit-Button
+        */}
 						<StatusButton
 							type="submit"
 							status={isSubmitting ? 'pending' : status}
-							className="relative -top-14 flex h-10 w-10 items-center justify-center border-0 hover:bg-secondary/10"
+							className="flex h-10 w-10 -translate-y-14 items-center justify-center rounded-full border-none hover:bg-black 2xl:absolute 2xl:top-24 2xl:h-12 2xl:w-16"
 							style={{
-								backgroundColor: color ? `hsl(${color}, 100%, 50%)` : undefined,
+								border: `hsl(${color}, 100%, 50%), 3px, solid`,
 							}}
 						>
 							<Icon
 								name="magnifying-glass"
-								size="xl"
+								size="font"
+								className="h-8 w-8 2xl:h-12 2xl:w-12"
 								style={{
-									color: color ? `hsl(${color}, 100%, 50%)` : undefined,
-									filter: 'invert(1)',
+									color: color ? `hsl(${color}, 100%, 50%)` : `#111`,
 								}}
 							/>
 							<span className="sr-only">Search</span>
@@ -439,7 +284,6 @@ const location = useLocation()
 					</div>
 					<div aria-hidden hidden={!searching} id="search-spinner" />
 				</Form>
-
 				<ul className="w-full gap-x-[3%] pt-4 [column-count:1] group-has-[label:nth-child(1)>input[type='radio']:checked]/body:[column-count:1] group-has-[label:nth-child(2)>input[type=radio]:checked]/body:[column-count:2] group-has-[label:nth-child(3)>input[type=radio]:checked]/body:[column-count:3] md:pt-8 md:[column-count:2] lg:gap-x-12 lg:pt-10 lg:[column-count:4] xl:gap-x-[4%] xl:pt-14 xl:[column-count:5] 2xl:gap-x-20 2xl:pt-20">
 					{data !== undefined && data.length > 0 ? (
 						data.map((artwork) => (
@@ -453,7 +297,11 @@ const location = useLocation()
 							>
 								<NavLink
 									className={({ isActive, isPending }) =>
-										isActive ? 'active' : isPending ? 'pending' : '' + 'w-full'
+										isActive
+											? 'active'
+											: isPending
+												? 'pending animate-pulse'
+												: '' + 'w-full'
 									}
 									to={`../artworks/${artwork.id}`}
 								>
@@ -548,19 +396,18 @@ const location = useLocation()
 	)
 }
 
- //§   ...........................................   MARK: LOGO
-
+//§   ...........................................   MARK: LOGO
 
 function Logo() {
 	return (
 		<Link
 			to="/"
-			className="logo group inline-grid justify-self-start px-6 py-2 leading-tight lg:px-8"
+			className="logo group inline-grid justify-self-start rounded-md bg-[conic-gradient(from_-90deg_at_top_left,_#0001,_#fff1)] px-2 py-1 leading-tight lg:px-4 lg:py-2 2xl:text-2xl"
 		>
-			<span className="animate-hue font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
+			<span className="font-bold leading-none text-slate-500 transition group-hover:-translate-x-1">
 				kunst
 			</span>
-			<span className="pl-3 font-light leading-none text-yellow-100 transition group-hover:translate-x-1">
+			<span className="pl-3 font-light leading-none text-slate-300 transition group-hover:translate-x-1">
 				räuber
 			</span>
 		</Link>
