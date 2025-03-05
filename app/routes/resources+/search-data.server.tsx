@@ -1537,7 +1537,7 @@ export async function searchArtworks(
 			)
 			break
 		case 'color':
-			result = (await getColor(Number(q), searchType, limit, pageNumber)).map(
+			result = (await getColor(Number(q))).map(
 				(artwork) => ({
 					...artwork,
 					latitude: null,

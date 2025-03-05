@@ -1,6 +1,6 @@
 import { type LinksFunction } from '@remix-run/react/dist/routeModules'
 import { ClientOnly } from 'remix-utils/client-only'
-import GeoSearchMap from '#app/components/geo-search.client'
+import GeoSearchMap from '#app/components/geo-search.client.tsx'
 import clusterStyles from './artworks.cluster.css?url'
 
 export const links: LinksFunction = () => [
