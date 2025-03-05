@@ -2,7 +2,7 @@ import { Control, DomUtil } from 'leaflet'
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch'
 import { useEffect, useMemo } from 'react'
 import { MapContainer, TileLayer, useMap, ZoomControl } from 'react-leaflet'
-import './geolet.client.js'
+// import './geolet.client.js'
 
 function SearchFieldInner() {
 	const provider = useMemo(() => new OpenStreetMapProvider(), [])
@@ -75,7 +75,7 @@ const GetCoordinates = () => {
 		map.addControl(new positon())
 
 		// @ts-ignore
-		L.geolet({ position: 'topright' }).addTo(map)
+		// L.geolet({ position: 'topright' }).addTo(map)
 	}, [map])
 
 	return null
