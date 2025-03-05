@@ -1,12 +1,12 @@
-import { useState } from "react"
+import { useState } from 'react'
 
 const LogicalNot = () => {
 	//Using Inline Function and the The Logical Not (!) to toggle state
 	const [toggle, setToggle] = useState(true)
 
-    const handleClick = () => {
-			setToggle(!toggle)
-		}
+	const handleClick = () => {
+		setToggle(!toggle)
+	}
 
 	return (
 		<>

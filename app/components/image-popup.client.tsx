@@ -1,16 +1,12 @@
+import L from 'leaflet'
 import {
-	MapContainer,
-	TileLayer,
 	ImageOverlay,
 	Marker,
 	useMap,
 	Popup,
 } from 'react-leaflet'
-import { useState } from 'react'
-import L from 'leaflet'
 import newMarker from '#app/assets/red-stroke-marker.svg'
 
-const center = [50.0595, 19.9379]
 
 const pointerIcon = new L.Icon({
 	iconUrl: newMarker,
@@ -48,11 +44,7 @@ const customPopup = (
 const imageUrl =
 	'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Krakow_Center_-_basic_map.svg/1440px-Krakow_Center_-_basic_map.svg.png'
 
-// add image to map ;)
-const imageBounds = [
-	[50.0665, 19.93],
-	[50.0522, 19.9455],
-]
+
 
 const OverlayImage = () => {
 	const map = useMap()
@@ -75,7 +67,6 @@ const OverlayImage = () => {
 }
 
 export function MapWrapper() {
-	const [map, setMap] = useState(null)
 
 	return (
 		<>

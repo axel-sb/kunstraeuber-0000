@@ -1,6 +1,5 @@
 // #region import-export
-import { type LinksFunction, type LoaderFunctionArgs, } from 'react-router'
-import { NavLink, useLoaderData } from 'react-router'
+import { NavLink, useLoaderData, type LinksFunction, type LoaderFunctionArgs } from 'react-router'
 import { Icon } from '#app/components/ui/icon.tsx'
 import { getFavorite } from '../resources+/search-data.server'
 import favorites from './artworks.favorites.css?url'

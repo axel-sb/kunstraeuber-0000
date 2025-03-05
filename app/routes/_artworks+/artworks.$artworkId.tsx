@@ -2,29 +2,21 @@
 import { invariantResponse } from '@epic-web/invariant'
 import { type Artwork } from '@prisma/client'
 
-import { type Route } from '../../+types/root.ts'
+import chalk from 'chalk'
+import { type FunctionComponent } from 'react'
 import {
 	Link,
 	NavLink,
 	useFetcher,
 	useLoaderData,
 	useNavigate,
-	data,
-	Links,
-	Meta,
-	Outlet,
-	Scripts,
-	ScrollRestoration,
-	useMatches,
-    ActionFunctionArgs,
-    LoaderFunctionArgs,
-    redirect,
+	type ActionFunctionArgs,
+	redirect,
 } from 'react-router'
-import chalk from 'chalk'
-import { type FunctionComponent } from 'react'
 import { MeshGradients } from '#app/components/mesh-gradients.tsx'
 import { Button } from '#app/components/ui/button.tsx'
 import { Icon } from '#app/components/ui/icon.js'
+import { type Route } from '../../+types/root.ts'
 import { getArtwork, updateArtwork } from '../resources+/search-data.server.tsx'
 import artworkId from './artworks.artworkId.css?url'
 
@@ -35,7 +27,7 @@ export const links: Route.LinksFunction = () => [
 	{ rel: 'stylesheet', href: artworkId },
 ]
 
-export const meta: Route.MetaFunction = ({ data }) => {
+export const meta: Route.MetaFunction = () => {
 	return [
 		{ title: '* Kunsträuber Artwork Page' },
 		{
@@ -105,7 +97,7 @@ const Favorite: FunctionComponent<{
 	return (
 		<fetcher.Form
 			method="post"
-			className="favorite pr-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 pt-4 justify-self-end"
+			className="favorite justify-self-end pr-4 pt-4 sm:px-8 md:px-12 lg:px-16 xl:px-20"
 		>
 			<Button
 				name="favorite"
@@ -172,7 +164,7 @@ export default function ArtworkId() {
 							{artwork.title}
 						</div>
 						<div className="artist col-[1_/_-1] row-[3_/_4] text-balance text-center">
-								{artwork.artist_title}
+							{artwork.artist_title}
 						</div>
 					</div>
 				</figcaption>
@@ -187,21 +179,14 @@ export default function ArtworkId() {
 					{/* //  .MARK: ⃝ btn-back ⏪
 					 */}
 					<Button
+						onClick={() => {
+							void navigate(-1)
+						}}
 						className="btn-back relative col-[1_/_2] inline-flex h-10 w-10 flex-[2_1_auto] cursor-pointer justify-center justify-self-center rounded-full p-0"
 						variant="ghost"
 						size="ghost"
-						onClick={() => {
-							/* navigate('../artworks') */
-							navigate(-1)
-						}}
 					>
 						<Icon name="arrow-left" size="font" className="text-3xl" />
-						{/* <NavLink
-						className={`$({ isActive, isPending }) => isActive ? 'active' : 'pending' transition-x-0 relative col-[1_/_2] inline-flex h-10 w-10 translate-y-0 place-items-center justify-center justify-self-center rounded-full p-0 p-1.5`}
-						to={'./'}
-					>
-						<Icon name="arrow-left" size="font" className="text-3xl" />
-					</NavLink> */}
 					</Button>
 					{/*// .MARK: ⃝ info-circled ℹ️
 					 */}
@@ -256,7 +241,7 @@ function Logo() {
 	return (
 		<Link
 			to="/"
-			className="logo group z-10 grid justify-start px-6 pt-8 pb-2 leading-snug"
+			className="logo group z-10 grid justify-start px-6 pb-2 pt-8 leading-snug"
 		>
 			<span
 				className="inline-block justify-self-start text-xl font-medium leading-none transition group-hover:translate-x-1"

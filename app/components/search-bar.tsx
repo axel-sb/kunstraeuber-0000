@@ -32,7 +32,7 @@ export function SearchBar({
 	})
 
 	const handleFormChange = useDebounce((form: HTMLFormElement) => {
-		submit(form)
+		void submit(form)
 	}, 400)
 
 	const [searchType, setSearchType] = useState<

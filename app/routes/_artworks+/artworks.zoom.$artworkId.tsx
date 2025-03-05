@@ -1,6 +1,5 @@
 import { invariantResponse } from '@epic-web/invariant'
-import { data, type LinksFunction, type LoaderFunctionArgs } from 'react-router'
-import { useLoaderData, useNavigate, type MetaFunction } from 'react-router'
+import { type LinksFunction, type LoaderFunctionArgs, useLoaderData, useNavigate, type MetaFunction  } from 'react-router'
 import { ClientOnly } from 'remix-utils/client-only'
 import { Button } from '#app/components/ui/button.tsx'
 import { Icon } from '#app/components/ui/icon.js'
@@ -53,7 +52,7 @@ export default function Zoom() {
 				<Button
 					className="border-0"
 					onClick={() => {
-						navigate(-1)
+						void navigate(-1)
 					}}
 				>
 					<Icon

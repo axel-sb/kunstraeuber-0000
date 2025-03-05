@@ -59,23 +59,23 @@ import { makeTimings, time } from './utils/timing.server.ts'
 import { getToast } from './utils/toast.server.ts'
 import { useOptionalUser, useUser } from './utils/user.ts' */
 
-import { Combobox } from './components/search-combobox.tsx'
 import { withSentry } from '@sentry/remix'
+import { useRef } from 'react'
 import {
-    data,
-    Form,
-    HeadersFunction,
-    Link,
-    Links,
-    Meta,
-    Outlet,
-    Scripts,
-    ScrollRestoration,
-    useLoaderData,
-    useLocation,
-    useMatches,
-    useNavigation,
-    useSubmit
+	data,
+	Form,
+	type HeadersFunction,
+	Link,
+	Links,
+	Meta,
+	Outlet,
+	Scripts,
+	ScrollRestoration,
+	useLoaderData,
+	useLocation,
+	useMatches,
+	useNavigation,
+	useSubmit,
 } from 'react-router'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import { type Route } from './+types/root.ts'
@@ -83,12 +83,18 @@ import globalStyles from './app.css?url'
 import appleTouchIconAssetUrl from './assets/favicons/apple-touch-icon.png'
 import faviconAssetUrl from './assets/favicons/favicon.svg'
 import { GeneralErrorBoundary } from './components/error-boundary.tsx'
+import { Combobox } from './components/search-combobox.tsx'
 import { useToast } from './components/toaster.tsx'
 import { Button } from './components/ui/button.tsx'
-import { Icon, href as iconsHref } from './components/ui/icon.tsx'
 import {
-    ThemeSwitch
-} from './routes/resources+/theme-switch.tsx'
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuPortal,
+	DropdownMenuTrigger,
+} from './components/ui/dropdown-menu.tsx'
+import { Icon, href as iconsHref } from './components/ui/icon.tsx'
+import { ThemeSwitch } from './routes/resources+/theme-switch.tsx'
 import tailwindStyleSheetUrl from './styles/tailwind.css?url'
 import { getUserId, logout } from './utils/auth.server.ts'
 import { ClientHintCheck, getHints } from './utils/client-hints.tsx'
@@ -102,14 +108,6 @@ import { makeTimings, time } from './utils/timing.server.ts'
 import { getToast } from './utils/toast.server.ts'
 import { useOptionalUser, useUser } from './utils/user.ts'
 
-import { useRef } from 'react'
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuPortal,
-    DropdownMenuTrigger,
-} from './components/ui/dropdown-menu.tsx'
 
 export const links: Route.LinksFunction = () => {
 	return [
@@ -288,11 +286,11 @@ function App() {
 	const user = useOptionalUser()
 	const matches = useMatches()
 	const isOnSearchPage = matches.find((m) => m.id === 'routes/users+/index')
-const combobox = isOnSearchPage ? null : <Combobox status="idle" />
+	const combobox = isOnSearchPage ? null : <Combobox status="idle" />
 	const allowIndexing = data.ENV.ALLOW_INDEXING !== 'false'
 	useToast(data.toast)
 	const location = useLocation()
-  const navigation = useNavigation()
+	const navigation = useNavigation()
 	const isNavigating = Boolean(navigation.location)
 
 	//   ......................................   MARK: return  ⮐
@@ -433,7 +431,7 @@ function UserDropdown() {
 						// this prevents the menu from closing before the form submission is completed
 						onSelect={(event) => {
 							event.preventDefault()
-							submit(formRef.current)
+							void submit(formRef.current)
 						}}
 					>
 						<Form action="/logout" method="POST" ref={formRef}>
@@ -503,11 +501,10 @@ export function ErrorBoundary() {
 	)
 }
 
-
 function GlobalSpinner() {
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div id="spinner"></div>
-    </div>
-  )
+	return (
+		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+			<div id="spinner"></div>
+		</div>
+	)
 }

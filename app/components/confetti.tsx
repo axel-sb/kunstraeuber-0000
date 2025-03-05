@@ -1,7 +1,10 @@
 import Confetti from 'react-confetti'
 import { ClientOnly } from 'remix-utils/client-only'
 
-export function ConfettiShower({ id }: { id?: string | null }, colors: string[]) {
+export function ConfettiShower(
+	{ id }: { id?: string | null },
+	colors: string[],
+) {
 	if (!id) return null
 
 	return (

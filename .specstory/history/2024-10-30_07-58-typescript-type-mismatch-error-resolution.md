@@ -5,17 +5,21 @@
 _**User**_
 
 For the code present, we get this error:
+
 ```
 Type '{ id: number; title: string | null; artist_display: string | null; artist_title: string | null; width: number | null; height: number | null; color_h: number | null; color_s: number | null; ... 4 more ...; weight: number | null; }[]' is not assignable to type '{ id: number; title: string | null; artist_display: string | null; artist_title: string | null; date_end: number | null; date_display: string | null; place_of_origin: string | null; ... 22 more ...; tags: string | null; }[]'.
   Type '{ id: number; title: string | null; artist_display: string | null; artist_title: string | null; width: number | null; height: number | null; color_h: number | null; color_s: number | null; ... 4 more ...; weight: number | null; }' is missing the following properties from type '{ id: number; title: string | null; artist_display: string | null; artist_title: string | null; date_end: number | null; date_display: string | null; place_of_origin: string | null; ... 22 more ...; tags: string | null; }': date_end, date_display, place_of_origin, medium_display, and 13 more.
 ```
+
 How can I resolve this? If you propose a fix, please make it concise.
 
 ---
 
 _**Assistant**_
 
-The error occurs because the return type of `getArtist` doesn't match the `Artwork` type. The simplest fix is to update the `select` object in `getArtist` to include all the required fields:
+The error occurs because the return type of `getArtist` doesn't match the
+`Artwork` type. The simplest fix is to update the `select` object in `getArtist`
+to include all the required fields:
 
 ```typescript:app/routes/resources+/search-data.server.tsx
 export function getArtist(q?: string | '') {
@@ -56,11 +60,9 @@ export function getArtist(q?: string | '') {
 }
 ```
 
-This adds all the fields that TypeScript expects in the `Artwork` type. Remove any commented-out fields and ensure all required fields are included.
+This adds all the fields that TypeScript expects in the `Artwork` type. Remove
+any commented-out fields and ensure all required fields are included.
 
 ---
 
-
-
 ---
-

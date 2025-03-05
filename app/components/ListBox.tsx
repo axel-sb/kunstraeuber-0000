@@ -1,10 +1,10 @@
 // eslint-disable @typescript-eslint/no-use-before-define
 import { CheckIcon } from '@heroicons/react/24/solid'
-import  { type AriaListBoxOptions } from '@react-aria/listbox'
-import  { type Node } from '@react-types/shared'
+import { type AriaListBoxOptions } from '@react-aria/listbox'
+import { type Node } from '@react-types/shared'
 import { useRef } from 'react'
 import { useListBox, useListBoxSection, useOption } from 'react-aria'
-import  { type ListState } from 'react-stately'
+import { type ListState } from 'react-stately'
 
 interface ListBoxProps extends AriaListBoxOptions<unknown> {
 	listBoxRef?: React.RefObject<HTMLUListElement>

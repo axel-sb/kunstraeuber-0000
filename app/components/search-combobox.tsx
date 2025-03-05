@@ -1,11 +1,3 @@
-import {
-	Form,
-	NavLink,
-	useFetcher,
-	useLocation,
-	useSearchParams,
-	useSubmit,
-} from 'react-router'
 import { useEffect, useId, useState } from 'react'
 import {
 	ComboBox,
@@ -17,9 +9,15 @@ import {
 	Label,
 	type Key,
 } from 'react-aria-components'
+import {
+	Form,
+	NavLink,
+	useFetcher,
+	useLocation,
+	useSearchParams,
+	useSubmit,
+} from 'react-router'
 import { Icon } from '#app/components/ui/icon.tsx'
-import { StatusButton } from '#app/components/ui/status-button.tsx'
-import { useIsPending } from '#app/utils/misc.tsx'
 import {
 	Select,
 	SelectContent,
@@ -27,7 +25,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '#app/components/ui/select.tsx'
-import { type } from 'node:os'
+import { StatusButton } from '#app/components/ui/status-button.tsx'
+import { useIsPending } from '#app/utils/misc.tsx'
 
 type FetcherData = {
 	suggestions: {
@@ -53,7 +52,7 @@ export function Combobox({
 	const location = useLocation()
 	const isSubmitting = useIsPending({
 		formMethod: 'GET',
-		formAction: location.pathname === '/' ? '/artworks' : '/artworks/cluster'
+		formAction: location.pathname === '/' ? '/artworks' : '/artworks/cluster',
 	})
 
 	type SearchType =
@@ -131,7 +130,7 @@ export function Combobox({
 	useEffect(() => {
 		if (inputValue.trim() && selectedKey === null) {
 			console.log('Fetching data for query:', inputValue)
-			fetcher.load(
+			void fetcher.load(
 				`../resources/autocomplete?q=${encodeURIComponent(
 					inputValue,
 				)}&searchType=${encodeURIComponent(searchType)}`,

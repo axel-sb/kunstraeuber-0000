@@ -5,8 +5,8 @@
 // 	export function foo(): void;
 // }
 declare module 'react-leaflet-markercluster' {
-	import { MarkerClusterGroupOptions } from 'leaflet.markercluster'
-	import { ReactNode } from 'react'
+	import { type MarkerClusterGroupOptions } from 'leaflet.markercluster'
+	import { type ReactNode } from 'react'
 
 	interface MarkerClusterGroupProps extends MarkerClusterGroupOptions {
 		children?: ReactNode
@@ -18,4 +18,3 @@ declare module 'react-leaflet-markercluster' {
 }
 
 declare module '#app/components/puzzle.client.js'
-

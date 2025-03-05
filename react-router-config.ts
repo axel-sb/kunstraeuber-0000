@@ -7,4 +7,3 @@ export default {
 		unstable_optimizeDeps: true,
 	},
 } satisfies Config
-    

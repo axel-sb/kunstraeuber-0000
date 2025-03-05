@@ -1,9 +1,9 @@
 {
-    "extends": "./tsconfig.json",
-        "include": [
-            "app/routes/_artworks+/**/*.ts",
-            "app/routes/_artworks+/**/*.tsx",
-            "app/components/**/*.ts",
-            "app/components/**/*.tsx"
-        ]
+	"extends": "./tsconfig.json",
+	"include": [
+		"app/routes/_artworks+/**/*.ts",
+		"app/routes/_artworks+/**/*.tsx",
+		"app/components/**/*.ts",
+		"app/components/**/*.tsx"
+	]
 }

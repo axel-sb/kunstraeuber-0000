@@ -1,16 +1,18 @@
 // #region  import export
-import { Button } from '#app/components/ui/button.js'
-import SVGComponent from '#app/components/ui/eye1.tsx'
-import { Icon } from '#app/components/ui/icon.js'
 import { type Artwork } from '@prisma/client'
 import React from 'react'
 import {
-    Link, type LinksFunction, NavLink,
-    useLoaderData,
-    useNavigate,
-    useSearchParams
+	Link,
+	type LinksFunction,
+	NavLink,
+	useLoaderData,
+	useNavigate,
+	useSearchParams,
 } from 'react-router'
-import type { Route } from '../../+types/root'
+import { Button } from '#app/components/ui/button.js'
+import SVGComponent from '#app/components/ui/eye1.tsx'
+import { Icon } from '#app/components/ui/icon.js'
+import  { type Route } from '../../+types/root'
 import { searchArtworks } from '../resources+/search-data.server'
 import artworks from './artworks.index.css?url'
 
@@ -116,7 +118,7 @@ export default function Index() {
 				<header className="mx-auto grid h-16 w-full grid-cols-3 place-content-center text-lg 2xl:text-xl">
 					<Logo />
 
-					<div className="navlink-map flex h-10 w-14 cursor-pointer justify-center justify-self-start self-center rounded-md -translate-x-2">
+					<div className="navlink-map flex h-10 w-14 -translate-x-2 cursor-pointer justify-center self-center justify-self-start rounded-md">
 						<NavLink
 							className={`$({ isActive, isPending }) => isActive ? 'active' : 'pending' z-10 inline-flex h-10 w-10 justify-center text-foreground`}
 							to={`../artworks/cluster/?search=${query}&searchType=${searchType}`}
@@ -191,7 +193,7 @@ export default function Index() {
 													color: `hsl( from ${artwork.colorHsl} h 100% 50% )`,
 												}}
 											>
-												<SVGComponent/>
+												<SVGComponent />
 											</span>
 										</div>
 									</figcaption>
@@ -206,7 +208,7 @@ export default function Index() {
 							size="ghost"
 							onClick={() => {
 								/* navigate('../artworks') */
-								navigate(-1)
+								void navigate(-1)
 							}}
 						>
 							<Icon name="arrow-left" size="font" className="text-3xl" />
@@ -240,7 +242,7 @@ export default function Index() {
 	)
 }
 
- 	// #region Logo, Footer
+// #region Logo, Footer
 
 function Logo() {
 	return (

@@ -9,8 +9,8 @@ input[type='radio']:checked + svg {
 
 .w-color-alpha-fill {
 	background: #0000 !important;
-    backdrop-filter: opacity(0);
-    border: 3px solid #fff0;
+	backdrop-filter: opacity(0);
+	border: 3px solid #fff0;
 }
 
 .editing-view-port {
@@ -18,11 +18,11 @@ input[type='radio']:checked + svg {
 }
 
 div.flex-1 > button {
-    /* text-shadow:
+	/* text-shadow:
     		0 0 1px #000d,
     		0 0 2px #0008,
     		0 0 3px #0003; */
-    }
+}
 
 #search-spinner {
 	display: block;

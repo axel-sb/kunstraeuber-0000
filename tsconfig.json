@@ -1,5 +1,12 @@
 {
-	"include": ["**/*.ts", "**/*.tsx", ".react-router/types/**/*", "app/components/assets/geoPlaces.js", "app/components/geo-search.client.tsx", "#app/components/puzzle.client.js"],
+	"include": [
+		"**/*.ts",
+		"**/*.tsx",
+		".react-router/types/**/*",
+		"app/components/assets/geoPlaces.js",
+		"app/components/geo-search.client.tsx",
+		"#app/components/puzzle.client.js"
+	],
 	"extends": ["@epic-web/config/typescript"],
 	"compilerOptions": {
 		// TODO: Probably should move this into epic-web/config

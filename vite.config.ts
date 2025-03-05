@@ -2,10 +2,9 @@ import { reactRouter } from '@react-router/dev/vite'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 
 import { envOnlyMacros } from 'vite-env-only'
-/* import { defineConfig, type ViteUserConfig } from 'vitest/config' */
+/* import { defineConfig, type ViteUserConfig } from 'vitest/config' 
 import { reactRouterDevTools } from 'react-router-devtools'
-/* import tsconfigPaths from 'vite-tsconfig-paths' */
-
+import tsconfigPaths from 'vite-tsconfig-paths' */
 
 const MODE = process.env.NODE_ENV
 
@@ -72,4 +71,4 @@ export default {
 			all: true,
 		},
 	},
-} 
+}

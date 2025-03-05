@@ -1,5 +1,4 @@
 import { type Artwork } from '@prisma/client'
-import chalk from 'chalk'
 import { prisma } from '../../utils/db.server.ts'
 
 enum ArtworkScalarFieldEnum {
@@ -35,7 +34,7 @@ enum ArtworkScalarFieldEnum {
 	tags = 'tags',
 }
 
-const fields: ArtworkScalarFieldEnum[] = [
+/* const fields: ArtworkScalarFieldEnum[] = [
 	ArtworkScalarFieldEnum.id,
 	ArtworkScalarFieldEnum.title,
 	ArtworkScalarFieldEnum.artist_display,
@@ -66,8 +65,7 @@ const fields: ArtworkScalarFieldEnum[] = [
 	ArtworkScalarFieldEnum.favorite,
 	ArtworkScalarFieldEnum.weight,
 	ArtworkScalarFieldEnum.tags,
-]
-
+] */
 //+  _______________________________ MARK:BY ID
 export function getArtwork({ id }: Pick<Artwork, 'id'>) {
 	return prisma.artwork.findFirst({
@@ -199,8 +197,8 @@ export function getAny(
 		throw new Error('Invalid limit or page number')
 	}
 
-	const start = (pageNumber - 1) * limitNumber
-	console.log('🟡 ALL (getAny):pageNumber, start', pageNumber, start)
+	// const start = (pageNumber - 1) * limitNumber
+	console.log('🟡 ALL (getAny):pageNumber', pageNumber)
 
 	console.log('🟡 search params ', {
 		q,
@@ -291,7 +289,7 @@ export function getSuggestedAny(
 		throw new Error('Invalid limit or page number')
 	}
 
-	const start = (pageNumber - 1) * limitNumber
+    // const start = (pageNumber - 1 ) * limitNumber
 
 	console.log('🟡 search params: ', {
 		q,
@@ -379,7 +377,7 @@ export async function getArtist(
 		throw new Error('Invalid limit or page number')
 	}
 
-	const start = (pageNumber - 1) * limitNumber
+	// // // // // const start = (pageNumber - 1) * limitNumber
 
 	console.log('🟡 search params: ', {
 		q,
@@ -430,7 +428,6 @@ export async function getArtist(
 		},
 		where: { artist_title: { contains: q } },
 		orderBy: { weight: 'desc' },
-		skip: start,
 		take: limitNumber,
 	})
 }
@@ -497,7 +494,7 @@ export function getSubject(
 		throw new Error('Invalid limit or page number')
 	}
 
-	const start = (pageNumber - 1) * limitNumber
+	// // // // // const start = (pageNumber - 1) * limitNumber
 
 	console.log('🟡 search params: ', {
 		q,
@@ -610,7 +607,7 @@ export function getStyle(
 		throw new Error('Invalid limit or page number')
 	}
 
-	const start = (pageNumber - 1) * limitNumber
+	// const start = (pageNumber - 1) * limitNumber
 
 	console.log('🟡 search params: ', {
 		q,
@@ -702,7 +699,7 @@ export function getTechnique(
 		throw new Error('Invalid limit or page number')
 	}
 
-	const start = (pageNumber - 1) * limitNumber
+	// // // // // const start = (pageNumber - 1) * limitNumber
 
 	console.log('🟡 search params: ', {
 		q,
@@ -792,7 +789,7 @@ export function getMedium(
 		throw new Error('Invalid limit or page number')
 	}
 
-	const start = (pageNumber - 1) * limitNumber
+	// // // // // const start = (pageNumber - 1) * limitNumber
 
 	console.log('🟡 search params: ', {
 		q,
@@ -878,7 +875,7 @@ export function getType(
 		throw new Error('Invalid limit or page number')
 	}
 
-	const start = (pageNumber - 1) * limitNumber
+	// // // // // const start = (pageNumber - 1) * limitNumber
 
 	console.log('🟡 search params: ', {
 		q,
@@ -966,7 +963,7 @@ export function getTags(
 		throw new Error('Invalid limit or page number')
 	}
 
-	const start = (pageNumber - 1) * limitNumber
+	// // // // // const start = (pageNumber - 1) * limitNumber
 
 	console.log('🟡 search params: ', {
 		q,
@@ -1053,7 +1050,7 @@ export function getTerm(
 		throw new Error('Invalid limit or page number')
 	}
 
-	const start = (pageNumber - 1) * limitNumber
+	// // // // // const start = (pageNumber - 1) * limitNumber
 
 	console.log('🟡 search params: ', {
 		q,
@@ -1119,7 +1116,7 @@ export function getPlace(
 		throw new Error('Invalid limit or page number')
 	}
 
-	const start = (pageNumber - 1) * limitNumber
+	// // // // // const start = (pageNumber - 1) * limitNumber
 
 	console.log('🟡 search params: ', {
 		q,
@@ -1194,9 +1191,9 @@ export function getSuggestedPlaces(q?: string | '') {
 //+  _______________________________________ MARK: BY DATE
 export function getDate(
 	qDate: number = 0,
-	searchType: string,
-	limit: number = 20,
-	page: number,
+	// searchType: string,
+	// limit: number = 20,
+	// page: number,
 ) {
 	return prisma.artwork.findMany({
 		select: {
@@ -1261,9 +1258,9 @@ export function getSuggestedDates(q?: number | '') {
 //+  _________________________________________ MARK: BY COLOR
 export function getColor(
 	q: number | 0,
-	searchType: string,
-	limit: number = 20,
-	page: number,
+	// searchType: string,
+	// limit: number = 20,
+	// page: number,
 ) {
 	// Parse limit and page to ensure they are numbers
 	/* const qNumber = Number(q)
@@ -1281,54 +1278,51 @@ export function getColor(
 		page,
 		pageNumber,
 	}) */
-
-	return (
-		prisma.artwork.findMany({
-			select: {
-				id: true,
-				title: true,
-				artist_title: true,
-				artist_display: true,
-				date_end: true,
-				date_display: true,
-				place_of_origin: true,
-				medium_display: true,
-				technique_titles: true,
-				description: true,
-				width: true,
-				height: true,
-				image_url: true,
-				term_titles: true,
-				subject_titles: true,
-				category_titles: true,
-				classification_titles: true,
-				provenance_text: true,
-				alt_text: true,
-				color_h: true,
-				color_s: true,
-				color_l: true,
-				artwork_type_title: true,
-				favorite: true,
-				weight: true,
-				colorHsl: true,
-				style_titles: true,
-				tags: true,
-				biography: true,
-				dimensions: true,
+	return prisma.artwork.findMany({
+		select: {
+			id: true,
+			title: true,
+			artist_title: true,
+			artist_display: true,
+			date_end: true,
+			date_display: true,
+			place_of_origin: true,
+			medium_display: true,
+			technique_titles: true,
+			description: true,
+			width: true,
+			height: true,
+			image_url: true,
+			term_titles: true,
+			subject_titles: true,
+			category_titles: true,
+			classification_titles: true,
+			provenance_text: true,
+			alt_text: true,
+			color_h: true,
+			color_s: true,
+			color_l: true,
+			artwork_type_title: true,
+			favorite: true,
+			weight: true,
+			colorHsl: true,
+			style_titles: true,
+			tags: true,
+			biography: true,
+			dimensions: true,
+		},
+		where: {
+			color_h: {
+				gt: q - 1,
+				lt: q + 1,
 			},
-			where: {
-				color_h: {
-					gt: q - 1,
-					lt: q + 1,
-				},
-				color_s: { gt: Number(25) },
-				color_l: { gt: Number(15), lt: Number(85) },
-			},
-			orderBy: { weight: 'desc' },
-			skip: 0,
-			take: 20,
-		}) || []
-	)
+			color_s: { gt: Number(25) },
+			color_l: { gt: Number(15), lt: Number(85) },
+		},
+		orderBy: { weight: 'desc' },
+		skip: 0,
+		take: 20,
+	})
 }
 
 //__ _______________________________ MARK: Search Suggestions
@@ -1453,88 +1447,112 @@ export async function searchArtworks(
 	let result: Artwork[] = []
 	switch (searchType) {
 		case 'all':
-			result = (await getAny(q, searchType, limit, pageNumber)).map(artwork => ({
-				...artwork,
-				latitude: null,
-				longitude: null
-			}))
+			result = (await getAny(q, searchType, limit, pageNumber)).map(
+				(artwork) => ({
+					...artwork,
+					latitude: null,
+					longitude: null,
+				}),
+			)
 			break
 		case 'artist':
-			result = (await getArtist(q, searchType, limit, pageNumber)).map(artwork => ({
-				...artwork,
-				latitude: null,
-				longitude: null
-			}))
+			result = (await getArtist(q, searchType, limit, pageNumber)).map(
+				(artwork) => ({
+					...artwork,
+					latitude: null,
+					longitude: null,
+				}),
+			)
 			break
 		case 'style':
-			result = (await getStyle(q, searchType, limit, pageNumber)).map(artwork => ({
-				...artwork,
-				latitude: null,
-				longitude: null
-			}))
+			result = (await getStyle(q, searchType, limit, pageNumber)).map(
+				(artwork) => ({
+					...artwork,
+					latitude: null,
+					longitude: null,
+				}),
+			)
 			break
 		case 'subject':
-			result = (await getSubject(q, searchType, limit, pageNumber)).map(artwork => ({
-				...artwork,
-				latitude: null,
-				longitude: null
-			}))
+			result = (await getSubject(q, searchType, limit, pageNumber)).map(
+				(artwork) => ({
+					...artwork,
+					latitude: null,
+					longitude: null,
+				}),
+			)
 			break
 		case 'tags':
-			result = (await getTags(q, searchType, limit, pageNumber)).map(artwork => ({
-				...artwork,
-				latitude: null,
-				longitude: null
-			}))
+			result = (await getTags(q, searchType, limit, pageNumber)).map(
+				(artwork) => ({
+					...artwork,
+					latitude: null,
+					longitude: null,
+				}),
+			)
 			break
 		case 'technique':
-			result = (await getTechnique(q, searchType, limit, pageNumber)).map(artwork => ({
-				...artwork,
-				latitude: null,
-				longitude: null
-			}))
+			result = (await getTechnique(q, searchType, limit, pageNumber)).map(
+				(artwork) => ({
+					...artwork,
+					latitude: null,
+					longitude: null,
+				}),
+			)
 			break
 		case 'type':
-			result = (await getType(q, searchType, limit, pageNumber)).map(artwork => ({
-				...artwork,
-				latitude: null,
-				longitude: null
-			}))
+			result = (await getType(q, searchType, limit, pageNumber)).map(
+				(artwork) => ({
+					...artwork,
+					latitude: null,
+					longitude: null,
+				}),
+			)
 			break
 		case 'medium':
-			result = (await getMedium(q, searchType, limit, pageNumber)).map(artwork => ({
-				...artwork,
-				latitude: null,
-				longitude: null
-			}))
+			result = (await getMedium(q, searchType, limit, pageNumber)).map(
+				(artwork) => ({
+					...artwork,
+					latitude: null,
+					longitude: null,
+				}),
+			)
 			break
 		case 'place':
-			result = (await getPlace(q, searchType, limit, pageNumber)).map(artwork => ({
-				...artwork,
-				latitude: null,
-				longitude: null
-			}))
+			result = (await getPlace(q, searchType, limit, pageNumber)).map(
+				(artwork) => ({
+					...artwork,
+					latitude: null,
+					longitude: null,
+				}),
+			)
 			break
 		case 'date':
-			result = (await getDate(Number(q), searchType, limit, pageNumber)).map(artwork => ({
-				...artwork,
-				latitude: null,
-				longitude: null
-			}))
+			result = (await getDate(Number(q), )).map(
+				(artwork) => ({
+					...artwork,
+					latitude: null,
+					longitude: null,
+				}),
+			)
 			break
 		case 'color':
-			result = (await getColor(Number(q), searchType, limit, pageNumber)).map(artwork => ({
-				...artwork,
-				latitude: null,
-				longitude: null
-			}))
+			result = (await getColor(Number(q), searchType, limit, pageNumber)).map(
+				(artwork) => ({
+					...artwork,
+					latitude: null,
+					longitude: null,
+				}),
+			)
 			break
 		case 'term':
-			result = (await getTerm(q, searchType, limit, pageNumber)).map(artwork => ({
-				...artwork,
-				latitude: null,
-				longitude: null
-			}))
+			result = (await getTerm(q, searchType, limit, pageNumber)).map(
+				(artwork) => ({
+					...artwork,
+					latitude: null,
+					longitude: null,
+				}),
+			)
 			break
 		default:
 			result = (await getAny(q, searchType, limit, pageNumber)).map(

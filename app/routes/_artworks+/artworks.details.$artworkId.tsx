@@ -1,25 +1,25 @@
 // region imports
-import { MeshGradients } from '#app/components/mesh-gradients.tsx'
-import { Button } from '#app/components/ui/button.tsx'
-import { Icon } from '#app/components/ui/icon.js'
-import SVGComponent from '#app/components/ui/puzzle.tsx'
 import { invariantResponse } from '@epic-web/invariant'
 import { type Artwork } from '@prisma/client'
 import chalk from 'chalk'
 import { type FunctionComponent } from 'react'
 import {
-    Link,
-    NavLink,
-    redirect,
-    // NavLink,
-    useFetcher,
-    useLoaderData,
-    useNavigate,
-    type ActionFunctionArgs,
-    type LinksFunction,
-    type LoaderFunctionArgs,
-    type MetaFunction
+	Link,
+	NavLink,
+	redirect,
+	// NavLink,
+	useFetcher,
+	useLoaderData,
+	useNavigate,
+	type ActionFunctionArgs,
+	type LinksFunction,
+	type LoaderFunctionArgs,
+	type MetaFunction,
 } from 'react-router'
+import { MeshGradients } from '#app/components/mesh-gradients.tsx'
+import { Button } from '#app/components/ui/button.tsx'
+import { Icon } from '#app/components/ui/icon.js'
+import SVGComponent from '#app/components/ui/puzzle.tsx'
 // import kunstraeuber from '../../../avatars/kunstraeuber.png'
 // import circles from '../../../circles.svg'
 import { getArtwork, updateArtwork } from '../resources+/search-data.server.tsx'
@@ -197,7 +197,7 @@ export default function ArtworkDetails() {
                 // .                                 MARK: . . . . . . . . .    ⓶   🢃 .
 				  */}
 
-				<div className="details-text-wrapper relative col-span-full max-w-[calc(100vw-2rem)] row-[2_/_3] overflow-y-auto 2xl:col-[3_/_4] 2xl:row-span-full 2xl:ml-2 2xl:mr-auto 2xl:max-h-[95dvh] 2xl:max-w-[clamp(30vw,65ch,50vw)]">
+				<div className="details-text-wrapper relative col-span-full row-[2_/_3] max-w-[calc(100vw-2rem)] overflow-y-auto 2xl:col-[3_/_4] 2xl:row-span-full 2xl:ml-2 2xl:mr-auto 2xl:max-h-[95dvh] 2xl:max-w-[clamp(30vw,65ch,50vw)]">
 					{/*
           // .MARK:header 2
 					  */}
@@ -207,7 +207,7 @@ export default function ArtworkDetails() {
 							className="btn-back relative z-50 flex h-10 w-10 cursor-pointer justify-self-center rounded-full p-0 text-body-2xs active:opacity-50"
 							variant="ghost"
 							onClick={() => {
-								navigate(-2)
+								void navigate(-2)
 							}}
 						>
 							<Icon
@@ -395,7 +395,7 @@ export default function ArtworkDetails() {
 								className="btn-back relative z-50 flex h-10 w-10 cursor-pointer justify-start rounded-full p-0 text-body-2xs"
 								variant="ghost"
 								onClick={() => {
-									navigate(-2)
+									void navigate(-2)
 								}}
 							>
 								<Icon

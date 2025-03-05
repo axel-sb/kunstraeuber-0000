@@ -1,18 +1,16 @@
 // #region imports
-import { type Artwork } from '@prisma/client'
-import { type LinksFunction, type LoaderFunctionArgs,} from 'react-router'
-import {
+// import { type Artwork } from '@prisma/client'
+import Hue from '@uiw/react-color-hue'
+import { useEffect, useState } from 'react'
+import { type LinksFunction, type LoaderFunctionArgs,
 	Form,
 	Link,
 	NavLink,
 	useLoaderData,
 	useNavigation,
 	useSearchParams,
-	useSubmit,
-} from 'react-router'
+	useSubmit } from 'react-router'
 
-import Hue from '@uiw/react-color-hue'
-import { useEffect, useState } from 'react'
 import SVGComponent from '#app/components/ui/eye.tsx'
 import { Icon } from '#app/components/ui/icon.js'
 import { Input } from '#app/components/ui/input'
@@ -39,7 +37,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const page = url.searchParams.get('page')
 	const pageNumber: number = page !== null ? Number(page) : 1
 
-	const data = await getColor(qNumber, searchType, limit, pageNumber)
+	const data = await getColor(qNumber, )
 
 	return {
 		query,
@@ -82,9 +80,9 @@ export default function ColorSearch({
 	const nextPageUrl = new URLSearchParams(searchParams)
 	nextPageUrl.set('page', nextPage.toString())
 
-	const handleNextPageClick = () => {
+	/* const handleNextPageClick = () => {
 		window.location.search = nextPageUrl.toString()
-	}
+	} */
 
 	// We've seen useNavigate already, we'll use its cousin, useSubmit (https://remix.run/docs/en/main/hooks/use-submit), for this.
 	const submit = useSubmit()
@@ -99,7 +97,7 @@ export default function ColorSearch({
 		new URLSearchParams(navigation.location.search).has('q')
 
 	const handleFormChange = useDebounce((form: HTMLFormElement) => {
-		submit(form)
+		void submit(form)
 	}, 400)
 
 	// MARK: Hue Slider

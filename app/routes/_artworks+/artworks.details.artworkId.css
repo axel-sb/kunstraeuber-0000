@@ -1,15 +1,21 @@
 #regenerate {
-    display: block;
-    left: -2px;
-    top: -2px;
-    background-image: radial-gradient(ellipse at -61% 141%, hsl(184, 0%, 20%), hsl(184, 0%, 50%) 20%, hsl(184, 0%, 15%), hsl(184, 0%, 30%) 60%);
+	display: block;
+	left: -2px;
+	top: -2px;
+	background-image: radial-gradient(
+		ellipse at -61% 141%,
+		hsl(184, 0%, 20%),
+		hsl(184, 0%, 50%) 20%,
+		hsl(184, 0%, 15%),
+		hsl(184, 0%, 30%) 60%
+	);
 }
 
 /* MARK: OTHER
  */
 
-body>ul>li>p {
-    color: #e3dcd0;
+body > ul > li > p {
+	color: #e3dcd0;
 }
 
 /* body>ul>li::last-child {
@@ -17,9 +23,9 @@ background: linear-gradient(90deg, transparent, var(--colorHslOp50) 2rem) !impor
 } */
 
 p {
-    color: hsl(var(--foreground));
+	color: hsl(var(--foreground));
 }
 
-svg #star-filling>path {
-    fill: linear-gradient(#f0f, #0ff) !important;
+svg #star-filling > path {
+	fill: linear-gradient(#f0f, #0ff) !important;
 }

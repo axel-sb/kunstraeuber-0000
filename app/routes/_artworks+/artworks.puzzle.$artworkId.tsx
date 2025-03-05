@@ -1,16 +1,15 @@
 // @ts-nocheck
 
+import { invariantResponse } from '@epic-web/invariant'
+import { useCallback, useEffect, useState } from 'react'
+import  { type LinksFunction, type LoaderFunctionArgs, NavLink, useLoaderData, useNavigate  } from 'react-router'
+import { ClientOnly } from 'remix-utils/client-only'
 import { ConfettiShower } from '#app/components/confetti.js'
 import { initializePuzzleGame } from '#app/components/puzzle.client.js'
 import { Button } from '#app/components/ui/button.js'
 import SVGComponent from '#app/components/ui/eye1.tsx'
 import { Icon } from '#app/components/ui/icon.js'
 import ToggleButton from '#app/components/ui/ToggleButton.tsx'
-import { invariantResponse } from '@epic-web/invariant'
-import { useCallback, useEffect, useState } from 'react'
-import type { LinksFunction, LoaderFunctionArgs } from 'react-router'
-import { NavLink, useLoaderData, useNavigate } from 'react-router'
-import { ClientOnly } from 'remix-utils/client-only'
 import { getArtwork } from '../resources+/search-data.server'
 import puzzleStyles from './artworks.puzzle.css?url'
 
@@ -92,7 +91,7 @@ function PuzzleComponent() {
 					size="ghost"
 					onClick={() => {
 						/* navigate('../artworks') */
-						navigate(-1)
+						void navigate(-1)
 					}}
 				>
 					<NavLink

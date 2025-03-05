@@ -1,7 +1,7 @@
+import { Control, DomUtil } from 'leaflet'
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch'
 import { useEffect } from 'react'
 import { MapContainer, TileLayer, useMap, ZoomControl } from 'react-leaflet'
-import { Control, DomUtil } from 'leaflet'
 import './geolet.client.js'
 
 function SearchFieldInner() {
@@ -13,8 +13,8 @@ function SearchFieldInner() {
 		autoComplete: true,
 		autoCompleteDelay: 1000,
 		searchLabel: '🖋️ enter address...',
-        style:'button',
-        position: 'topleft'
+		style: 'button',
+		position: 'topleft',
 	})
 
 	const map = useMap()
@@ -68,7 +68,6 @@ const GetCoordinates = () => {
 				return info
 			},
 		})
-
 
 		map.on('click', (e) => {
 			info.textContent = `${e.latlng}`

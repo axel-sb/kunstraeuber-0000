@@ -1,23 +1,4 @@
-import React from 'react'
-import {
-	GeoJSON,
-	MapContainer,
-	Marker,
-	Tooltip,
-	ZoomControl,
-} from 'react-leaflet'
-import MarkerClusterGroup from 'react-leaflet-markercluster'
-// import redFilledMarker from '#app/assets/red-filled-marker.svg'
-import L, { divIcon } from 'leaflet'
-import { Feature, FeatureCollection, GeoJsonProperties } from 'geojson'
 
-import { geoPlaces } from '#app/components/assets/geoPlaces.js'
-import { type GeoPlace } from '#app/components/assets/geoPlaces.js'
-import world from '#app/components/assets/world.geo.json'
-import 'react-tabs/style/react-tabs.css'
-import marker from '#app/routes/_artworks+/images/marker-icon-2x.png'
-import { type Artwork } from '@prisma/client'
-import { NavLink } from 'react-router'
 import {
 	animate,
 	AnimatePresence,
@@ -27,8 +8,30 @@ import {
 	useMotionValueEvent,
 	useTransform,
 } from 'framer-motion'
+import {
+	type Feature,
+	type FeatureCollection,
+	type GeoJsonProperties,
+} from 'geojson'
+import L, { divIcon } from 'leaflet'
+import React, { useState } from 'react'
 import { Button, Dialog, Modal, ModalOverlay } from 'react-aria-components'
-import { useState } from 'react'
+
+import {
+	GeoJSON,
+	MapContainer,
+	Marker,
+	Tooltip,
+	//  TODO: ZoomControl,                                                    ❗
+} from 'react-leaflet'
+import MarkerClusterGroup from 'react-leaflet-markercluster'
+// import redFilledMarker from '#app/assets/red-filled-marker.svg'
+
+import { NavLink } from 'react-router'
+import { geoPlaces, type GeoPlace  } from '#app/components/assets/geoPlaces.js'
+import world from '#app/components/assets/world.geo.json'
+import 'react-tabs/style/react-tabs.css'
+import marker from '#app/routes/_artworks+/images/marker-icon-2x.png'
 import SVGComponent from './ui/eye'
 
 // Wrap React Aria modal components so they support framer-motion values.
@@ -112,12 +115,9 @@ const getFeatureStyle = (
 }
 
 //__ MARK: Custom Popup
-function CustomPopup(
-	{ artworks }: { artworks: Artwork[] },
-) {
-
+function CustomPopup({ artworks }: { artworks: Artwork[] }) {
 	return (
-		<ul className="max-w-[50vw] relative max-h-fit min-h-[calc(100vh-8rem)] gap-x-[3%] overflow-auto pt-4 [column-count:1] group-has-[label:nth-child(1)>input[type='radio']:checked]/body:[column-count:1] group-has-[label:nth-child(2)>input[type=radio]:checked]/body:[column-count:2] group-has-[label:nth-child(3)>input[type=radio]:checked]/body:[column-count:3] md:py-8 md:[column-count:2] lg:gap-x-12 lg:pt-10 lg:[column-count:4] xl:gap-x-[4%] xl:pt-14 xl:[column-count:5] 2xl:gap-x-20 2xl:pt-20">
+		<ul className="relative max-h-fit min-h-[calc(100vh-8rem)] max-w-[50vw] gap-x-[3%] overflow-auto pt-4 [column-count:1] group-has-[label:nth-child(1)>input[type='radio']:checked]/body:[column-count:1] group-has-[label:nth-child(2)>input[type=radio]:checked]/body:[column-count:2] group-has-[label:nth-child(3)>input[type=radio]:checked]/body:[column-count:3] md:py-8 md:[column-count:2] lg:gap-x-12 lg:pt-10 lg:[column-count:4] xl:gap-x-[4%] xl:pt-14 xl:[column-count:5] 2xl:gap-x-20 2xl:pt-20">
 			{artworks.map((artwork: Artwork) => (
 				<li
 					key={artwork.id}
@@ -304,7 +304,6 @@ export default function Cluster({ places, artworks }: ClusterProps) {
 
 function ArtworkPlacesMarkers({
 	geoPlaces,
-	artworks,
 	onMarkerClick,
 }: {
 	geoPlaces: GeoPlace[]

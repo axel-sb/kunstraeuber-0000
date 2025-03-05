@@ -7,19 +7,40 @@ canvas#my-canvas {
 }
 
 #regenerate {
-    animation    : rotate 3s linear;
-    background-size: 230%;
-    box-shadow: 0px 0px 10px 3px #385650;
+	animation: rotate 3s linear;
+	background-size: 230%;
+	box-shadow: 0px 0px 10px 3px #385650;
 }
 
 @keyframes rotate {
-    from { rotate: 1 2 1 0deg; opacity: .5}
-    10% { rotate: 1 2 1 36deg; opacity: .6}
-    25% { rotate: 1 2 1 90deg; opacity: 1}
-    50% { rotate: 1 2 1 180deg; opacity: .15}
-    75% { rotate: 1 2 1 270deg; opacity: 0}
-    90% { rotate: 1 2 1 324deg; opacity: .1}
-    to { rotate: 1 2 1 360deg; opacity: .5}
+	from {
+		rotate: 1 2 1 0deg;
+		opacity: 0.5;
+	}
+	10% {
+		rotate: 1 2 1 36deg;
+		opacity: 0.6;
+	}
+	25% {
+		rotate: 1 2 1 90deg;
+		opacity: 1;
+	}
+	50% {
+		rotate: 1 2 1 180deg;
+		opacity: 0.15;
+	}
+	75% {
+		rotate: 1 2 1 270deg;
+		opacity: 0;
+	}
+	90% {
+		rotate: 1 2 1 324deg;
+		opacity: 0.1;
+	}
+	to {
+		rotate: 1 2 1 360deg;
+		opacity: 0.5;
+	}
 }
 
 body {
@@ -68,7 +89,6 @@ header {
 	grid-row: 1 / 2;
 }
 
-
 figure {
 	grid-column: 1 / -1 !important;
 	grid-row: 2 / 3;
@@ -115,7 +135,7 @@ footer {
 	grid-template-rows: subgrid;
 	align-items: center;
 	justify-content: space-between;
-  backdrop-filter: blur(10px);
+	backdrop-filter: blur(10px);
 }
 
 .toolbar {
@@ -124,7 +144,7 @@ footer {
 	grid-template-rows: subgrid;
 	align-items: center;
 	justify-content: space-between;
-  padding-bottom: 1rem;
+	padding-bottom: 1rem;
 }
 
 /* shades of a color variable */

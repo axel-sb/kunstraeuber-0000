@@ -1,15 +1,15 @@
+import { useCallback, useState } from 'react'
+import {
+	type MetaFunction,
+	NavLink,
+	useLoaderData,
+	useSearchParams,
+} from 'react-router'
+import { ClientOnly } from 'remix-utils/client-only'
 import Cluster from '#app/components/markercluster.client.tsx'
 import { Combobox } from '#app/components/search-combobox.tsx'
 import { Icon } from '#app/components/ui/icon.tsx'
 import ToggleButton from '#app/components/ui/ToggleButton.tsx'
-import { useCallback, useState } from 'react'
-import {
-    MetaFunction,
-    NavLink,
-    useLoaderData,
-    useSearchParams
-} from 'react-router'
-import { ClientOnly } from 'remix-utils/client-only'
 import { type Route } from '../../+types/root.ts'
 import { searchArtworks } from '../resources+/search-data.server.tsx'
 import clusterStyles from './artworks.cluster.css?url'
@@ -56,8 +56,8 @@ export default function Index() {
 	const {
 		data: artworks,
 		page,
-		query,
-		searchType,
+		// query,
+		// searchType,
 	} = useLoaderData<typeof loader>()
 	console.log('page, artworks ', artworks, page)
 	console.log('page, artworks ', page, artworks)
@@ -67,9 +67,9 @@ export default function Index() {
 	const nextPageUrl = new URLSearchParams(searchParams)
 	nextPageUrl.set('page', nextPage.toString())
 
-	const handleNextPageClick = () => {
+	/* const handleNextPageClick = () => {
 		window.location.search = nextPageUrl.toString()
-	}
+	} */
 
 	const combobox = <Combobox status="idle" />
 
@@ -86,15 +86,15 @@ export default function Index() {
 	// remove all empty items from an array https://michaeluloth.com/javascript-filter-boolean/
 	const placesFound = places.filter(Boolean)
 
-    const [show, setShow] = useState(true)
-		const handleToggle = useCallback(() => setShow((show) => !show), [])
+	const [show, setShow] = useState(true)
+	const handleToggle = useCallback(() => setShow((show) => !show), [])
 
 	return (
 		<>
 			<header className="absolute flex w-full items-center justify-between">
 				<Logo />
 				<ToggleButton
-					className="z-[1000000001] ml-auto mr-4 h-8 w-8 min-w-fit text-2xl "
+					className="z-[1000000001] ml-auto mr-4 h-8 w-8 min-w-fit text-2xl"
 					onToggle={handleToggle}
 					isActive={show}
 				>
