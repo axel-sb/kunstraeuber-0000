@@ -7,6 +7,7 @@ import {
 	useMotionValueEvent,
 	useTransform,
 } from 'framer-motion'
+import { useState } from 'react'
 import {
 	Button,
 	Dialog,
@@ -14,7 +15,6 @@ import {
 	Modal,
 	ModalOverlay,
 } from 'react-aria-components'
-import { useState } from 'react'
 
 // Wrap React Aria modal components so they support framer-motion values.
 const MotionModal = motion(Modal)

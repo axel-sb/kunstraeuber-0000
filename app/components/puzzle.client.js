@@ -262,7 +262,8 @@ function initializePuzzleGame(imgUrl, onGameOver) {
 		// initPuzzle() // Removed initPuzzle from gameOver - resetPuzzle handles this
 	}
 
-	function pieceDropped(e) {
+    // function pieceDropped(e) {
+    function pieceDropped() {
 		document.onpointermove = null
 		document.onpointerup = null
 		if (currentDropPiece !== null) {

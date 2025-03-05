@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs, data } from 'react-router'
+import { type LoaderFunctionArgs } from 'react-router'
 import { searchSuggestions } from '#app/routes/resources+/search-data.server'
 
 export async function loader({ request }: LoaderFunctionArgs) {

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Downloaded from @radix-ui/icons -->
+
+<!-- License https://github.com/radix-ui/icons/blob/master/LICENSE -->
+
+<!-- https://github.com/radix-ui/icons/blob/master/packages/radix-icons/icons/zoom-in.svg -->
+
+<!-- @radix-ui/icons -->
+
+<!-- https://github.com/radix-ui/icons/blob/master/LICENSE -->
+
+<svg
+   width="15"
+   height="15"
+   viewBox="0 0 15 15"
+   fill="none"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="zoom-in.svg"
+   inkscape:export-filename="zoom-in.svg"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="71.610969"
+     inkscape:cx="6.9612241"
+     inkscape:cy="5.648576"
+     inkscape:window-width="2160"
+     inkscape:window-height="1192"
+     inkscape:window-x="101"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1" />
+  <path
+     fill-rule="evenodd"
+     clip-rule="evenodd"
+     d="M 10,6.5 C 10,8.433 8.433,10 6.5,10 4.567,10 3,8.433 3,6.5 3,4.567 4.567,3 6.5,3 8.433,3 10,4.567 10,6.5 Z M 9.30884,10.0159 C 8.53901,10.6318 7.56251,11 6.5,11 4.01472,11 2,8.98528 2,6.5 2,4.01472 4.01472,2 6.5,2 8.98528,2 11,4.01472 11,6.5 11,7.56251 10.6318,8.53901 10.0159,9.30884 l 2.8377,2.83756 c 0.1952,0.1953 0.1952,0.5119 0,0.7072 -0.1953,0.1952 -0.5119,0.1952 -0.7072,0 z M 4.25,6.5 C 4.25,6.22386 4.47386,6 4.75,6 H 6 V 4.75 C 6,4.47386 6.22386,4.25 6.5,4.25 6.77614,4.25 7,4.47386 7,4.75 V 6 H 8.25 C 8.52614,6 8.75,6.22386 8.75,6.5 8.75,6.77614 8.52614,7 8.25,7 H 7 V 8.25 C 7,8.52614 6.77614,8.75 6.5,8.75 6.22386,8.75 6,8.52614 6,8.25 V 7 H 4.75 C 4.47386,7 4.25,6.77614 4.25,6.5 Z"
+     fill="currentColor"
+     id="path1"
+     sodipodi:nodetypes="ssssscsssscccccsscssscssscssscss" />
+  <path
+     fill-rule="evenodd"
+     clip-rule="evenodd"
+     d="M 10,6.5 C 10,8.433 8.433,10 6.5,10 4.567,10 3,8.433 3,6.5 3,4.567 4.567,3 6.5,3 8.433,3 10,4.567 10,6.5 Z M 9.30884,10.0159 C 8.53901,10.6318 7.56251,11 6.5,11 4.01472,11 2,8.98528 2,6.5 2,4.01472 4.01472,2 6.5,2 8.98528,2 11,4.01472 11,6.5 11,7.56251 10.6318,8.53901 10.0159,9.30884 l 2.8377,2.83756 c 0.1952,0.1953 0.1952,0.5119 0,0.7072 -0.1953,0.1952 -0.5119,0.1952 -0.7072,0 z M 4.25,6.5 C 4.25,6.22386 4.47386,6 4.75,6 H 6 V 4.75 C 6,4.47386 6.22386,4.25 6.5,4.25 6.77614,4.25 7,4.47386 7,4.75 V 6 H 8.25 C 8.52614,6 8.75,6.22386 8.75,6.5 8.75,6.77614 8.52614,7 8.25,7 H 7 V 8.25 C 7,8.52614 6.77614,8.75 6.5,8.75 6.22386,8.75 6,8.52614 6,8.25 V 7 H 4.75 C 4.47386,7 4.25,6.77614 4.25,6.5 Z"
+     fill="currentColor"
+     id="path2"
+     sodipodi:nodetypes="ssssscsssscccccsscssscssscssscss" />
+</svg>

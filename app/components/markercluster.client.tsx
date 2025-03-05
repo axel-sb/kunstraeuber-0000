@@ -1,4 +1,5 @@
 
+import { type Artwork } from '@prisma/client'
 import {
 	animate,
 	AnimatePresence,
@@ -13,7 +14,8 @@ import {
 	type FeatureCollection,
 	type GeoJsonProperties,
 } from 'geojson'
-import L, { divIcon } from 'leaflet'
+// import L, { divIcon } from 'leaflet'
+import L from 'leaflet'
 import React, { useState } from 'react'
 import { Button, Dialog, Modal, ModalOverlay } from 'react-aria-components'
 

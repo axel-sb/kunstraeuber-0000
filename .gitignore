@@ -2,7 +2,7 @@ node_modules
 .DS_store
 
 /build
-/public/build
+/public
 /server-build
 .env
 .cache
@@ -24,84 +24,17 @@ node_modules
 .history
 
 # generated files
-/app/components/ui/icons
 .react-router/
-app/routes/_marketing+/about.tsx
-app/routes/_marketing+/index.tsx
-app/routes/_marketing+/privacy.tsx
-app/routes/_marketing+/support.tsx
-app/routes/_marketing+/tailwind-preset.ts
-app/routes/_marketing+/tos.tsx
-app/routes/_marketing+/logos/*
+app/routes/_marketing+
 client_secret_642208729626-ids9ig4ntanjfu4rq5k109a0sm255651.apps.googleusercontent.com.json
-app/components/ui/combobox-multiple.tsx
-app/components/ui/combobox-multiple.tsx.sly
-app/components/ui/getMeta.tsx
-app/components/ui/InlineCode.tsx
-app/components/ui/LocalStorageDB.tsx
-app/components/ui/tabs.tsx
-app/routes/_artworks+/test.css
-app/routes/_artworks+/test.tsx
-other/svg-icons/grid-3b.svg
-app/routes/_artworks+/test.tsx
-app/routes/_artworks+/test.tsx
-other/svg-icons/turtle.svg
-other/svg-icons/zoom-in-col.svg
-other/svg-icons/zoom-in-inkscape.svg
-app/routes/_artworks+/artworks._details.artworkId.1.css
-app/routes/_artworks+/artworks._details.$artworkId.1.tsx
-.cursor/rules/kunstraeuber.mdc
+.cursor/
 app/assets/mapstyle-greyish.ts
 app/assets/red-filled-marker.svg
 app/assets/red-stroke-marker.svg
-public/104896.avif
-public/229361.avif
-public/border-image copy.svg
-public/border-image.svg
-public/marker-icon-2x.png
-public/marker-shadow.png
-public/site.webmanifest
-public/img/1.gif
-public/img/61680987-alte-statue-symbol-in-einfachen-stil-auf-weißem-hintergrund-art-symbol.jpg
-public/img/arrow-right.svg
-public/img/marker-monalisa.png
-public/img/ml-square.png
-public/img/ml.png
-public/img/mona-cubes.png
-public/img/ninja-red-72.png
-public/img/ninja-red.png
-public/img/noun-artwork-26864 copy.png
-public/img/noun-artwork-26864.png
-public/img/noun-artwork-26864.svg
-public/img/noun-camera-7440064.png
-public/img/noun-camera-7440064.svg
-public/img/sad-thief.png
-public/img/statue.png
-public/img/stumping,hatching,stippling.jpg
-other/bruno-kr/bruno.json
-other/bruno-kr/Get Artists.bru
-.specstory/history/2024-10-04_12-59-certainly!-i'll-guide-you-through-the-process-of-transferring-the-select-component-from-`root-tsx`-to-`search-bar-ts...as-expected-after-the-changes-if-you-have-any-further-questions-or-need-additional-modifications,-feel-free-to-ask!.md
-.specstory/history/2024-10-04_13-36-remove-unused-button-import-in-search-bar-component.md
-.specstory/history/2024-10-05_23-33-resolving-module-not-found-error-for-web-oidc-remix.md
-.specstory/history/2024-10-10_08-29-dynamic-background-image-with-css-variable.md
-.specstory/history/2024-10-16_20-09-deployment-error-with-google-auth-integration.md
-.specstory/history/2024-10-17_22-52-type-error-resolution-in-typescript-code.md
-.specstory/history/2024-10-17_23-00-typescript-error-resolution-for-html-prop.md
-.specstory/history/2024-10-24_14-24-type-error-resolution-for-nullable-strings.md
-.specstory/history/2024-10-29_08-20-debugging-search-function-for-min-weight-query.md
-.specstory/history/2024-10-30_07-36-resolving-typescript-prismapromise-error.md
-.specstory/history/2024-10-30_07-48-fixing-typescript-'map'-error-on-emptyobject.md
-.specstory/history/2024-10-30_07-58-typescript-type-mismatch-error-resolution.md
-.specstory/history/2024-10-31_09-13-resolving-typescript-type-mismatch-error.md
-.specstory/history/2024-11-03_12-21-google-oauth-2-0-authentication-setup-issues.md
-.specstory/history/2024-11-08_10-52-improving-search-bar-functionality-with-suggestions.md
-.specstory/history/2024-11-08_14-30-resolving-typescript-function-type-error.md
-.specstory/history/2024-11-28_11-39-resolving-typescript-eslint-parsing-error.md
-.specstory/history/2024-12-04_09-36-fixing-typescript-module-error.md
-.specstory/history/2024-12-19_22-27-leaflet-error-no-context-provided.md
-.specstory/history/2024-12-28_23-27-highlighting-countries-on-artwork-map.md
-.specstory/history/2025-01-02_15-49-fixing-typescript-tooltip-jsx-error.md
-.specstory/history/2025-01-06_09-47-fixing-typescript-component-prop-error.md
-.specstory/history/2025-01-19_16-59-canvas-initialization-error-in-game-code.md
-.specstory/history/2025-01-22_20-04-artwork-markers-by-coordinates-update.md
-.specstory/history/2025-01-22_20-04-untitled.md
+.specstory 
+
+# If there is a separator at the beginning or middle (or both) of the pattern, then the pattern is relative to the directory level of the particular .gitignore file itself. Otherwise the pattern may also match at any level below the .gitignore level.
+
+# If there is a separator at the end of the pattern then the pattern will only match directories, otherwise the pattern can match both files and directories.
+
+# For example, a pattern doc/frotz/ matches doc/frotz directory, but not a/doc/frotz directory; however frotz/ matches frotz and a/frotz that is a directory (all paths are relative from the .gitignore file).

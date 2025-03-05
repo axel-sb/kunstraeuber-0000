@@ -1,9 +1,7 @@
-import { type MetaFunction } from 'react-router'
+import { type MetaFunction, NavLink } from 'react-router'
 import { EpicProgress } from '../../components/progress-bar.tsx'
 import { EpicToaster } from '../../components/ui/sonner.tsx'
 import {} from '../../utils/misc.tsx'
-import { NavLink } from 'react-router'
-
 export const meta: MetaFunction = () => [{ title: '*Kunsträuber' }]
 
 export default function Index() {

@@ -14,7 +14,7 @@ import {
 	NavLink,
 	useFetcher,
 	useLocation,
-	useSearchParams,
+	// useSearchParams,
 	useSubmit,
 } from 'react-router'
 import { Icon } from '#app/components/ui/icon.tsx'
@@ -70,7 +70,7 @@ export function Combobox({
 
 	const [searchType, setSearchType] = useState<SearchType>('artist')
 
-	let suggestionItem = 'artist_title'
+	/* let suggestionItem = 'artist_title'
 
 	switch (searchType) {
 		case 'all':
@@ -105,7 +105,7 @@ export function Combobox({
 			break
 		default:
 			suggestionItem = 'artist_title'
-	}
+	} */
 
 	// Handle input change
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -163,7 +163,7 @@ export function Combobox({
 		}
 	}, [fetcher.data])
 
-	const [searchParams] = useSearchParams()
+	// const [searchParams] = useSearchParams()
 	const submit = useSubmit()
 
 	useEffect(() => {

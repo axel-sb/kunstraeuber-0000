@@ -1,0 +1,13 @@
+<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" style="--colorHsl:hsl(195, 28%, 43%);--foreground:hsl(38 14% 80%)">
+<defs>
+<linearGradient id="colorHsl" gradientTransform="rotate(70 0.5 0.5)">
+      <stop offset="0%" stop-color="hsl(from var(--colorHsl) h 100 80 " />
+      <stop offset="25%" stop-color="hsl(from var(--colorHsl) h 50 50 " />
+      <stop offset="50%" stop-color="hsl(from var(--colorHsl) h 100 30 " />
+      <stop offset="75%" stop-color="hsl(from var(--colorHsl) h 50 20" />
+      <stop offset="90%" stop-color="hsl(from var(--colorHsl) h 50 30" />
+    </linearGradient>
+</defs>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M10.456 6.323c0 5.51-8.265 5.51-8.265 0s8.265-5.51 8.265 0m-.816 4.152C4.375 14.68-2.14 7.28 2.57 2.57s12.111 1.805 7.905 7.07l3.35 3.35c.558.557-.278 1.393-.835.836zM3.667 6.323a.59.59 0 0 1 .59-.59h1.476V4.257c0-.787 1.18-.787 1.18 0v1.476H8.39c.787 0 .787 1.18 0 1.18H6.914V8.39c0 .787-1.181.787-1.181 0V6.914H4.257a.59.59 0 0 1-.59-.59m0 0a.59.59 0 0 1 .59-.591h1.476V4.257c0-.787 1.18-.787 1.18 0v1.476H8.39c.787 0 .787 1.18 0 1.18H6.914V8.39c0 .787-1.181.787-1.181 0V6.914H4.257a.59.59 0 0 1-.59-.59" fill="url(#colorHsl)"  style="display:inline;stroke-width:1"/>
+  <path d="M4.1 6.35a.5.5 0 0 1 .5-.5h1.25V4.6c0-.667 1-.667 1 0v1.25H8.1c.667 0 .667 1 0 1H6.85V8.1c0 .667-1 .667-1 0V6.85H4.6a.5.5 0 0 1-.5-.5" style="clip-rule:evenodd" display="inline" fill="var(--foreground)" fill-opacity="1" fill-rule="evenodd"/>
+</svg>

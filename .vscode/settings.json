@@ -12,15 +12,15 @@
 		"*.db": "sqlite-viewer.view"
 	},
 	"workbench.colorCustomizations": {
-		"editor.foldBackground": "#1e1e2e11",
-		"commandCenter.border": "#e7e7e799",
-		"sash.hoverBorder": "#616100",
-		"tab.activeBorder": "#616100",
-		"titleBar.activeBackground": "#616100",
-		"titleBar.activeForeground": "#e7e7e7",
-		"titleBar.inactiveBackground": "#61610099",
-		"titleBar.inactiveForeground": "#e7e7e799"
-	},
+        "editor.foldBackground": "#1e1e2e11",
+        "commandCenter.border": "#e7e7e799",
+        "sash.hoverBorder": "#616100",
+        "tab.activeBorder": "#616100",
+        "titleBar.activeBackground": "#616100",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#61610099",
+        "titleBar.inactiveForeground": "#e7e7e799"
+    },
 	"peacock.color": "#616100",
 	"editor.fontWeight": "normal",
 	"editor.fontSize": 16,
