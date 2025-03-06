@@ -2,7 +2,7 @@ import { reactRouter } from '@react-router/dev/vite'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 
 import { envOnlyMacros } from 'vite-env-only'
-/* import { defineConfig, type ViteUserConfig } from 'vitest/config' 
+/* import { defineConfig, type ViteUserConfig } from 'vitest/config'
 import { reactRouterDevTools } from 'react-router-devtools'
 import tsconfigPaths from 'vite-tsconfig-paths' */
 
@@ -28,6 +28,21 @@ export default {
 		},
 
 		sourcemap: true,
+	},
+	optimizeDeps: {
+		include: [
+			'@uiw/react-color-hue',
+			'@uiw/react-color-alpha',
+			'@uiw/color-convert',
+		],
+		esbuildOptions: {
+			target: 'es2022',
+		},
+	},
+	resolve: {
+		alias: {
+			'@uiw/react-color-hue': '@uiw/react-color-hue/esm/index.js',
+		},
 	},
 	server: {
 		watch: {

@@ -1,17 +1,19 @@
 // #region imports
 // import { type Artwork } from '@prisma/client'
-import Hue from '@uiw/react-color-hue'
 import { useEffect, useState } from 'react'
-import { type LinksFunction, type LoaderFunctionArgs,
-	Form,
-	Link,
-	NavLink,
-	useLoaderData,
-	useNavigation,
-	useSearchParams,
-	useSubmit } from 'react-router'
+import {
+    type LinksFunction, type LoaderFunctionArgs,
+    Form,
+    Link,
+    NavLink,
+    useLoaderData,
+    useNavigation,
+    useSearchParams,
+    useSubmit
+} from 'react-router'
 
 import SVGComponent from '#app/components/ui/eye.tsx'
+import HueWrapper from '#app/components/ui/HueWrapper'
 import { Icon } from '#app/components/ui/icon.js'
 import { Input } from '#app/components/ui/input'
 import { StatusButton } from '#app/components/ui/status-button.tsx'
@@ -105,7 +107,7 @@ export default function ColorSearch({
 	function HueSlider() {
 		const [hsva, setHsva] = useState({ h: 0, s: 0, v: 68, a: 1 })
 		return (
-			<Hue
+			<HueWrapper
 				className="h-8 p-2 2xl:h-10 2xl:p-4"
 				hue={hsva.h}
 				onChange={(newHue) => {
