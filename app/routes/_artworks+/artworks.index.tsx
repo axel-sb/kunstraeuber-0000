@@ -104,7 +104,7 @@ export default function Index() {
 				<Icon
 					name={name}
 					size="font"
-					className="!group-has-[input[type='radio']:checked]:text-yellow-300 visible w-12 px-1 text-yellow-100/50 group-has-[input[type='radio']:checked]:inline-flex group-has-[input[type='radio']:checked]:animate-pulse"
+					className="!group-has-[input[type='radio']:checked]:text-yellow-300 visible w-12 px-1 text-yellow-100/50 group-has-[input[type='radio']:checked]:inline-flex"
 				/>
 			</label>
 		)
@@ -115,37 +115,41 @@ export default function Index() {
 	return (
 		<>
 			<main className="artworks-fade-in p-4 pb-8 sm:p-10 md:px-12 lg:px-16 xl:px-24 2xl:px-32">
-				<header className="mx-auto grid h-16 w-full grid-cols-3 place-content-center text-lg 2xl:text-xl">
+				<header className="mx-auto grid w-full grid-cols-3 place-content-center gap-4 rounded-md pb-6 text-lg 2xl:text-xl">
 					<Logo />
 
-					<div className="navlink-map flex h-10 w-14 -translate-x-2 cursor-pointer justify-center self-center justify-self-start rounded-md">
-						<NavLink
-							className={`$({ isActive, isPending }) => isActive ? 'active' : 'pending' z-10 inline-flex h-10 w-10 justify-center text-foreground`}
-							to={`../artworks/cluster/?search=${query}&searchType=${searchType}`}
-						>
-							<Icon name="map" className="text-[1.7rem]" size="font" />
-						</NavLink>
-					</div>
+					{/*
+                        //§  MARK: 🔘 radio-btns
+                    */}
 
-					<form className="form col-[3/4] grid h-12 self-center justify-self-end">
-						<div className="group/radio flex justify-around place-self-center rounded-md pb-2 pr-1 pt-1 text-xl text-yellow-50/50 md:gap-4 2xl:text-2xl">
+					<form className="form col-span-2 grid h-12 grid-cols-[min-content_min-content] gap-[.5rem] self-center justify-self-end text-yellow-100/50">
+						<div className="navlink-map inline-flex h-10 w-14 cursor-pointer justify-center self-center justify-self-end rounded rounded-md border-[0.5px]">
+							<NavLink
+								className={`$({ isActive, isPending }) => isActive ? 'active' : 'pending' z-10 inline-flex h-10 w-10 justify-center`}
+								to={`../artworks/cluster/?search=${query}&searchType=${searchType}`}
+							>
+								<Icon name="map" className="text-[1.6rem]" size="font" />
+							</NavLink>
+						</div>
+						<div className="inline-flex justify-around place-self-center rounded border-[0.5px] pb-2 pt-1 text-xl md:gap-4 2xl:text-2xl">
 							<RadioButton
 								name="grid-1"
 								value={grid}
 								onChange={handleGrid1Change}
-								className="place-self-center"
+								className="group place-self-center"
 							/>
 							<RadioButton
 								name="grid-2"
 								value={grid}
 								onChange={handleGrid2Change}
-								className="place-self-center"
+								className="group place-self-center"
 							/>
+
 							<RadioButton
 								name="grid-3"
 								value={grid}
 								onChange={handleGrid3Change}
-								className="place-self-center"
+								className="group place-self-center"
 							/>
 						</div>
 					</form>

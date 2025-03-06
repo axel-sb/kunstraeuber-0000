@@ -1313,8 +1313,8 @@ export function getColor(
 		},
 		where: {
 			color_h: {
-				gt: q - 1,
-				lt: q + 1,
+				gt: q - 2,
+				lt: q + 2,
 			},
 			color_s: { gt: Number(25) },
 			color_l: { gt: Number(15), lt: Number(85) },

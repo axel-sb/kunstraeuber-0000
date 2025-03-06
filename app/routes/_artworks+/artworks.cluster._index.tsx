@@ -118,7 +118,7 @@ function Logo() {
 	return (
 		<NavLink
 			to="/"
-			className="logo group inline-grid justify-self-start py-4 pl-4 leading-tight"
+			className="logo group z-[1000000001] inline-grid justify-self-start py-4 pl-4 leading-tight"
 		>
 			<span className="font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
 				kunst

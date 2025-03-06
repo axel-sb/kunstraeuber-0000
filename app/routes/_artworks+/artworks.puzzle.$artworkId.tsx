@@ -2,7 +2,13 @@
 
 import { invariantResponse } from '@epic-web/invariant'
 import { useCallback, useEffect, useState } from 'react'
-import  { type LinksFunction, type LoaderFunctionArgs, NavLink, useLoaderData, useNavigate  } from 'react-router'
+import {
+	type LinksFunction,
+	type LoaderFunctionArgs,
+	NavLink,
+	useLoaderData,
+	useNavigate,
+} from 'react-router'
 import { ClientOnly } from 'remix-utils/client-only'
 import { ConfettiShower } from '#app/components/confetti.js'
 import { initializePuzzleGame } from '#app/components/puzzle.client.js'
@@ -53,6 +59,8 @@ function PuzzleComponent() {
 
 	return (
 		<>
+        <header className="absolute flex w-full items-center justify-between">
+				<Logo /> </header>
 			<div className="mx-auto p-4">
 				<canvas id="canvas" className="" />
 			</div>
@@ -90,7 +98,6 @@ function PuzzleComponent() {
 					variant="ghost"
 					size="ghost"
 					onClick={() => {
-						/* navigate('../artworks') */
 						void navigate(-1)
 					}}
 				>
@@ -158,5 +165,21 @@ export default function Puzzle() {
 				)}
 			</ClientOnly>
 		</>
+	)
+}
+
+function Logo() {
+	return (
+		<NavLink
+			to="/"
+			className="logo group z-[1000000001] inline-grid justify-self-start py-4 pl-4 leading-tight"
+		>
+			<span className="font-bold leading-none text-cyan-200 transition group-hover:-translate-x-1">
+				kunst
+			</span>
+			<span className="pl-3 font-light leading-none text-yellow-100 transition group-hover:translate-x-1">
+				räuber
+			</span>
+		</NavLink>
 	)
 }

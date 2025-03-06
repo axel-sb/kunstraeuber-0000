@@ -179,25 +179,24 @@ export default function ColorSearch({
 				<header className="mx-auto grid w-full grid-cols-3 place-content-center gap-4 rounded-md pb-6 text-lg 2xl:text-xl">
 					<Logo />
 
-					<div className="navlink-map inline-flex h-10 w-14 cursor-pointer justify-center self-center justify-self-center rounded-md">
-						<NavLink
-							className={`$({ isActive, isPending }) => isActive ? 'active' : 'pending' z-10 inline-flex h-10 w-10 justify-center text-foreground`}
-							to={`../artworks/cluster/?search=${query}&searchType=${searchType}`}
-						>
-							<Icon
-								name="map"
-								className="text-[1.9rem] text-slate-500"
-								size="font"
-							/>
-						</NavLink>
-					</div>
-
 					{/*
-           //§  MARK: 🔘 radio-btns
-        */}
+                        //§  MARK: 🔘 radio-btns
+                    */}
 
-					<form className="form col-[3/3] grid h-12 self-center justify-self-end">
-						<div className="flex justify-around place-self-center rounded border-[0.5px] pb-2 pt-1 text-xl text-slate-500 md:gap-4 2xl:text-2xl">
+					<form className="form col-span-2 grid h-12 grid-cols-[min-content_min-content] gap-[.5rem] self-center justify-self-end">
+						<div className="navlink-map inline-flex h-10 w-14 cursor-pointer justify-center self-center justify-self-end rounded-md">
+							<NavLink
+								className={`$({ isActive, isPending }) => isActive ? 'active' : 'pending' z-10 inline-flex h-10 w-10 justify-center text-foreground`}
+								to={`../artworks/cluster/?search=${query}&searchType=${searchType}`}
+							>
+								<Icon
+									name="map"
+									className="text-[1.7rem] text-slate-500"
+									size="font"
+								/>
+							</NavLink>
+						</div>
+						<div className="inline-flex justify-around place-self-center rounded border-[0.5px] pb-2 pt-1 text-xl text-slate-500 md:gap-4 2xl:text-2xl">
 							<RadioButton
 								name="grid-1"
 								value={grid}
@@ -330,7 +329,7 @@ export default function ColorSearch({
 													{artwork.title} {'  '}
 												</div>
 												<div className="figcaption-artist w-[calc(100%-2rem)] font-medium leading-snug tracking-[-0.020rem] opacity-70">
-													{artwork.artist_title}
+													{artwork.artist_display}
 												</div>
 												<span
 													className="ml-auto self-end overflow-hidden"
