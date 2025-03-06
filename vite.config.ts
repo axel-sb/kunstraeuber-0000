@@ -1,6 +1,6 @@
 import { reactRouter } from '@react-router/dev/vite'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
-
+import { resolve } from 'path'
 import { envOnlyMacros } from 'vite-env-only'
 /* import { defineConfig, type ViteUserConfig } from 'vitest/config'
 import { reactRouterDevTools } from 'react-router-devtools'
@@ -41,7 +41,7 @@ export default {
 	},
 	resolve: {
 		alias: {
-			'@uiw/react-color-hue': '@uiw/react-color-hue/esm/index.js',
+			'@uiw/react-color-hue': resolve(__dirname, './app/lib/color-hue-shim.js'),
 		},
 	},
 	server: {
