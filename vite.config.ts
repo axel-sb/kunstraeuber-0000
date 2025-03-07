@@ -1,4 +1,3 @@
-import { resolve } from 'path'
 import { reactRouter } from '@react-router/dev/vite'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import { envOnlyMacros } from 'vite-env-only'
@@ -26,21 +25,6 @@ export default {
 		},
 
 		sourcemap: true,
-	},
-	optimizeDeps: {
-		include: [
-			'@uiw/react-color-hue',
-			'@uiw/react-color-alpha',
-			'@uiw/color-convert',
-		],
-		esbuildOptions: {
-			target: 'es2022',
-		},
-	},
-	resolve: {
-		alias: {
-			'@uiw/react-color-hue': resolve(__dirname, './app/lib/color-hue-shim.js'),
-		},
 	},
 	server: {
 		watch: {
