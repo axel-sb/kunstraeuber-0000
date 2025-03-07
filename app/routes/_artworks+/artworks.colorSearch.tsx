@@ -53,7 +53,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 // #endregion
 
 // //§ ______________________ MARK: Export default 🌈
-// https://uiwjs.github.io/react-color/#/hue
 
 export default function ColorSearch({
 	status,

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface SimpleHuePickerProps {
   className?: string
@@ -11,7 +11,7 @@ export function SimpleHuePicker({ className = '', hue = 0, onChange }: SimpleHue
   const [isDragging, setIsDragging] = useState(false)
 
   // Calculate hue value from mouse position
-  const calculateHue = (clientX: number) => {
+  const calculateHue = useCallback((clientX: number) => {
     if (!containerRef.current) return
 
     const rect = containerRef.current.getBoundingClientRect()
@@ -23,7 +23,7 @@ export function SimpleHuePicker({ className = '', hue = 0, onChange }: SimpleHue
     newHue = Math.max(0, Math.min(newHue, 360))
 
     onChange({ h: newHue })
-  }
+  }, [onChange])
 
   // Handle mouse down event
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -70,7 +70,7 @@ export function SimpleHuePicker({ className = '', hue = 0, onChange }: SimpleHue
       window.removeEventListener('mouseup', handleEnd)
       window.removeEventListener('touchend', handleEnd)
     }
-  }, [isDragging])
+  }, [isDragging, calculateHue])
 
   return (
     <div
